@@ -1,10 +1,15 @@
-package Model;
+package Model.utente;
 
+import Model.carrello.Carrello;
+import Model.ordine.Ordine;
+
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
-public class Customer {
+public class Utente {
 
-    public Customer(){
+    public Utente(){
+        super();
     }
 
     public String getNome() {
@@ -63,12 +68,44 @@ public class Customer {
         this.numeroCivico = numeroCivico;
     }
 
-    public String getCap() {
-        return cap;
+    public String getCitta() {
+        return citta;
     }
 
-    public void setCap(String cap) {
-        this.cap = cap;
+    public void setCitta(String cap) {
+        this.citta = cap;
+    }
+
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
+    }
+
+    public ArrayList<Ordine> getOrdini() {
+        return ordini;
+    }
+
+    public void setOrdini(ArrayList<Ordine> ordini) {
+        this.ordini = ordini;
+    }
+
+    public ArrayList<Carrello> getStorico() {
+        return storico;
+    }
+
+    public void setStorico(ArrayList<Carrello> storico) {
+        this.storico = storico;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     private String nome;
@@ -78,5 +115,10 @@ public class Customer {
     private String email;
     private String via;
     private int numeroCivico;
-    private String cap;
+    private String citta;
+    private boolean admin;
+    private String password;
+
+    private ArrayList<Ordine> ordini;
+    private ArrayList<Carrello> storico;
 }
