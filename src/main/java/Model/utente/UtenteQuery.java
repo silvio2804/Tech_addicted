@@ -16,7 +16,7 @@ public class UtenteQuery extends TableQuery {
     }
 
     String insertUtente() {
-        return String.format("INSERT INTO %s (email,nome,cognome,admin VALUES (?,?,?,?,?);", table);
+        return String.format("INSERT INTO %s (email,nome,cognome,password,admin VALUES (?,?,?,?,?);", table);
     }
 
     String updateUtente() {

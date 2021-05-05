@@ -108,6 +108,14 @@ public class Utente {
         this.password = password;
     }
 
+    public void setSesso(String sesso) {
+        this.sesso = sesso;
+    }
+
+    public String getSesso() {
+        return sesso;
+    }
+
     private String nome;
     private String cognome;
     private int id;
@@ -118,7 +126,10 @@ public class Utente {
     private String citta;
     private boolean admin;
     private String password;
+    private String sesso;
 
     private ArrayList<Ordine> ordini;
     private ArrayList<Carrello> storico;
+
+
 }
