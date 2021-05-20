@@ -1,0 +1,27 @@
+@font-face {
+    font-family:'Quattrocento';
+    font-weight: normal;
+    font-style: italic;
+    src: url("../fonts/QuattrocentoSans-Bold-Italic.otf");
+}
+
+@font-face {
+    font-family:'Quattrocento' ;
+    font-weight: bold;
+    font-style: normal;
+    src: url("../fonts/QuattrocentoSans-Bold.otf");
+}
+
+@font-face {
+    font-family:'Quattrocento' ;
+    font-weight: normal;
+    font-style: italic;
+    src: url("../fonts/QuattrocentoSans-Italic.otf");
+}
+
+@font-face {
+    font-family:'Quattrocento' ;
+    font-weight: normal;
+    font-style: normal;
+    src: url("../fonts/QuattrocentoSans-Regular.otf");
+}

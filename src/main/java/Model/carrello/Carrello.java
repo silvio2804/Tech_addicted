@@ -7,11 +7,11 @@ import java.util.ArrayList;
 
 public class Carrello {
 
-    public Carrello(ArrayList<carItem> items){
+    public Carrello(ArrayList<CarItem> items){
         this.items = items;
     }
 
-    public ArrayList<carItem> getItems() {
+    public ArrayList<CarItem> getItems() {
         return items;
     }
 
@@ -49,15 +49,19 @@ public class Carrello {
 
     public  double totaleCarrello(){
         double totale=0;
-        for(carItem i: items){
+        for(CarItem i: items){
             totale +=i.totale();
         }
         return totale;
+    }
+    public void addProdotto(Prodotto prodotto, int quantita) {
+        CarItem item = new CarItem(prodotto,quantita);
+        items.add(item);
     }
 
     private String idCarrello;
     private ArrayList<Prodotto> listaProdotti;
     private String dataAcquisto;
     private Utente utente;
-    private ArrayList<carItem> items;
+    private ArrayList<CarItem> items;
 }

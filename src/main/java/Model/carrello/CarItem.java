@@ -2,9 +2,9 @@ package Model.carrello;
 
 import Model.prodotto.Prodotto;
 
-public class carItem {
+public class CarItem {
 
-    public carItem(Prodotto prodotto, int quantita) {
+    public CarItem(Prodotto prodotto, int quantita) {
         this.prodotto = prodotto;
         this.quantita = quantita;
     }

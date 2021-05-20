@@ -1,12 +1,13 @@
-package Model.parolaChiave;
+package Model.tag;
 
 import Model.prodotto.Prodotto;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
-public class ParolaChiave {
+public class Tag {
 
-    public ParolaChiave(){
+    public Tag(){
         super();
     }
 
@@ -27,5 +28,23 @@ public class ParolaChiave {
     }
 
     private String parola;
+    private int idTag;
+
+    public int getIdTag() {
+        return idTag;
+    }
+
+    public void setIdTag(int idTag) {
+        this.idTag = idTag;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Tag tag = (Tag) o;
+        return idTag == tag.idTag;
+    }
+
     private ArrayList<Prodotto> prodotto;
 }

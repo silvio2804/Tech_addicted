@@ -6,13 +6,13 @@ import java.util.Optional;
 
 public interface UtenteDao <E extends  Exception>{
 
-    ArrayList<Utente> fetchAccount(int start, int end) throws E;
+    ArrayList<Utente> fetchAccounts(int start, int end) throws E;
 
-    Optional<Utente> fetchAccount(String email)  throws E;
+    Optional<Utente> fetchAccount(int id)  throws E;
 
-    Integer creaAccount(Utente utente) throws E ; //mettiamo boolean al posto di integer
+    boolean creaAccount(Utente utente) throws E ; //mettiamo boolean al posto di integer
 
-    Integer eliminaAccount(String email) throws E;
+    boolean eliminaAccount(int id) throws E;
 
-    Integer modificaAccount(Utente utente) throws E;
+    boolean modificaAccount(Utente utente) throws E;
 }

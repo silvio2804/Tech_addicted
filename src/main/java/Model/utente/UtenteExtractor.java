@@ -4,6 +4,7 @@ import Model.storage.ResultSetExtractor;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 public class UtenteExtractor implements ResultSetExtractor<Utente> {
     @Override
@@ -12,7 +13,7 @@ public class UtenteExtractor implements ResultSetExtractor<Utente> {
         u.setId(rs.getInt(1));
         u.setNome(rs.getString(2));
         u.setCognome(rs.getString(3));
-        u.setDataNa(rs.getString(4));
+        u.setDataNa(LocalDate.parse(rs.getString(4)));
         u.setEmail(rs.getString(5));
         u.setPassword(rs.getString(6));
         u.setSesso(rs.getString(7));

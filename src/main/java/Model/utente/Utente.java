@@ -2,7 +2,8 @@ package Model.utente;
 
 import Model.carrello.Carrello;
 import Model.ordine.Ordine;
-
+import Model.prodotto.Prodotto;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
@@ -36,11 +37,11 @@ public class Utente {
         this.id = id;
     }
 
-    public String getDataNa() {
+    public LocalDate getDataNa() {
         return dataNa;
     }
 
-    public void setDataNa(String dataNa) {
+    public void setDataNa(LocalDate dataNa) {
         this.dataNa = dataNa;
     }
 
@@ -116,10 +117,19 @@ public class Utente {
         return sesso;
     }
 
+    public boolean equals(Object o){
+        if(o != null)
+            return false;
+        if(o.getClass().getName()!= this.getClass().getName())
+            return false;
+        Utente ut = (Utente) o;
+        return this.id == ut.getId();
+    }
+
     private String nome;
     private String cognome;
     private int id;
-    private String dataNa;
+    private LocalDate dataNa;
     private String email;
     private String via;
     private int numeroCivico;
@@ -128,8 +138,7 @@ public class Utente {
     private String password;
     private String sesso;
 
+    private ArrayList<Prodotto> listaDesideri;
     private ArrayList<Ordine> ordini;
     private ArrayList<Carrello> storico;
-
-
 }

@@ -1,6 +1,7 @@
 package Model.utente;
 
 import Model.storage.Manager;
+import Model.storage.QueryBuilder;
 import Model.storage.ResultSetExtractor;
 
 import javax.sql.DataSource;
@@ -11,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Optional;
 
-public class UtenteManager extends Manager implements UtenteDao {
+public class UtenteManager extends Manager implements UtenteDao { // E' il mio DAO
 
     private final UtenteQuery QUERY = new UtenteQuery("Utente");
 
@@ -20,9 +21,11 @@ public class UtenteManager extends Manager implements UtenteDao {
     }
 
     @Override
-    public ArrayList<Utente> fetchAccount(int start, int end) throws SQLException { //limit
+    public ArrayList<Utente> fetchAccounts(int start, int end) throws SQLException { //limit
         try (Connection conn = source.getConnection()) {
-            try (PreparedStatement ps = conn.prepareStatement(QUERY.selectUtenti())) {
+            QueryBuilder queryBuilder = new QueryBuilder("utente","ute");
+            String query = queryBuilder.select().limit(true).generateQuery();
+            try (PreparedStatement ps = conn.prepareStatement(query)) {
                 ps.setInt(1, start);
                 ps.setInt(2, end);
                 ResultSet rs = ps.executeQuery();
@@ -39,48 +42,68 @@ public class UtenteManager extends Manager implements UtenteDao {
 
 
     @Override
-    public Optional<Utente> fetchAccount(String email) throws SQLException {
-        return Optional.empty();
-    }
-
-    @Override
-    public Integer creaAccount(Utente utente) throws SQLException {
+    public Optional<Utente> fetchAccount(int id) throws SQLException {
         try (Connection conn = source.getConnection()) {
-            try (PreparedStatement ps = conn.prepareStatement(QUERY.insertUtente())) {
-                ps.setString(1, utente.getEmail());
-                ps.setString(2, utente.getNome());
-                ps.setString(3, utente.getCognome());
-                ps.setString(4, utente.getPassword());
-                ps.setBoolean(5, utente.isAdmin());
-                return ps.executeUpdate();
+            QueryBuilder queryBuilder = new QueryBuilder("utente", "ute");
+            String query = queryBuilder.select().limit(true).generateQuery();
+            try (PreparedStatement ps = conn.prepareStatement(query)) {
+                ps.setInt(1, id);
+                ResultSet rs = ps.executeQuery();
+                Utente utente = null;
+                if (rs.next()) {
+                    utente = new UtenteExtractor().extract(rs);
+                }
+                return Optional.ofNullable(utente); //restituisce un oggetto che incapsula null
             }
         }
     }
 
     @Override
-    public Integer eliminaAccount(String email) throws SQLException {
-        if (email == null)
-            return null;
+    public boolean creaAccount(Utente utente) throws SQLException {
         try (Connection conn = source.getConnection()) {
-            try (PreparedStatement ps = conn.prepareStatement(QUERY.deleteUtente())) {
-                ps.setString(1, email);
-                return ps.executeUpdate();
+            QueryBuilder queryBuilder = new QueryBuilder("utente","ute");
+            String admin =""+utente.isAdmin();
+            queryBuilder.insert("email","password","nome","cognome","adm");
+            try (PreparedStatement ps = conn.prepareStatement(queryBuilder.generateQuery())) {
+                ps.setString(1,utente.getEmail());
+                ps.setString(2,utente.getPassword());
+                ps.setString(3,utente.getNome());
+                ps.setString(4,utente.getCognome());
+                ps.setBoolean(5,utente.isAdmin());
+                int updRet = ps.executeUpdate();
+                return updRet == 1;
             }
         }
     }
 
     @Override
-    public Integer modificaAccount(Utente utente) throws SQLException {
-        if (utente == null)
-            return null;
+    public boolean eliminaAccount(int id) throws SQLException {
         try (Connection conn = source.getConnection()) {
-            try (PreparedStatement ps = conn.prepareStatement(QUERY.updateUtente())) {
+            QueryBuilder queryBuilder = new QueryBuilder("utente","ute");
+            queryBuilder.delete().where("id=?");
+            try (PreparedStatement ps = conn.prepareStatement(queryBuilder.generateQuery())) {
+                ps.setInt(1,id);
+                int updRet = ps.executeUpdate();
+                return updRet == 1;
+            }
+        }
+    }
+
+    @Override
+    public boolean modificaAccount(Utente utente) throws SQLException {
+        try (Connection conn = source.getConnection()) {
+            QueryBuilder queryBuilder = new QueryBuilder("utente","ute");
+            queryBuilder.update("nome","cognome").where("id=?");
+            try (PreparedStatement ps = conn.prepareStatement(queryBuilder.generateQuery())) {
                 ps.setString(1, utente.getNome());
                 ps.setString(2, utente.getCognome());
-                ps.setString(3, utente.getEmail());
-                return ps.executeUpdate();
+                ps.setInt(3,utente.getId());
+                int updRet = ps.executeUpdate();
+                return updRet == 1;
             }
         }
     }
+
+
 }
 

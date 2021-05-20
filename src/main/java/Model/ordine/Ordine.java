@@ -1,5 +1,7 @@
 package Model.ordine;
 
+import Model.carrello.Carrello;
+import Model.carrello.CarItem;
 import Model.utente.Utente;
 
 import java.time.LocalDate;
@@ -49,12 +51,26 @@ public class Ordine {
         this.utente = utente;
     }
 
+    public Carrello getCarrello() {
+        return carrello;
+    }
+
+    public void setCarrello(Carrello carrello) {
+        this.carrello = carrello;
+    }
+
     private double totale;
     private String pagamento;
     private int idOrdine;
     private LocalDate dataOrdine;
-
     private Utente utente;
+    private Carrello carrello;
 
-
+    public int entries() {
+        int entries = 0;
+        for(CarItem item: carrello.getItems()){
+            entries++;
+        }
+        return entries;
+    }
 }

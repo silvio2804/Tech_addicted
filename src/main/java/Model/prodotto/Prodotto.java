@@ -2,20 +2,15 @@ package Model.prodotto;
 
 import Model.carrello.Carrello;
 import Model.categoria.Categoria;
-import Model.parolaChiave.ParolaChiave;
+import Model.sconto.Sconto;
+import Model.tag.Tag;
+import Model.utente.Utente;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Prodotto {
     public Prodotto(){
-    }
-
-    public String getColore() {
-        return colore;
-    }
-
-    public void setColore(String colore) {
-        this.colore = colore;
     }
 
     public String getDescrizione() {
@@ -74,22 +69,39 @@ public class Prodotto {
         this.categoria = categoria;
     }
 
-    public ArrayList<ParolaChiave> getParoleChiavi() {
-        return paroleChiavi;
+    public ArrayList<Tag> getTags() {
+        return tags;
     }
 
-    public void setParoleChiavi(ArrayList<ParolaChiave> paroleChiavi) {
-        this.paroleChiavi = paroleChiavi;
+    public void setParoleChiavi(ArrayList<Tag> tags) {
+        this.tags = tags;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Prodotto prodotto = (Prodotto) o;
+        return idProdotto == prodotto.idProdotto;
+    }
+
+
+    public ArrayList<Sconto> getScontiProdotto() {
+        return scontiProdotto;
+    }
+
+    public void setScontiProdotto(ArrayList<Sconto> scontiProdotto) {
+        this.scontiProdotto = scontiProdotto;
     }
 
     private int idProdotto;
     private String nome;
     private double prezzo;
     private String immagine;
-    private String colore;
     private String descrizione;
-
     private ArrayList<Carrello> ProdottiCarrello; //vedere in quanti carrelli si trova il prodotto?? potrebbe servire a questo
     private Categoria categoria;
-    private ArrayList<ParolaChiave> paroleChiavi;
+    private ArrayList<Tag> tags;
+    private ArrayList<Utente> UtentiDesideri;
+    private ArrayList<Sconto> scontiProdotto;
 }
