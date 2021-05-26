@@ -16,7 +16,7 @@ public class UtenteManager extends Manager implements UtenteDao { // E' il mio D
 
     private final UtenteQuery QUERY = new UtenteQuery("Utente");
 
-    public UtenteManager(DataSource source) {
+    public UtenteManager(DataSource source)throws SQLException {
         super(source);
     }
 

@@ -16,7 +16,7 @@ import java.util.Optional;
 
 public class ScontoManager extends Manager implements ScontoDao {
 
-    protected ScontoManager(DataSource source) {
+    protected ScontoManager(DataSource source)throws SQLException {
         super(source);
     }
 

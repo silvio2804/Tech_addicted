@@ -15,7 +15,7 @@ import java.util.Optional;
 
 public class TagManager extends Manager implements TagDao {
 
-    protected TagManager(DataSource source) {
+    protected TagManager(DataSource source) throws SQLException {
         super(source);
     }
 

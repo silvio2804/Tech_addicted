@@ -17,5 +17,5 @@
 </c:if>
 <script src="js/library.js" defer></script>
 <c:if test="${not empty param.script}">
-    <script src="js/${param.script}"defer></script>
+    <script src="js/${param.script}" defer></script>
 </c:if>

@@ -927,78 +927,302 @@ SELECT|sys.sys_config
 </ObjectGrants>
     </user>
     <table id="289" parent="10" name="carrello"/>
-    <table id="290" parent="10" name="prodotto"/>
-    <table id="291" parent="10" name="utente"/>
-    <column id="292" parent="289" name="idCarrello">
+    <table id="290" parent="10" name="categoria"/>
+    <table id="291" parent="10" name="listadesideri"/>
+    <table id="292" parent="10" name="ordine"/>
+    <table id="293" parent="10" name="prodottiincarrello"/>
+    <table id="294" parent="10" name="prodotto"/>
+    <table id="295" parent="10" name="promozione"/>
+    <table id="296" parent="10" name="sconto"/>
+    <table id="297" parent="10" name="tag"/>
+    <table id="298" parent="10" name="tagprodotti"/>
+    <table id="299" parent="10" name="utente"/>
+    <column id="300" parent="289" name="idCar">
       <Position>1</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
+      <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="293" parent="289" name="idUtente">
+    <column id="301" parent="289" name="idUtente">
       <Position>2</Position>
       <DataType>int|0s</DataType>
     </column>
-    <key id="294" parent="289" name="PRIMARY">
+    <key id="302" parent="289" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
-      <ColNames>idCarrello</ColNames>
+      <ColNames>idCar</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="295" parent="290" name="id">
+    <column id="303" parent="290" name="nomeCategoria">
+      <Position>1</Position>
+      <DataType>char(30)|0s</DataType>
+    </column>
+    <column id="304" parent="290" name="idCat">
+      <Position>2</Position>
+      <DataType>int|0s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>null</SequenceIdentity>
+    </column>
+    <key id="305" parent="290" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>idCat</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="306" parent="291" name="idUtente">
       <Position>1</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="296" parent="290" name="nome">
+    <column id="307" parent="291" name="idProdotto">
+      <Position>2</Position>
+      <DataType>int|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="308" parent="291" name="idProdotto">
+      <ColNames>idProdotto</ColNames>
+      <Type>btree</Type>
+    </index>
+    <key id="309" parent="291" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>idUtente
+idProdotto</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="310" parent="291" name="listadesideri_ibfk_1">
+      <ColNames>idUtente</ColNames>
+      <RefTableName>utente</RefTableName>
+      <RefColNames>id</RefColNames>
+      <OnDelete>cascade</OnDelete>
+    </foreign-key>
+    <foreign-key id="311" parent="291" name="listadesideri_ibfk_2">
+      <ColNames>idProdotto</ColNames>
+      <RefTableName>prodotto</RefTableName>
+      <RefColNames>idProd</RefColNames>
+    </foreign-key>
+    <column id="312" parent="292" name="idOrdine">
+      <Position>1</Position>
+      <DataType>int|0s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>null</SequenceIdentity>
+    </column>
+    <column id="313" parent="292" name="pagamento">
       <Position>2</Position>
       <DataType>char(30)|0s</DataType>
     </column>
-    <column id="297" parent="290" name="categoria">
+    <column id="314" parent="292" name="totale">
       <Position>3</Position>
+      <DataType>double|0s</DataType>
+    </column>
+    <column id="315" parent="292" name="dataOrdine">
+      <Position>4</Position>
+      <DataType>timestamp|0s</DataType>
+    </column>
+    <column id="316" parent="292" name="idUtente">
+      <Position>5</Position>
+      <DataType>int|0s</DataType>
+    </column>
+    <column id="317" parent="292" name="idCarrello">
+      <Position>6</Position>
+      <DataType>int|0s</DataType>
+    </column>
+    <key id="318" parent="292" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>idOrdine</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="319" parent="293" name="idCarrello">
+      <Position>1</Position>
+      <DataType>int|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="320" parent="293" name="idProdotto">
+      <Position>2</Position>
+      <DataType>int|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="321" parent="293" name="quantita">
+      <Position>3</Position>
+      <DataType>int|0s</DataType>
+    </column>
+    <index id="322" parent="293" name="idProdotto">
+      <ColNames>idProdotto</ColNames>
+      <Type>btree</Type>
+    </index>
+    <key id="323" parent="293" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>idCarrello
+idProdotto</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="324" parent="293" name="prodottiincarrello_ibfk_1">
+      <ColNames>idCarrello</ColNames>
+      <RefTableName>carrello</RefTableName>
+      <RefColNames>idCar</RefColNames>
+      <OnDelete>cascade</OnDelete>
+    </foreign-key>
+    <foreign-key id="325" parent="293" name="prodottiincarrello_ibfk_2">
+      <ColNames>idProdotto</ColNames>
+      <RefTableName>prodotto</RefTableName>
+      <RefColNames>idProd</RefColNames>
+    </foreign-key>
+    <column id="326" parent="294" name="idProd">
+      <Position>1</Position>
+      <DataType>int|0s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>null</SequenceIdentity>
+    </column>
+    <column id="327" parent="294" name="nome">
+      <Position>2</Position>
       <DataType>char(30)|0s</DataType>
     </column>
-    <column id="298" parent="290" name="descrizione">
+    <column id="328" parent="294" name="descrizione">
+      <Position>3</Position>
+      <DataType>char(50)|0s</DataType>
+    </column>
+    <column id="329" parent="294" name="immagine">
       <Position>4</Position>
       <DataType>char(50)|0s</DataType>
     </column>
-    <column id="299" parent="290" name="immagine">
+    <column id="330" parent="294" name="prezzo">
       <Position>5</Position>
-      <DataType>char(50)|0s</DataType>
-    </column>
-    <column id="300" parent="290" name="prezzo">
-      <Position>6</Position>
       <DataType>double|0s</DataType>
     </column>
-    <key id="301" parent="290" name="PRIMARY">
+    <column id="331" parent="294" name="idCategoria">
+      <Position>6</Position>
+      <DataType>int|0s</DataType>
+    </column>
+    <key id="332" parent="294" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
-      <ColNames>id</ColNames>
+      <ColNames>idProd</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="302" parent="291" name="id">
+    <column id="333" parent="295" name="idProdotto">
       <Position>1</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="303" parent="291" name="nome">
+    <column id="334" parent="295" name="idSconto">
+      <Position>2</Position>
+      <DataType>int|0s</DataType>
+    </column>
+    <column id="335" parent="295" name="dataInizio">
+      <Position>3</Position>
+      <DataType>timestamp|0s</DataType>
+    </column>
+    <column id="336" parent="295" name="dataFine">
+      <Position>4</Position>
+      <DataType>timestamp|0s</DataType>
+    </column>
+    <index id="337" parent="295" name="idSconto">
+      <ColNames>idSconto</ColNames>
+      <Type>btree</Type>
+    </index>
+    <key id="338" parent="295" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>idProdotto</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="339" parent="295" name="promozione_ibfk_1">
+      <ColNames>idSconto</ColNames>
+      <RefTableName>sconto</RefTableName>
+      <RefColNames>idSconto</RefColNames>
+      <OnDelete>cascade</OnDelete>
+    </foreign-key>
+    <column id="340" parent="296" name="idSconto">
+      <Position>1</Position>
+      <DataType>int|0s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>null</SequenceIdentity>
+    </column>
+    <column id="341" parent="296" name="nomeSconto">
       <Position>2</Position>
       <DataType>char(30)|0s</DataType>
     </column>
-    <column id="304" parent="291" name="cognome">
+    <column id="342" parent="296" name="percentuale">
+      <Position>3</Position>
+      <DataType>int|0s</DataType>
+    </column>
+    <key id="343" parent="296" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>idSconto</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="344" parent="297" name="idTag">
+      <Position>1</Position>
+      <DataType>int|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="345" parent="297" name="parola">
+      <Position>2</Position>
+      <DataType>char(30)|0s</DataType>
+    </column>
+    <key id="346" parent="297" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>idTag</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="347" parent="298" name="idProdotto">
+      <Position>1</Position>
+      <DataType>int|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="348" parent="298" name="idTag">
+      <Position>2</Position>
+      <DataType>char(30)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <key id="349" parent="298" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>idProdotto
+idTag</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="350" parent="299" name="id">
+      <Position>1</Position>
+      <DataType>int|0s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>null</SequenceIdentity>
+    </column>
+    <column id="351" parent="299" name="nome">
+      <Position>2</Position>
+      <DataType>char(30)|0s</DataType>
+    </column>
+    <column id="352" parent="299" name="cognome">
       <Position>3</Position>
       <DataType>char(30)|0s</DataType>
     </column>
-    <column id="305" parent="291" name="dataNascita">
+    <column id="353" parent="299" name="dataNascita">
       <Position>4</Position>
       <DataType>date|0s</DataType>
     </column>
-    <column id="306" parent="291" name="email">
+    <column id="354" parent="299" name="email">
       <Position>5</Position>
       <DataType>char(50)|0s</DataType>
     </column>
-    <column id="307" parent="291" name="sesso">
+    <column id="355" parent="299" name="passw">
       <Position>6</Position>
+      <DataType>char(50)|0s</DataType>
+    </column>
+    <column id="356" parent="299" name="sesso">
+      <Position>7</Position>
       <DataType>char(10)|0s</DataType>
     </column>
-    <key id="308" parent="291" name="PRIMARY">
+    <column id="357" parent="299" name="adm">
+      <Position>8</Position>
+      <DataType>tinyint(1)|0s</DataType>
+    </column>
+    <column id="358" parent="299" name="citta">
+      <Position>9</Position>
+      <DataType>char(30)|0s</DataType>
+    </column>
+    <column id="359" parent="299" name="via">
+      <Position>10</Position>
+      <DataType>char(30)|0s</DataType>
+    </column>
+    <column id="360" parent="299" name="numeroCivico">
+      <Position>11</Position>
+      <DataType>int|0s</DataType>
+    </column>
+    <key id="361" parent="299" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>

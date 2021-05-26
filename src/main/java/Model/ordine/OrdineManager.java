@@ -22,7 +22,8 @@ import java.util.Optional;
 
 public class OrdineManager extends Manager implements OrdineDao{
 
-    protected OrdineManager(DataSource source) {
+
+    protected OrdineManager(DataSource source) throws SQLException {
         super(source);
     }
 

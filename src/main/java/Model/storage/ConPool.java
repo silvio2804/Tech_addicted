@@ -29,10 +29,10 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package Model;
+package Model.storage;
 
 /**
- * @author Mattia De Rosa
+ * @author Silvio Venturino, Federico Antonio Vitale
  *
  */
 
@@ -46,10 +46,10 @@ import java.util.TimeZone;
 public class ConPool {
 	private static DataSource datasource;
 
-	public static Connection getConnection() throws SQLException {
+	public static DataSource getDatasource() throws SQLException {
 		if (datasource == null) {
 			PoolProperties p = new PoolProperties();
-			p.setUrl("jdbc:mysql://localhost:3306/dbModelloMVC?serverTimezone=" + TimeZone.getDefault().getID());
+			p.setUrl("jdbc:mysql://localhost:3306/techaddicted?serverTimezone=" + TimeZone.getDefault().getID());
 			p.setDriverClassName("com.mysql.cj.jdbc.Driver");
 			p.setUsername("root");
 			p.setPassword("Leonidas1!");
@@ -61,6 +61,6 @@ public class ConPool {
 			datasource = new DataSource();
 			datasource.setPoolProperties(p);
 		}
-		return datasource.getConnection();
+		return datasource;
 	}
 }

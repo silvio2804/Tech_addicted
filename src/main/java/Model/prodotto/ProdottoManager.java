@@ -15,7 +15,7 @@ import java.util.Optional;
 
 public class ProdottoManager extends Manager implements ProdottoDao {
 
-    protected ProdottoManager(DataSource source) {
+    protected ProdottoManager(DataSource source) throws SQLException {
         super(source);
     }
 

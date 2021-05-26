@@ -1,6 +1,8 @@
 package Model.categoria;
 
+import Model.prodotto.Prodotto;
 import Model.prodotto.ProdottoExtractor;
+import Model.storage.ConPool;
 import Model.storage.Manager;
 import Model.storage.QueryBuilder;
 import Model.utente.Utente;
@@ -15,7 +17,7 @@ import java.util.Optional;
 
 public class CategoriaManager extends Manager implements CategoriaDao {
 
-    protected CategoriaManager(DataSource source) {
+    protected CategoriaManager(DataSource source) throws SQLException {
         super(source);
     }
 
@@ -49,22 +51,45 @@ public class CategoriaManager extends Manager implements CategoriaDao {
         try(Connection conn = source.getConnection()){
             QueryBuilder queryBuilder = new QueryBuilder("categoria","cat");
             queryBuilder.select().innerJoin("prodotto","pro").on("cat.id=pro.idCategoria").where("cat.id=?");
-        try(PreparedStatement ps = conn.prepareStatement(queryBuilder.generateQuery())){
-            ps.setInt(1,catId);
-            ResultSet rs = ps.executeQuery();
-            CategoriaExtractor categoriaExtractor = new CategoriaExtractor();
-            Categoria cat = null;
-            if(rs.next()){
-                cat = categoriaExtractor.extract(rs);
-                cat.setProdotti(new ArrayList<>());
-                ProdottoExtractor prodottoExtractor = new ProdottoExtractor();
-                cat.getProdotti().add(prodottoExtractor.extract(rs));
-                while(rs.next()){
+            try(PreparedStatement ps = conn.prepareStatement(queryBuilder.generateQuery())){
+                ps.setInt(1,catId);
+                ResultSet rs = ps.executeQuery();
+                CategoriaExtractor categoriaExtractor = new CategoriaExtractor();
+                Categoria cat = null;
+                if(rs.next()){
+                    cat = categoriaExtractor.extract(rs);
+                    cat.setProdotti(new ArrayList<>());
+                    ProdottoExtractor prodottoExtractor = new ProdottoExtractor();
                     cat.getProdotti().add(prodottoExtractor.extract(rs));
+                    while(rs.next())
+                        cat.getProdotti().add(prodottoExtractor.extract(rs));
                 }
+                return Optional.ofNullable(cat);
             }
-            return Optional.ofNullable(cat);
         }
+    }
+
+    public Optional<Categoria> fetchCategoriaConProdotto(int catId) throws SQLException { //dammi tutti i prodotti che appartengono a una categoria
+        try(Connection conn = source.getConnection()){
+            QueryBuilder queryBuilder = new QueryBuilder("prodotto","pro");
+            queryBuilder.select().innerJoin("categoria","cat").on("cat.idCat=pro.idCategoria").where("cat.idCat=?");
+            try(PreparedStatement ps = conn.prepareStatement(queryBuilder.generateQuery())){
+                System.out.println(queryBuilder.generateQuery());
+                ps.setInt(1,catId);
+                ResultSet rs = ps.executeQuery();
+                CategoriaExtractor categoriaExtractor = new CategoriaExtractor();
+                Categoria cat = null;
+                if(rs.next()){
+                    cat = categoriaExtractor.extract(rs);
+                    cat.setProdotti(new ArrayList<>());
+                    ProdottoExtractor prodottoExtractor = new ProdottoExtractor();
+                    cat.getProdotti().add(prodottoExtractor.extract(rs));//aggiungo il primo prodotto, a causa del while
+                    while(rs.next()){
+                        cat.getProdotti().add(prodottoExtractor.extract(rs));
+                    }
+                }
+                return Optional.ofNullable(cat);
+            }
         }
     }
 

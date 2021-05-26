@@ -4,7 +4,6 @@ import java.util.StringJoiner;
 
 /**
  * Query builder build query by Silvio
- * @param table,alias,stringBuilder
  */
 
 
@@ -13,7 +12,7 @@ public class QueryBuilder {
     public QueryBuilder(String table, String alias) {
         this.table = table;
         this.alias = alias;
-        this.query = null;
+        this.query = new StringBuilder();
     }
 
     public String generateQuery(){
