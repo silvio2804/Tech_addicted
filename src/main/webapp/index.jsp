@@ -15,6 +15,6 @@
     </style>
 </head>
 <body>
-<% response.sendRedirect("./Utenti/secret"); %>
+<% response.sendRedirect("./accounts/secret"); %>
 </body>
 </html>

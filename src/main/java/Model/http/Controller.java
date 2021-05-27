@@ -12,7 +12,7 @@ public abstract class Controller extends HttpServlet {
 
     protected String getPath(HttpServletRequest req) {return req.getPathInfo() != null ? req.getPathInfo() : "/"; }
 
-    protected String  view(String viewPath) {
+    protected String view(String viewPath) {
         String basePath = getServletContext().getInitParameter("basePath");
         String engine = getServletContext().getInitParameter("engine");
         return basePath + viewPath + engine;
@@ -20,7 +20,7 @@ public abstract class Controller extends HttpServlet {
 
     protected String back(HttpServletRequest request) { return request.getServletPath() + request.getPathInfo(); }
 
-    protected void validate(RequestValidator validator) throws InvalidRequestException {
+    /*protected void validate(RequestValidator validator) throws InvalidRequestException {
         if(validator.HasErrors()){
             throw new InvalidRequestException("Validation error", validator.getErrors());
         }
@@ -28,5 +28,5 @@ public abstract class Controller extends HttpServlet {
 
     protected String getUploadPath() {
         return System.getenv("CATALINA_HOME") + File.separator + "webapps" + File.separator + "progetto" + File.separator + "uploads" + File.separator;
-    }
+    }*/
 }

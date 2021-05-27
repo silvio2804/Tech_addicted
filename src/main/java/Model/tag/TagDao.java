@@ -1,7 +1,5 @@
 package Model.tag;
 
-import Model.utente.Utente;
-
 import java.util.ArrayList;
 import java.util.Optional;
 

@@ -1,7 +1,7 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!doctype html>
-<html>
+<html lang="it" dir="ltr">
 <head>
     <jsp:include page="WEB-INF/views/partials/head.jsp">
         <jsp:param name="title" value="homePage"/>
@@ -15,8 +15,6 @@
     </style>
 </head>
 <body>
-<p>
-    ciao
-</p>
+<% response.sendRedirect("./accounts/secret"); %>
 </body>
 </html>
