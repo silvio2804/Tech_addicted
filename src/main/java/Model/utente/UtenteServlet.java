@@ -21,6 +21,7 @@ public class UtenteServlet extends HttpServlet {
             case "signup": //login utente
                 break;
             case "secret": //login admin (pagina)
+                request.getRequestDispatcher(view("crm/secret")).forward(request, response);
                 break;
             case "create":
                 break;
