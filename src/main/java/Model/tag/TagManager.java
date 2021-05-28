@@ -2,8 +2,6 @@ package Model.tag;
 
 import Model.storage.Manager;
 import Model.storage.QueryBuilder;
-import Model.utente.Utente;
-import Model.utente.UtenteExtractor;
 
 import javax.sql.DataSource;
 import java.sql.Connection;

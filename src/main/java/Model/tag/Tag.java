@@ -1,9 +1,8 @@
 package Model.tag;
 
-import Model.prodotto.Prodotto;
+import Model.product.Product;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class Tag {
 
@@ -19,12 +18,12 @@ public class Tag {
         this.parola = parola;
     }
 
-    public ArrayList<Prodotto> getProdotto() {
-        return prodotto;
+    public ArrayList<Product> getProdotto() {
+        return products;
     }
 
-    public void setProdotto(ArrayList<Prodotto> prodotto) {
-        this.prodotto = prodotto;
+    public void setProdotto(ArrayList<Product> products) {
+        this.products = products;
     }
 
     private String parola;
@@ -46,5 +45,5 @@ public class Tag {
         return idTag == tag.idTag;
     }
 
-    private ArrayList<Prodotto> prodotto;
+    private ArrayList<Product> products;
 }
