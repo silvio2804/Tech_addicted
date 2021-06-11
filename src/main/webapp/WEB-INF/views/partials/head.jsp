@@ -14,7 +14,7 @@
 <meta name="theme-color" content="#d6faff">
 <link href="${context}/css/reset.css" rel="stylesheet">
 <link href="${context}/css/library.css" rel="stylesheet">
-<c:if test="${not empty param.style}">
+<c:if test="${not empty param.styles}">
     <c:forTokens items="${param.styles}" delims="," var="style">
     <link rel="stylesheet" href="${context}/css/${style}.css">
     </c:forTokens>
