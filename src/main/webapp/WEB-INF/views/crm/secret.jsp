@@ -12,20 +12,37 @@
     <jsp:include page="../partials/head.jsp">
         <jsp:param name="title" value="Login Admin"/>
     </jsp:include>
+
+    <style>
+
+        .app {
+            background: linear-gradient(var(--primary), var(--white));
+        }
+
+        .login {
+            padding: 1rem;
+            background-color: var(--white);
+            border-radius: 10px;
+        }
+
+        .login > * {
+            margin: 10px;
+        }
+    </style>
 </head>
 <body>
-<form action="/secret" method="post">
-    <fieldset>
+<form class="app grid-x justify-center align-center" action="/progetto_war_exploded/crm/dashboard" method="get">
+    <fieldset class="grid-y cell w50 login">
         <h2> Login Pannello Admin</h2>
         <span>Email</span>
-        <label for="email">
+        <label for="email" class="field">
             <input type="email" name="email" id="email" placeholder="Email">
         </label>
         <span>Password</span>
         <label for="password">
             <input type="password" name="password" id="password" placeholder="Password">
         </label>
-        <button type="submit">Accedi</button>
+        <button type="submit" class="btn primary">Accedi</button>
     </fieldset>
 </form>
 </body>
