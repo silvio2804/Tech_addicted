@@ -25,8 +25,8 @@ public abstract class Controller extends HttpServlet {
             throw new InvalidRequestException("Validation error", validator.getErrors());
         }
     }
-
+*/
     protected String getUploadPath() {
-        return System.getenv("CATALINA_HOME") + File.separator + "webapps" + File.separator + "progetto" + File.separator + "uploads" + File.separator;
-    }*/
+        return System.getenv("CATALINA_HOME") + File.separator + "uploads" + File.separator;
+    }
 }

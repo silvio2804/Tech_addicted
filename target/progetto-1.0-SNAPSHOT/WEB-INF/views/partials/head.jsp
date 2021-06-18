@@ -2,7 +2,7 @@
 
 <c:set var="context" value="${pageContext.request.contextPath}"/>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>${param.title}</title>
 <meta name="description" content="Ecommerce High-tech">
 <link rel="icon" type="image/png" href="${context}/images/logo.png">

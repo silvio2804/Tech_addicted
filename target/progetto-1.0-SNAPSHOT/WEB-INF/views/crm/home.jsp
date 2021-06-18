@@ -3,7 +3,6 @@
 <!doctype html>
 <html>
 <head>
-    <%-- head dinamico --%>
     <jsp:include page="../partials/head.jsp">
         <jsp:param name="param" value="Tech addicted home"/>
         <jsp:param name="styles" value="crm,dashboard"/>
@@ -12,50 +11,31 @@
 </head>
 <body>
 <main class="app">
-    <aside class="sidebar">
-        <nav class="menu grid-y align-center">
-            <img src="../images/logo.png" width="100" height="100">
-            <a href="#">Gestione Clienti</a>
-            <a href="#">Gestione Prodotti</a>
-            <a href="#">Gestione Ordini</a>
-            <a href="#">Gestione Categorie</a>
-            <a href="#">Gestione Promozioni</a>
-            <a href="#">Profilo</a>
-            <a href="#">Logout</a>
-        </nav>
-    </aside>
+    <%@include file="../partials/crm/sidebar.jsp" %>
     <section class="content grid-y">
-        <header class="topbar grid-x align-center">
-            <%@include file="../../../icons/menu.svg" %>
-            <label class="field command">
-                <input type="text" placeholder="Cerca Comandi">
-            </label>
-            <span class="account">
-                <%@include file="../../../icons/user.svg" %>
-                Benvenuto amministratore
-            </span>
-        </header>
+        <%@include file="../partials/crm/header.jsp" %>
         <div class="body grid-x justify-center">
-            <div class="grid-y cell w40">
-                <h4>Clienti Registrati</h4>
-                <h2>24</h2>
-            </div>
-            <div class="grid-y cell w40">
-                <h4>Prodotti in magazzino</h4>
-                <h2>135</h2>
-            </div>
-            <div class="grid-y cell w40">
-                <h4>Incasso mensile</h4>
-                <h2>1200 euro</h2>
-            </div>
-            <div class="grid-y cell w40">
-                <h4>Ordini mensili</h4>
-                <h2>133</h2>
-            </div>
+            <jsp:include page="../partials/crm/statscard.jsp">
+                <jsp:param name="title" value="Clienti registrati"/>
+                <jsp:param name="stat" value="24"/>
+            </jsp:include>
+
+            <jsp:include page="../partials/crm/statscard.jsp">
+                <jsp:param name="title" value="Prodotti in magazzino"/>
+                <jsp:param name="stat" value="135"/>
+            </jsp:include>
+
+            <jsp:include page="../partials/crm/statscard.jsp">
+                <jsp:param name="title" value="Incasso mensile"/>
+                <jsp:param name="stat" value="1200 euro"/>
+            </jsp:include>
+
+            <jsp:include page="../partials/crm/statscard.jsp">
+                <jsp:param name="title" value="Ordini mensili"/>
+                <jsp:param name="stat" value="133"/>
+            </jsp:include>
         </div>
-        <footer class="info">
-            <p>Copyright © 2021 Tutti i diritti riservati.</p>
-        </footer>
+        <%@include file="../partials/crm/footer.jsp" %>
     </section>
 </main>
 </body>
