@@ -65,6 +65,7 @@ input:focus, textarea:focus, select:focus {
 
 .grid-x {
     display: flex;
+    flex-flow: row wrap;
 }
 
 .grid-y {
