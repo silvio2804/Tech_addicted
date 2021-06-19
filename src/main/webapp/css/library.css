@@ -42,7 +42,8 @@
 input, select, textarea {
     padding: 8px;
     border-width: 1px;
-    border-color: var(--white);
+    border-color: #CCCCCC;
+    background-color: var(--white);
     color: var(--black);
     border-style: solid;
     border-radius: 0;

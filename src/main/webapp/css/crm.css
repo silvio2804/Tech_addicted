@@ -10,7 +10,7 @@
 
 .menu > a {
     text-decoration: none;
-    color: var(--black);
+    color: var(--white);
     padding: 1rem;
 }
 .menu > img {
@@ -57,7 +57,7 @@
 }
 
 .topbar > * {
-    color: var(--black);
+    color: var(--white);
     margin-right: 8px;
 }
 

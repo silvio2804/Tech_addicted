@@ -20,7 +20,7 @@
     <section class="content grid-y">
         <%@include file="../partials/crm/header.jsp" %>
         <div class="body grid-x justify-center">
-            <form method="post" action="/progetto_war_exploded/products/create" enctype="multipart/form-data"> <!-- per inviare file binari -->
+            <form method="post" action="/progetto_war_exploded/products/create" enctype="multipart/form-data">
                 <fieldset class="grid-y cell product-form">
                     <legend>Crea Prodotto</legend>
                     <label for="name" class="field cell w50">
@@ -33,7 +33,8 @@
                         <input type="text" id="description" name="description" placeholder="Descrizione">
                     </label>
                     <label for="categoryId" class="field cell w50">
-                        <select name="category" id="categoryId">
+                        <select name="categoryId" id="categoryId">
+                            <option value="1">notebook</option>
                             // da completare con le categorie prese automaticamente dal DB
                         </select>
                     </label>

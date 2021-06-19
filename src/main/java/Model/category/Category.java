@@ -42,6 +42,15 @@ public class Category {
         return idCategoria == category.idCategoria;
     }
 
+    @Override
+    public String toString() {
+        return "Category{" +
+                "nomeCategoria='" + nomeCategoria + '\'' +
+                ", idCategoria=" + idCategoria +
+                ", prodotti=" + prodotti +
+                '}';
+    }
+
     private String nomeCategoria;
     private int idCategoria;
     private ArrayList<Product> prodotti;   //lista di prodotti appartenente alla categoria

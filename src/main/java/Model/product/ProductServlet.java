@@ -9,15 +9,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.SQLException;
 
 @WebServlet(name = "ProductServlet", value = "/products/*")
-@MultipartConfig //per inviare file binari
+@MultipartConfig
 public class ProductServlet extends Controller {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -48,7 +45,7 @@ public class ProductServlet extends Controller {
             String path = getPath(request);
             switch (path) {
                 case "/create":
-                    ProdottoDao<SQLException> prodottoDao = new SqlProdottoDao(source); //?
+                    ProdottoDao<SQLException> prodottoDao = new ProdottoManager(source);
                     Product product = new Product();
                     product.setPrezzo(Double.parseDouble(request.getParameter("price")));
                     product.setNome(request.getParameter("name"));
@@ -59,20 +56,21 @@ public class ProductServlet extends Controller {
                     Category category = new Category();
                     category.setIdCategoria(Integer.parseInt(request.getParameter("categoryId")));
                     product.setCategoria(category);
+                    System.out.println(product);
                     if(prodottoDao.creaProdotto(product)) {
                         request.getRequestDispatcher("/index.jsp").forward(request, response);
-                        String uploadRoot = getUploadPath(); //?
-                        try(InputStream fileStream = filePart.getInputStream()){
-                            File file = new File(uploadRoot + fileName);
-                            Files.copy(fileStream, file.toPath());
-
-                        }
+                        String uploadRoot = getUploadPath();
+                        product.writeCover(uploadRoot, filePart);
                     } else {
                         response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Errore Server");
                     }
                     break;
             }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
     }
 }
+
+
 // DA COMPLETARE

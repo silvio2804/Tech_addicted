@@ -1,5 +1,6 @@
 package Model.http;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
@@ -7,7 +8,7 @@ import java.io.File;
 
 public abstract class Controller extends HttpServlet {
 
-   /* @Resource(name = "jdbc/") ?? */
+   @Resource(name = "jdbc/techaddicted")
     protected static DataSource source;
 
     protected String getPath(HttpServletRequest req) {return req.getPathInfo() != null ? req.getPathInfo() : "/"; }

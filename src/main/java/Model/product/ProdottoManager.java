@@ -68,6 +68,7 @@ public class ProdottoManager extends Manager implements ProdottoDao {
                 ps.setDouble(4, product.getPrezzo());
                 ps.setString(5, product.getImmagine());
                 int updRet = ps.executeUpdate();
+                System.out.println(queryBuilder.generateQuery());
                 return updRet == 1;
             }
         }

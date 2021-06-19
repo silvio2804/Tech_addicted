@@ -14,7 +14,9 @@
     <%@include file="../partials/crm/sidebar.jsp" %>
     <section class="content grid-y">
         <%@include file="../partials/crm/header.jsp" %>
+
         <div class="body grid-x justify-center">
+
             <jsp:include page="../partials/crm/statscard.jsp">
                 <jsp:param name="title" value="Clienti registrati"/>
                 <jsp:param name="stat" value="24"/>
