@@ -4,6 +4,11 @@ import Model.cart.Cart;
 import Model.order.Order;
 import Model.product.Product;
 
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -105,8 +110,18 @@ public class Account {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPassword(String password) throws NoSuchAlgorithmException { // password è inserita dall'utente
+            MessageDigest digest = MessageDigest.getInstance("SHA-512"); //password crittografata
+            SecureRandom ss = new SecureRandom();
+            byte[] salt = new byte[16];
+            ss.nextBytes(salt);
+            digest.update(salt);
+            byte[] hashedPwd = digest.digest(password.getBytes(StandardCharsets.UTF_8));
+            digest.update(password.getBytes(StandardCharsets.UTF_8));
+            StringBuilder builder = new StringBuilder();
+            for (byte bit : hashedPwd)
+                builder.append(String.format("%02x", bit));
+            this.password = builder.toString();
     }
 
     public void setSesso(String sesso) {

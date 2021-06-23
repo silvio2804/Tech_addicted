@@ -15,7 +15,6 @@ public class AccountExtractor implements ResultSetExtractor<Account> {
         u.setCognome(rs.getString(3));
         u.setDataNa(LocalDate.parse(rs.getString(4)));
         u.setEmail(rs.getString(5));
-        u.setPassword(rs.getString(6));
         u.setSesso(rs.getString(7));
         u.setAdmin(rs.getBoolean(8));
         u.setCitta(rs.getString(9));

@@ -1,6 +1,9 @@
 package Model.product;
 
+import Model.search.Condition;
+
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public interface ProdottoDao <E extends Exception>{
@@ -16,4 +19,6 @@ public interface ProdottoDao <E extends Exception>{
     boolean modificaProdotto(Product product) throws E;
 
     ArrayList<Product> fetchProdottiUtente(int idUtente) throws E;
+
+    List<Product> search(List<Condition> conditions) throws E;
 }

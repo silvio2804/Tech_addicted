@@ -1,8 +1,10 @@
 package Model.account;
 
+import Model.search.Paginator;
 import Model.storage.Manager;
 import Model.storage.QueryBuilder;
 
+import javax.servlet.ServletException;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,20 +15,21 @@ import java.util.Optional;
 
 public class AccountManager extends Manager implements AccountDao { // E' il mio DAO
 
-    private final AccountQuery QUERY = new AccountQuery("Utente");
+    private AccountManager accountManager;
+
 
     public AccountManager(DataSource source)throws SQLException {
         super(source);
     }
 
     @Override
-    public ArrayList<Account> fetchAccounts(int start, int end) throws SQLException { //limit
+    public ArrayList<Account> fetchAccounts(Paginator paginator) throws SQLException { //limit
         try (Connection conn = source.getConnection()) {
             QueryBuilder queryBuilder = new QueryBuilder("utente","ute");
             String query = queryBuilder.select().limit(true).generateQuery();
             try (PreparedStatement ps = conn.prepareStatement(query)) {
-                ps.setInt(1, start);
-                ps.setInt(2, end);
+                ps.setInt(1, paginator.getLimit());
+                ps.setInt(2, paginator.getOffset());
                 ResultSet rs = ps.executeQuery();
                 AccountExtractor ex = new AccountExtractor();
                 ArrayList<Account> utenti = new ArrayList<>();
@@ -103,6 +106,21 @@ public class AccountManager extends Manager implements AccountDao { // E' il mio
         }
     }
 
-
+    public Optional<Account> findAccount(String email, String password, boolean admin) throws SQLException {
+        try (Connection conn = source.getConnection()) {
+            QueryBuilder queryBuilder = new QueryBuilder("utente", "ute");
+            queryBuilder.select().where("email=?").andCondition("password=?").andCondition("admin=?");
+            try (PreparedStatement ps = conn.prepareStatement(queryBuilder.generateQuery())) {
+                ps.setString(1, email);
+                ps.setString(2, password);
+                ps.setBoolean(3,admin);
+                ResultSet rs = ps.executeQuery();
+                Account account = null;
+                if (rs.next())
+                    account = new AccountExtractor().extract(rs);
+                return Optional.ofNullable(account);
+            }
+        }
+    }
 }
 

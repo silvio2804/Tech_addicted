@@ -1,5 +1,9 @@
 package Model.storage;
 
+import Model.search.Condition;
+import Model.search.Operator;
+
+import java.util.List;
 import java.util.StringJoiner;
 
 /**
@@ -38,6 +42,16 @@ public class QueryBuilder {
 
     public QueryBuilder where(String condition){
         query.append(" WHERE ").append(condition);
+        return this;
+    }
+
+    public QueryBuilder orCondition(String condition){
+        query.append(OR).append(condition);
+        return this;
+    }
+
+    public QueryBuilder andCondition(String condition){
+        query.append(AND).append(condition);
         return this;
     }
 
@@ -93,8 +107,25 @@ public class QueryBuilder {
         return this;
     }
 
-    public  QueryBuilder on(String condition){
+    public QueryBuilder on(String condition){
         query.append(" ON ").append(condition);
+        return this;
+    }
+
+    public QueryBuilder search(List<Condition> conditions){
+        StringJoiner searchJoiner = new StringJoiner("AND");
+        for(Condition con : conditions){
+                searchJoiner.add(String.format("%s.%s%s", alias,con.toString(),QM));
+        }
+        query.append(searchJoiner);
+        return this;
+    }
+
+    public QueryBuilder count(String name){
+        query.append("SELECT COUNT(*) AS ");
+        query.append(name);
+        query.append(" FROM ");
+        query.append(this.table);
         return this;
     }
 
@@ -102,4 +133,6 @@ public class QueryBuilder {
     private final String table,alias;
     private final StringBuilder query;
     private static final String QM ="?";
+    private static final String AND =" && ";
+    private static final String OR =" || ";
 }

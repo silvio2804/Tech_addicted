@@ -1,7 +1,11 @@
 package Model.product;
 
+import Components.Alert;
 import Model.category.Category;
 import Model.http.Controller;
+import Model.http.ErrorHandler;
+import Model.http.InvalidRequestException;
+import Model.search.Condition;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -12,10 +16,11 @@ import javax.servlet.http.Part;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.sql.SQLException;
+import java.util.List;
 
 @WebServlet(name = "ProductServlet", value = "/products/*")
 @MultipartConfig
-public class ProductServlet extends Controller {
+public class ProductServlet extends Controller implements ErrorHandler {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String path = getPath(request);
@@ -45,8 +50,11 @@ public class ProductServlet extends Controller {
             String path = getPath(request);
             switch (path) {
                 case "/create":
+                    authorize(request.getSession(false));
+                    request.setAttribute("back",view("crm/product"));
+                    validate(ProductValidator.validateForm(request));
+                    Product product = new ProductFormMapper().map(request,false);
                     ProdottoDao<SQLException> prodottoDao = new ProdottoManager(source);
-                    Product product = new Product();
                     product.setPrezzo(Double.parseDouble(request.getParameter("price")));
                     product.setNome(request.getParameter("name"));
                     product.setDescrizione(request.getParameter("description"));
@@ -56,17 +64,43 @@ public class ProductServlet extends Controller {
                     Category category = new Category();
                     category.setIdCategoria(Integer.parseInt(request.getParameter("categoryId")));
                     product.setCategoria(category);
-                    System.out.println(product);
                     if(prodottoDao.creaProdotto(product)) {
-                        request.getRequestDispatcher("/index.jsp").forward(request, response);
-                        String uploadRoot = getUploadPath();
-                        product.writeCover(uploadRoot, filePart);
+                        product.writeCover(getUploadPath(), request.getPart("cover"));
+                        request.setAttribute("alert",new Alert(List.of("Prodotto creato!"),"sucess"));
+                        response.setStatus(HttpServletResponse.SC_CREATED);
+                        request.getRequestDispatcher(view("crm/product")).forward(request, response);
                     } else {
+                        //internalError();
                         response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Errore Server");
                     }
                     break;
+                case "/search":
+                    List<Condition> conditions = new ProductSearch().buildSearch(request);
+                    List<Product> searcProducts = conditions.isEmpty() ?
+                            prodottoDao.fetchProdottiUtente(1);//prodottoDao.fetchProductWIthRelations(newPaginator(1,50)):
+                            prodottoDao.search(conditions);
+                            request.setAttribute("products",searcProducts);
+                            request.getRequestDispatcher(view("site/search")).forward(request,response);
+                    break;
+                case "/update":
+                    authorize(request.getSession(false));
+                    request.setAttribute("back",view("crm/product"));
+                    validate(ProductValidator.validateForm(request));
+                    Product updateProduct = new ProductFormMapper().map(request,false);
+                    request.setAttribute("product",updateProduct);
+                    if(prodottoDao.updateProduct(updateProduct)){
+                        updateProduct.writeCover(getUploadPath(), request.getPart("cover"));
+                        request.setAttribute("alert",new Alert(List.of("Prodotto aggiornato!"),"sucess"));
+                        request.getRequestDispatcher(view("crm/product")).forward(request, response);
+                    }
+                    else{
+                        internalError();
+                    }
+                    break;
+                default:
+                    notFound();
             }
-        } catch (SQLException throwables) {
+        } catch (SQLException | InvalidRequestException throwables) {
             throwables.printStackTrace();
         }
     }

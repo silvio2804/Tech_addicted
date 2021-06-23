@@ -85,18 +85,15 @@ public class Product {
         try(InputStream fileStream = stream.getInputStream()){
             File file = new File(uploadPath + immagine);
             Files.copy(fileStream, file.toPath());
-
         }
     }
 
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
         return idProdotto == product.idProdotto;
     }
-
 
     public ArrayList<Discount> getScontiProdotto() {
         return scontiProdotto;

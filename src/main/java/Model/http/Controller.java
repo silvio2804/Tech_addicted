@@ -1,14 +1,18 @@
 package Model.http;
 
-import javax.annotation.Resource;
+import Model.account.AccountSession;
+import Model.cart.Cart;
+
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.io.File;
 
-public abstract class Controller extends HttpServlet {
+public abstract class Controller extends HttpServlet implements ErrorHandler {
 
-   @Resource(name = "jdbc/techaddicted")
+   //@Resource(name = "jdbc/techaddicted")
     protected static DataSource source;
 
     protected String getPath(HttpServletRequest req) {return req.getPathInfo() != null ? req.getPathInfo() : "/"; }
@@ -19,15 +23,26 @@ public abstract class Controller extends HttpServlet {
         return basePath + viewPath + engine;
     }
 
-    protected String back(HttpServletRequest request) { return request.getServletPath() + request.getPathInfo(); }
-
-    /*protected void validate(RequestValidator validator) throws InvalidRequestException {
-        if(validator.HasErrors()){
-            throw new InvalidRequestException("Validation error", validator.getErrors());
+    protected void validate(RequestValidator validator) throws InvalidRequestException {
+        if(validator.hasErrors()){
+            throw new InvalidRequestException("Validation Error",validator.getError(),
+                    HttpServletResponse.SC_BAD_REQUEST);
         }
     }
-*/
+
+    protected String back(HttpServletRequest request) { return request.getServletPath() + request.getPathInfo(); }
+
     protected String getUploadPath() {
         return System.getenv("CATALINA_HOME") + File.separator + "uploads" + File.separator;
+    }
+
+    protected int parsePage(HttpServletRequest request){return Integer.parseInt(request.getParameter("page"));}
+
+    protected AccountSession getSessionAccount(HttpSession session){
+        return (AccountSession) session.getAttribute("accountSessione");
+    }
+
+    protected Cart getSessionCart(HttpSession session){
+        return (Cart) session.getAttribute("accountCart");
     }
 }

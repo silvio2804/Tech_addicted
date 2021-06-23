@@ -6,7 +6,7 @@
     <jsp:include page="../partials/head.jsp">
         <jsp:param name="param" value="Tech addicted home"/>
         <jsp:param name="styles" value="crm,products"/>
-        <jsp:param name="scripts" value="crm,"/>
+        <jsp:param name="scripts" value="crm"/>
     </jsp:include>
 </head>
 <body>
@@ -15,8 +15,17 @@
     <section class="content grid-y">
         <%@include file="../partials/crm/header.jsp" %>
         <div class="body grid-x justify-center">
-            <section class="grid-y cell products">
-                <%@include file="../product/table.jsp" %>
+            <%-- <section class="grid-y cell products">
+                 
+                 <%@include file="../product/table.jsp" %>
+                  <%@include file="../partials/crm/footer.jsp" %>
+             </section>
+         </div> --%>
+            <section class="grid-y cell ">
+                <%@include file="../product/table.jsp"%>
+                <jsp:include page="../partials/paginator.jsp">
+                    <jsp:param name="resource" value="products"/>
+                </jsp:include>
             </section>
         </div>
         <%@include file="../partials/crm/footer.jsp" %>

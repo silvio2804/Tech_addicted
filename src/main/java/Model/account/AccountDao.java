@@ -1,11 +1,13 @@
 package Model.account;
 
+import Model.search.Paginator;
+
 import java.util.ArrayList;
 import java.util.Optional;
 
 public interface AccountDao<E extends  Exception>{
 
-    ArrayList<Account> fetchAccounts(int start, int end) throws E;
+    ArrayList<Account> fetchAccounts(Paginator paginator) throws E;
 
     Optional<Account> fetchAccount(int id)  throws E;
 
