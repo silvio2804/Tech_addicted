@@ -12,7 +12,7 @@ import java.util.List;
 public class ProductSearch implements SearchBuilder {
 
     @Override
-    public List<Condition> buildSearch(HttpServletRequest request) {
+    public List<Condition> buildSearch(HttpServletRequest request) {//prendo i parametri dalla form
 
         List<Condition> conditions = new ArrayList<>();
         Enumeration<String> parameterNames = request.getParameterNames();

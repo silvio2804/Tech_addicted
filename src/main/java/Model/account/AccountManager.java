@@ -4,7 +4,6 @@ import Model.search.Paginator;
 import Model.storage.Manager;
 import Model.storage.QueryBuilder;
 
-import javax.servlet.ServletException;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,21 +14,18 @@ import java.util.Optional;
 
 public class AccountManager extends Manager implements AccountDao { // E' il mio DAO
 
-    private AccountManager accountManager;
-
-
-    public AccountManager(DataSource source)throws SQLException {
+    public AccountManager(DataSource source) throws SQLException {
         super(source);
     }
 
     @Override
     public ArrayList<Account> fetchAccounts(Paginator paginator) throws SQLException { //limit
         try (Connection conn = source.getConnection()) {
-            QueryBuilder queryBuilder = new QueryBuilder("utente","ute");
+            QueryBuilder queryBuilder = new QueryBuilder("utente", "ute");
             String query = queryBuilder.select().limit(true).generateQuery();
             try (PreparedStatement ps = conn.prepareStatement(query)) {
-                ps.setInt(1, paginator.getLimit());
-                ps.setInt(2, paginator.getOffset());
+                ps.setInt(1, paginator.getOffset());
+                ps.setInt(2, paginator.getLimit());
                 ResultSet rs = ps.executeQuery();
                 AccountExtractor ex = new AccountExtractor();
                 ArrayList<Account> utenti = new ArrayList<>();
@@ -42,12 +38,11 @@ public class AccountManager extends Manager implements AccountDao { // E' il mio
         }
     }
 
-
     @Override
     public Optional<Account> fetchAccount(int id) throws SQLException {
         try (Connection conn = source.getConnection()) {
             QueryBuilder queryBuilder = new QueryBuilder("utente", "ute");
-            String query = queryBuilder.select().limit(true).generateQuery();
+            String query = queryBuilder.select().where("id=?").generateQuery();
             try (PreparedStatement ps = conn.prepareStatement(query)) {
                 ps.setInt(1, id);
                 ResultSet rs = ps.executeQuery();
@@ -55,23 +50,23 @@ public class AccountManager extends Manager implements AccountDao { // E' il mio
                 if (rs.next()) {
                     utente = new AccountExtractor().extract(rs);
                 }
-                return Optional.ofNullable(utente); //restituisce un oggetto che incapsula null
+                return Optional.ofNullable(utente);
             }
         }
     }
 
     @Override
-    public boolean creaAccount(Account utente) throws SQLException {
+    public boolean createAccount(Account utente) throws SQLException {
         try (Connection conn = source.getConnection()) {
-            QueryBuilder queryBuilder = new QueryBuilder("utente","ute");
-            String admin =""+utente.isAdmin();
-            queryBuilder.insert("email","password","nome","cognome","adm");
+            QueryBuilder queryBuilder = new QueryBuilder("utente", "ute");
+            String admin = "" + utente.isAdmin();
+            queryBuilder.insert("email", "password", "nome", "cognome", "adm");
             try (PreparedStatement ps = conn.prepareStatement(queryBuilder.generateQuery())) {
-                ps.setString(1,utente.getEmail());
-                ps.setString(2,utente.getPassword());
-                ps.setString(3,utente.getNome());
-                ps.setString(4,utente.getCognome());
-                ps.setBoolean(5,utente.isAdmin());
+                ps.setString(1, utente.getEmail());
+                ps.setString(2, utente.getPassword());
+                ps.setString(3, utente.getName());
+                ps.setString(4, utente.getLastName());
+                ps.setBoolean(5, utente.isAdmin());
                 int updRet = ps.executeUpdate();
                 return updRet == 1;
             }
@@ -79,12 +74,12 @@ public class AccountManager extends Manager implements AccountDao { // E' il mio
     }
 
     @Override
-    public boolean eliminaAccount(int id) throws SQLException {
+    public boolean deleteAccount(int id) throws SQLException {
         try (Connection conn = source.getConnection()) {
-            QueryBuilder queryBuilder = new QueryBuilder("utente","ute");
+            QueryBuilder queryBuilder = new QueryBuilder("utente", "ute");
             queryBuilder.delete().where("id=?");
             try (PreparedStatement ps = conn.prepareStatement(queryBuilder.generateQuery())) {
-                ps.setInt(1,id);
+                ps.setInt(1, id);
                 int updRet = ps.executeUpdate();
                 return updRet == 1;
             }
@@ -92,28 +87,29 @@ public class AccountManager extends Manager implements AccountDao { // E' il mio
     }
 
     @Override
-    public boolean modificaAccount(Account utente) throws SQLException {
+    public boolean updateAccount(Account utente) throws SQLException {
         try (Connection conn = source.getConnection()) {
-            QueryBuilder queryBuilder = new QueryBuilder("utente","ute");
-            queryBuilder.update("nome","cognome").where("id=?");
+            QueryBuilder queryBuilder = new QueryBuilder("utente", "ute");
+            queryBuilder.update("nome", "cognome").where("id=?");
             try (PreparedStatement ps = conn.prepareStatement(queryBuilder.generateQuery())) {
-                ps.setString(1, utente.getNome());
-                ps.setString(2, utente.getCognome());
-                ps.setInt(3,utente.getId());
+                ps.setString(1, utente.getName());
+                ps.setString(2, utente.getLastName());
+                ps.setInt(3, utente.getId());
                 int updRet = ps.executeUpdate();
                 return updRet == 1;
             }
         }
     }
 
+    @Override
     public Optional<Account> findAccount(String email, String password, boolean admin) throws SQLException {
         try (Connection conn = source.getConnection()) {
             QueryBuilder queryBuilder = new QueryBuilder("utente", "ute");
-            queryBuilder.select().where("email=?").andCondition("password=?").andCondition("admin=?");
+            queryBuilder.select().where("email=?").andCondition("passw=?").andCondition("adm=?");
             try (PreparedStatement ps = conn.prepareStatement(queryBuilder.generateQuery())) {
                 ps.setString(1, email);
                 ps.setString(2, password);
-                ps.setBoolean(3,admin);
+                ps.setBoolean(3, admin);
                 ResultSet rs = ps.executeQuery();
                 Account account = null;
                 if (rs.next())
@@ -121,6 +117,20 @@ public class AccountManager extends Manager implements AccountDao { // E' il mio
                 return Optional.ofNullable(account);
             }
         }
+    }
+
+    @Override
+    public int countAll() throws SQLException {
+        try (Connection conn = source.getConnection()) {
+            QueryBuilder queryBuilder = new QueryBuilder("utente", "ute");
+            queryBuilder.count("allAccounts");
+            try (PreparedStatement ps = conn.prepareStatement(queryBuilder.generateQuery())) {
+                ResultSet rs = ps.executeQuery();
+                if (rs.next())
+                    return rs.getInt(1);
+            }
+        }
+        return 0;
     }
 }
 

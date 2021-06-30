@@ -6,20 +6,36 @@ import java.util.ArrayList;
 
 public class Discount {
 
-    public int getIdSconto() {
-        return idSconto;
+    public int getDiscountId() {
+        return discountId;
     }
 
-    public void setIdSconto(int idSconto) {
-        this.idSconto = idSconto;
+    public void setDiscountId(int discountId) {
+        this.discountId = discountId;
     }
 
-    public int getPercentuale() {
-        return percentuale;
+    public int getPercentage() {
+        return percentage;
     }
 
-    public void setPercentuale(int percentuale) {
-        this.percentuale = percentuale;
+    public void setPercentage(int percentage) {
+        this.percentage = percentage;
+    }
+
+    public String getDiscountName() {
+        return discountName;
+    }
+
+    public void setDiscountName(String discountName) {
+        this.discountName = discountName;
+    }
+
+    public void setDiscountedProducts(ArrayList<Product> discountedProducts) {
+        this.discountedProducts = discountedProducts;
+    }
+
+    public ArrayList<Product> getDiscountedProducts() {
+        return discountedProducts;
     }
 
     @Override
@@ -27,21 +43,21 @@ public class Discount {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Discount discount = (Discount) o;
-        return idSconto == discount.idSconto;
+        return discountId == discount.discountId;
     }
 
-
-
-    public ArrayList<Product> getProdottiScontati() {
-        return prodottiScontati;
+    @Override
+    public String toString() {
+        return "Discount{" +
+                "discountId=" + discountId +
+                ", percentage=" + percentage +
+                ", discountName='" + discountName + '\'' +
+                ", discountedProducts=" + discountedProducts +
+                '}';
     }
 
-    public void setProdottiScontati(ArrayList<Product> prodottiScontati) {
-        this.prodottiScontati = prodottiScontati;
-    }
-
-
-    private int idSconto;
-    private int percentuale;
-    private ArrayList<Product> prodottiScontati;
+    private int discountId;
+    private int percentage;
+    private String discountName;
+    private ArrayList<Product> discountedProducts;
 }

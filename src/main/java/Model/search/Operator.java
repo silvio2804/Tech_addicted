@@ -4,14 +4,30 @@ public enum Operator {
     GT, LT, EQ, NE, GE, LE, MATCH;
 
     public String toString(){
-        return switch(this){
-            case LT ->" < ";
-            case EQ -> " = ";
-            case GE -> " >= ";
-            case NE -> " != ";
-            case GT -> " > ";
-            case LE -> " <= ";
-            case MATCH : " LIKE ";
-        };
+        String operator = "";
+        switch(this){
+            case LT :
+                operator =" < ";
+            break;
+            case EQ :
+                operator =" = ";
+                break;
+            case GE :
+                operator =" >= ";
+                break;
+            case NE :
+                operator = " != ";
+                break;
+            case GT : ;
+                operator = " > ";
+                break;
+            case LE :
+                operator = " <= ";
+                break;
+            case MATCH :
+                operator = " LIKE ";
+                break;
+        }
+        return operator;
     }
 }

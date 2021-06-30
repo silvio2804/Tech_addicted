@@ -20,9 +20,9 @@
         <img src="./images/top.jps">
         <h1>Categorie</h1>
         <div class="grid-x">
-            <img src="" alt="Frutta">
-            <img src="" alt="Verduta">
-            <img src="" alt="Sottaceti">
+            <img src="" alt="smartphone">
+            <img src="" alt="computer">
+            <img src="" alt="stampanti">
         </div>
     </section>
     <%@include file="../partials/site/footer.jsp"%>

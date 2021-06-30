@@ -8,15 +8,15 @@ import java.util.Optional;
 
 public interface OrderDao<E extends SQLException> {
 
-    ArrayList<Order> fetchOrdini(int start, int end) throws E;
+    ArrayList<Order> fetchOrders(Paginator paginator) throws E;
 
-    Optional<Order> fetchOrdine(int id)  throws E;
+    Optional<Order> fetchOrder(int id)  throws E;
 
-    boolean creaOrdine(Order order) throws E ; //mettiamo boolean al posto di integer
+    boolean createOrder(Order order) throws E ; //mettiamo boolean al posto di integer
 
-    boolean eliminaOrdine(int idOrdine) throws E;
+    boolean deleteOrder(int idOrdine) throws E;
 
-    boolean modificaOrdine(Order order) throws E;
+    boolean updateOrder(Order order) throws E;
 
-    ArrayList<Order> fetchOrdiniConProdotti(int id, Paginator paginator) throws E;
+    ArrayList<Order> fethOrdersWithProduct(int id, Paginator paginator) throws E;
 }

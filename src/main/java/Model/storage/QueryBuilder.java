@@ -129,10 +129,9 @@ public class QueryBuilder {
         return this;
     }
 
-
     private final String table,alias;
     private final StringBuilder query;
     private static final String QM ="?";
-    private static final String AND =" && ";
-    private static final String OR =" || ";
+    private static final String AND =" AND ";
+    private static final String OR =" OR ";
 }

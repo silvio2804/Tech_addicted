@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8"  %>
 
 <!doctype html>
 <html>
@@ -15,16 +15,10 @@
     <section class="content grid-y">
         <%@include file="../partials/crm/header.jsp" %>
         <div class="body grid-x justify-center">
-            <%-- <section class="grid-y cell products">
-                 
-                 <%@include file="../product/table.jsp" %>
-                  <%@include file="../partials/crm/footer.jsp" %>
-             </section>
-         </div> --%>
             <section class="grid-y cell ">
                 <%@include file="../product/table.jsp"%>
                 <jsp:include page="../partials/paginator.jsp">
-                    <jsp:param name="resource" value="products"/>
+                    <jsp:param name="products" value="products"/>
                 </jsp:include>
             </section>
         </div>

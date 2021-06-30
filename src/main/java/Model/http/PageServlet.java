@@ -5,7 +5,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
+//servlet per le pagine utente
 @WebServlet(name = "pageServlet",value = "/pages/*")
 public class PageServlet extends Controller {
 
@@ -14,17 +14,18 @@ public class PageServlet extends Controller {
             String path = getPath(request);
             switch (path) {
                 case "/dashboard":
-                    authorize(request.getSession(false));
+                    System.out.println("aa");
+                    //authorize(request.getSession(false));
                     request.getRequestDispatcher(view("crm/home")).forward(request, response);
                     break;
                 case "/":
                     request.getRequestDispatcher(view("site/home")).forward(request, response);
                     break;
             }
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        catch(InvalidRequestException ex){
-                log(ex.getMessage());
-                ex.handle(request, response);
-            }
-        }
+    }
     }

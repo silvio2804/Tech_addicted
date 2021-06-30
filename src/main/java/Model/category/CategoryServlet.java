@@ -1,6 +1,10 @@
 package Model.category;
 
+import Model.http.Controller;
+import Model.http.InvalidRequestException;
+import Model.http.RequestValidator;
 import Model.product.Product;
+import Model.search.Paginator;
 import org.apache.tomcat.jdbc.pool.DataSource;
 
 import javax.servlet.*;
@@ -11,24 +15,48 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Optional;
 
-@WebServlet(name = "categoriaServlet", value = "/categoriaServlet")
-public class CategoryServlet extends HttpServlet {
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+@WebServlet(name = "categoryServlet", value = "/categories/*")
 
-        try{
-            CategoryManager cm = new CategoryManager(new DataSource());
-            Optional<Category> cat = cm.fetchCategoriaConProdotto(1);
-            ArrayList<Product> prodotti = cat.get().getProdotti();
-            request.setAttribute("prodotti", prodotti);
-            System.out.println(prodotti);
-        }
-        catch (SQLException e){
+public class CategoryServlet extends Controller{
+
+    private CategoryManager categoryManager;
+    public void init()throws ServletException{
+        try {
+            categoryManager = new CategoryManager(source);
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-        String address = "WEB-INF/views/categoria/categorieEx.jsp";
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher(address);
-        requestDispatcher.forward(request,response);
+    }
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try{
+            String path = getPath(request);
+            switch (path){
+                case "/": //mostra tutte le categorie
+                    authorize(request.getSession());
+                    request.setAttribute("back",view("crm/home"));
+                    ArrayList<Category> categories = categoryManager.fetchCategories(new Paginator(1, 2));
+                    System.out.println(categories);
+                    request.setAttribute("categories",categories);
+                    request.getRequestDispatcher(view("crm/manageCategory")).forward(request, response);
+                    break;
+                case "/create":
+                    request.getRequestDispatcher(view("crm/category")).forward(request,response);
+                    break;
+                case "/show":
+                    request.getRequestDispatcher(view("crm/product")).forward(request, response);
+                    break;
+                case "/search":
+                    request.getRequestDispatcher(view("site/search")).forward(request, response);
+                    break;
+                default:
+                    notFound();
+            }
+        }
+        catch(InvalidRequestException | SQLException t){
+            t.printStackTrace();
+        }
+
     }
 
     @Override

@@ -10,12 +10,12 @@ public class Tag {
         super();
     }
 
-    public String getParola() {
-        return parola;
+    public String getWord() {
+        return word;
     }
 
-    public void setParola(String parola) {
-        this.parola = parola;
+    public void setWord(String word) {
+        this.word = word;
     }
 
     public ArrayList<Product> getProdotto() {
@@ -26,15 +26,12 @@ public class Tag {
         this.products = products;
     }
 
-    private String parola;
-    private int idTag;
-
-    public int getIdTag() {
-        return idTag;
+    public int getTagId() {
+        return tagId;
     }
 
-    public void setIdTag(int idTag) {
-        this.idTag = idTag;
+    public void setTagId(int tagId) {
+        this.tagId = tagId;
     }
 
     @Override
@@ -42,8 +39,10 @@ public class Tag {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Tag tag = (Tag) o;
-        return idTag == tag.idTag;
+        return tagId == tag.tagId;
     }
 
+    private String word;
+    private int tagId;
     private ArrayList<Product> products;
 }

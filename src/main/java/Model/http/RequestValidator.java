@@ -14,9 +14,9 @@ public class RequestValidator {
     private final List<String> errors;
     private final HttpServletRequest request;
     private static final Pattern INT_PATTERN = Pattern.compile("^\\d+$");
-    private static final Pattern DOUBLE_PATTERN = Pattern.compile("^(-)?(0|[1-9]\\.\\d+$");
+    private static final Pattern DOUBLE_PATTERN = Pattern.compile("^[+-]?([0-9]*[.])?[0-9]+$");
 
-    public  RequestValidator(HttpServletRequest request){
+    public RequestValidator(HttpServletRequest request){
         this.errors = new ArrayList<>();
         this.request = request;
     }
@@ -35,10 +35,11 @@ public class RequestValidator {
         }
     }
 
-    private boolean required(String value){return value != null && !value.isBlank();}//controlla se un campo è obbligatorio
+    private boolean required(String value){return value != null && !value.isBlank();}//controlla se un campo è obbligatorio,con spazi bianchi o null
 
-    public boolean assertMatch(String value, Pattern regexp, String msg){
+    public boolean assertMatch(String value, Pattern regexp, String msg){//value è il noe del campo da analizzare
         String param = request.getParameter(value);
+        System.out.println(param);
         boolean condition = required(param) && regexp.matcher(param).matches();
         return gatherError(condition,msg);
     }
@@ -52,17 +53,21 @@ public class RequestValidator {
     }
 
     public boolean assertEmail(String value, String msg){
-        Pattern pattern = Pattern.compile("^]");
+        Pattern pattern = Pattern.compile("[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}");
         return assertMatch(value,pattern, msg);
     }
 
-    public boolean assertInts(String values, String msg){
+    public boolean assertPassword(String value, String msg){ //ipotetica registrazione ??
+        Pattern pattern = Pattern.compile("^[A-z0-9\\.\\+_-]+@[A-z0-9]+\\.[A-z]{2,6}$");
+        return assertMatch(value,pattern, msg);
+    }
+
+    public boolean assertInts(String values, String msg){ //valida un array di id, ad esempio per la valdiazione di un ordine,gli id dei prodotti siano tutti interi
         String[] params = request.getParameterValues(values);
         boolean allInt = Arrays.stream(params).allMatch(param -> INT_PATTERN.matcher(param).matches());
         return gatherError(allInt,msg);
     }
-
-    public boolean assertSize(String first, String second, String msg){
+    public boolean assertSize(String first, String second, String msg){ //controllare che due liste abbiano la stessa lunghezza
         String[] firstList = request.getParameterValues(first);
         String[] secondList = request.getParameterValues(second);
         return gatherError(firstList.length == secondList.length, msg);

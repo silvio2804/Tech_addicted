@@ -17,59 +17,59 @@ public class Product {
     public Product(){
     }
 
-    public String getDescrizione() {
-        return descrizione;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDescrizione(String descrizione) {
-        this.descrizione = descrizione;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public int getIdProdotto() {
-        return idProdotto;
+    public int getProductId() {
+        return productId;
     }
 
-    public void setIdProdotto(int idProdotto) {
-        this.idProdotto = idProdotto;
+    public void setProductId(int productId) {
+        this.productId = productId;
     }
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public double getPrezzo() {
-        return prezzo;
+    public double getPrice() {
+        return price;
     }
 
-    public void setPrezzo(double prezzo) {
-        this.prezzo = prezzo;
+    public void setPrice(double price) {
+        this.price = price;
     }
 
-    public String getImmagine() {
-        return immagine;
+    public String getCover() {
+        return cover;
     }
 
-    public void setImmagine(String immagine) {
-        this.immagine = immagine;
+    public void setCover(String cover) {
+        this.cover = cover;
     }
 
     public ArrayList<Cart> getProdottiCarrello() {
-        return prodottiCart;
+        return cartProducts;
     }
 
     public void setProdottiCarrello(ArrayList<Cart> prodottiCart) {
-        this.prodottiCart = prodottiCart;
+        this.cartProducts = prodottiCart;
     }
 
-    public Category getCategoria() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategoria(Category category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 
@@ -83,7 +83,7 @@ public class Product {
 
     public void writeCover(String uploadPath, Part stream) throws IOException {
         try(InputStream fileStream = stream.getInputStream()){
-            File file = new File(uploadPath + immagine);
+            File file = new File(uploadPath + cover);
             Files.copy(fileStream, file.toPath());
         }
     }
@@ -92,40 +92,40 @@ public class Product {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return idProdotto == product.idProdotto;
+        return productId == product.productId;
     }
 
-    public ArrayList<Discount> getScontiProdotto() {
-        return scontiProdotto;
+    public ArrayList<Discount> getDiscountProducts() {
+        return discountProducts;
     }
 
-    public void setScontiProdotto(ArrayList<Discount> scontiProdotto) {
-        this.scontiProdotto = scontiProdotto;
+    public void setDiscountProducts(ArrayList<Discount> discountProducts) {
+        this.discountProducts = discountProducts;
     }
 
     public String toString() {
         return "Product{" +
-                "idProdotto=" + idProdotto +
-                ", nome='" + nome + '\'' +
-                ", prezzo=" + prezzo +
-                ", immagine='" + immagine + '\'' +
-                ", descrizione='" + descrizione + '\'' +
-                ", prodottiCart=" + prodottiCart +
+                "idProdotto=" + productId +
+                ", nome='" + name + '\'' +
+                ", prezzo=" + price +
+                ", immagine='" + cover + '\'' +
+                ", descrizione='" + description + '\'' +
+                ", prodottiCart=" + cartProducts +
                 ", category=" + category +
                 ", tags=" + tags +
-                ", UtentiDesideri=" + UtentiDesideri +
-                ", scontiProdotto=" + scontiProdotto +
+                ", UtentiDesideri=" + wishList +
+                ", scontiProdotto=" + discountProducts +
                 '}';
     }
 
-    private int idProdotto;
-    private String nome;
-    private double prezzo;
-    private String immagine;
-    private String descrizione;
-    private ArrayList<Cart> prodottiCart; //vedere in quanti carrelli si trova il prodotto?? potrebbe servire a questo
+    private int productId;
+    private String name;
+    private double price;
+    private String cover;
+    private String description;
+    private ArrayList<Cart> cartProducts; //vedere in quanti carrelli si trova il prodotto?? potrebbe servire a questo
     private Category category;
     private ArrayList<Tag> tags;
-    private ArrayList<Account> UtentiDesideri;
-    private ArrayList<Discount> scontiProdotto;
+    private ArrayList<Account> wishList;
+    private ArrayList<Discount> discountProducts;
 }

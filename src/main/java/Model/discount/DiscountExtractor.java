@@ -5,13 +5,14 @@ import Model.storage.ResultSetExtractor;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class DIscountExtractor implements ResultSetExtractor <Discount> {
+public class DiscountExtractor implements ResultSetExtractor <Discount> {
     @Override
     public Discount extract(ResultSet rs) throws SQLException {
         if(rs.next()){
             Discount sc = new Discount();
-            sc.setIdSconto(rs.getInt(1));
-            sc.setPercentuale((rs.getInt(2)));
+            sc.setDiscountId(rs.getInt(1));
+            sc.setDiscountName(rs.getString(2));
+            sc.setPercentage(rs.getInt(3));
             return sc;
         }
         return null;

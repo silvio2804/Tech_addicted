@@ -10,8 +10,8 @@ public class TagExtractor implements ResultSetExtractor <Tag> {
     public Tag extract(ResultSet rs) throws SQLException {
         if(rs.next()){
             Tag tag = new Tag();
-            tag.setIdTag(rs.getInt(1));
-            tag.setParola(rs.getString(2));
+            tag.setTagId(rs.getInt(1));
+            tag.setWord(rs.getString(2));
             return tag;
         }
         return null;

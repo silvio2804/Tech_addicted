@@ -31,7 +31,7 @@
     </style>
 </head>
 <body>
-<form class="app grid-x justify-center align-center" action="/progetto_war_exploded/crm/dashboard" method="get">
+<form class="app grid-x justify-center align-center" action="/progetto_war_exploded/accounts/secret" method="post"> <!-- qui chiama la servlet crm in http/crm/dashboard!-->
     <fieldset class="grid-y cell w50 login">
         <h2> Login Pannello Admin</h2>
         <span>Email</span>

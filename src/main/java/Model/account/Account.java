@@ -4,34 +4,32 @@ import Model.cart.Cart;
 import Model.order.Order;
 import Model.product.Product;
 
-import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Account {
 
-    public Account(){
+    public Account() {
         super();
     }
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setName(String nome) {
+        this.name = nome;
     }
 
-    public String getCognome() {
-        return cognome;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setCognome(String cognome) {
-        this.cognome = cognome;
+    public void setLastName(String cognome) {
+        this.lastName = cognome;
     }
 
     public int getId() {
@@ -42,12 +40,12 @@ public class Account {
         this.id = id;
     }
 
-    public LocalDate getDataNa() {
-        return dataNa;
+    public LocalDate getDateBirth() {
+        return date;
     }
 
-    public void setDataNa(LocalDate dataNa) {
-        this.dataNa = dataNa;
+    public void setDateBirth(LocalDate dataNa) {
+        this.date = dataNa;
     }
 
     public String getEmail() {
@@ -58,28 +56,28 @@ public class Account {
         this.email = email;
     }
 
-    public String getVia() {
-        return via;
+    public String getStreet() {
+        return street;
     }
 
-    public void setVia(String via) {
-        this.via = via;
+    public void setStreet(String street) {
+        this.street = street;
     }
 
-    public int getNumeroCivico() {
-        return numeroCivico;
+    public int getHouseNumber() {
+        return houseNumber;
     }
 
-    public void setNumeroCivico(int numeroCivico) {
-        this.numeroCivico = numeroCivico;
+    public void setHouseNumber(int houseNumber) {
+        this.houseNumber = houseNumber;
     }
 
-    public String getCitta() {
-        return citta;
+    public String getCity() {
+        return city;
     }
 
-    public void setCitta(String cap) {
-        this.citta = cap;
+    public void setCity(String cap) {
+        this.city = cap;
     }
 
     public boolean isAdmin() {
@@ -90,20 +88,20 @@ public class Account {
         this.admin = admin;
     }
 
-    public ArrayList<Order> getOrdini() {
-        return ordini;
+    public ArrayList<Order> getOrders() {
+        return orders;
     }
 
-    public void setOrdini(ArrayList<Order> ordini) {
-        this.ordini = ordini;
+    public void setOrders(ArrayList<Order> orders) {
+        this.orders = orders;
     }
 
-    public ArrayList<Cart> getStorico() {
-        return storico;
+    public ArrayList<Cart> getPurchaseHistory() {
+        return purchaseHistory;
     }
 
-    public void setStorico(ArrayList<Cart> storico) {
-        this.storico = storico;
+    public void setPurchaseHistory(ArrayList<Cart> purchaseHistory) {
+        this.purchaseHistory = purchaseHistory;
     }
 
     public String getPassword() {
@@ -111,49 +109,58 @@ public class Account {
     }
 
     public void setPassword(String password) throws NoSuchAlgorithmException { // password è inserita dall'utente
-            MessageDigest digest = MessageDigest.getInstance("SHA-512"); //password crittografata
-            SecureRandom ss = new SecureRandom();
-            byte[] salt = new byte[16];
-            ss.nextBytes(salt);
-            digest.update(salt);
-            byte[] hashedPwd = digest.digest(password.getBytes(StandardCharsets.UTF_8));
-            digest.update(password.getBytes(StandardCharsets.UTF_8));
-            StringBuilder builder = new StringBuilder();
-            for (byte bit : hashedPwd)
-                builder.append(String.format("%02x", bit));
-            this.password = builder.toString();
+        MessageDigest digest = MessageDigest.getInstance("SHA-512"); //password crittografata
+        //SecureRandom ss = new SecureRandom();
+        //byte[] salt = new byte[16];
+        //ss.nextBytes(salt);
+        //digest.update(salt);
+        byte[] hashedPwd = digest.digest(password.getBytes(StandardCharsets.UTF_8));
+        digest.update(password.getBytes(StandardCharsets.UTF_8));
+        StringBuilder builder = new StringBuilder();
+        for (byte bit : hashedPwd)
+            builder.append(String.format("%02x", bit));
+        this.password = builder.toString();
     }
 
-    public void setSesso(String sesso) {
-        this.sesso = sesso;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
-    public String getSesso() {
-        return sesso;
+    public String getGender() {
+        return gender;
     }
 
-    public boolean equals(Object o){
-        if(o != null)
+    public boolean equals(Object o) {
+        if (o != null)
             return false;
-        if(o.getClass().getName()!= this.getClass().getName())
+        if (o.getClass().getName() != this.getClass().getName())
             return false;
         Account ut = (Account) o;
         return this.id == ut.getId();
     }
 
-    private String nome;
-    private String cognome;
+    private String name;
+    private String lastName;
     private int id;
-    private LocalDate dataNa;
+    private LocalDate date;
     private String email;
-    private String via;
-    private int numeroCivico;
-    private String citta;
+    private String street;
+    private int houseNumber;
+    private String city;
     private boolean admin;
     private String password;
-    private String sesso;
+    private String gender;
 
-    private ArrayList<Product> listaDesideri;
-    private ArrayList<Order> ordini;
-    private ArrayList<Cart> storico;
+    private ArrayList<Product> wishList;
+    private ArrayList<Order> orders;
+    private ArrayList<Cart> purchaseHistory;
+
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }

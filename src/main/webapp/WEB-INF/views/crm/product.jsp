@@ -34,7 +34,7 @@
                     </label>
                     <label for="categoryId" class="field cell w50">
                         <select name="categoryId" id="categoryId">
-                            <option value="1">notebook</option>
+                            <option value=1>notebook</option>
                             // da completare con le categorie prese automaticamente dal DB
                         </select>
                     </label>

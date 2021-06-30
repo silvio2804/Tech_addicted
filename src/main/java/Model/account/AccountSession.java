@@ -2,11 +2,11 @@ package Model.account;
 
 public class AccountSession {
 
-    public AccountSession(String firstName, String lastName, int id, boolean isAdmin) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.id = id;
-        this.isAdmin = isAdmin;
+    public AccountSession(Account account) {
+        this.firstName = account.getName();
+        this.lastName = account.getLastName();
+        this.id = account.getId();
+        this.isAdmin = account.isAdmin();
     }
 
     public String getFirstName() {
@@ -23,6 +23,16 @@ public class AccountSession {
 
     public boolean isAdmin() {
         return isAdmin;
+    }
+
+    @Override
+    public String toString() {
+        return "AccountSession{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", id=" + id +
+                ", isAdmin=" + isAdmin +
+                '}';
     }
 
     private final String firstName, lastName;

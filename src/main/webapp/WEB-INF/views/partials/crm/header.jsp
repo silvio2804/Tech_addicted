@@ -7,6 +7,6 @@
     </label>
     <span class="account">
         <%@include file="../../../../icons/user.svg" %>
-            ${accountSession.firstName.concat(" ").concat(accountSession.lastName())}
+            ${accountSession.firstName.concat(" ").concat(accountSession.lastName)}
     </span>
 </header>

@@ -8,6 +8,5 @@ public abstract class Manager{ //SQL DAO
     protected Manager(DataSource source) throws SQLException {
         this.source = ConPool.getDatasource();
     }
-
     protected final DataSource source;
 }

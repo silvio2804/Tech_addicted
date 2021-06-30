@@ -5,50 +5,52 @@ import Model.cart.CarItem;
 import Model.account.Account;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 public class Order {
+
     public Order(){
         super();
     }
 
-    public double getTotale() {
-        return totale;
+    public double getTotal() {
+        return total;
     }
 
-    public void setTotale(double totale) {
-        this.totale = totale;
+    public void setTotal(double total) {
+        this.total = total;
     }
 
-    public String getPagamento() {
-        return pagamento;
+    public String getPayment() {
+        return payment;
     }
 
-    public void setPagamento(String pagamento) {
-        this.pagamento = pagamento;
+    public void setPayment(String payment) {
+        this.payment = payment;
     }
 
-    public int getIdOrdine() {
-        return idOrdine;
+    public int getOrderId() {
+        return orderId;
     }
 
-    public void setIdOrdine(int idOrdine) {
-        this.idOrdine = idOrdine;
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
     }
 
-    public LocalDate getDataOrdine() {
-        return dataOrdine;
+    public Date getOrderDate() {
+        return orderDate;
     }
 
-    public void setDataOrdine(LocalDate dataOrdine) {
-        this.dataOrdine = dataOrdine;
+    public void setOrderDate(Date orderDate) {
+        this.orderDate = orderDate;
     }
 
-    public Account getUtente() {
-        return utente;
+    public Account getAccount() {
+        return account;
     }
 
-    public void setUtente(Account utente) {
-        this.utente = utente;
+    public void setAccount(Account account) {
+        this.account = account;
     }
 
     public Cart getCarrello() {
@@ -58,14 +60,6 @@ public class Order {
     public void setCarrello(Cart cart) {
         this.cart = cart;
     }
-
-    private double totale;
-    private String pagamento;
-    private int idOrdine;
-    private LocalDate dataOrdine;
-    private Account utente;
-    private Cart cart;
-
     public int entries() {
         int entries = 0;
         for(CarItem item: cart.getItems()){
@@ -73,4 +67,24 @@ public class Order {
         }
         return entries;
     }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "total=" + total +
+                ", payment='" + payment + '\'' +
+                ", orderId=" + orderId +
+                ", orderDate=" + orderDate +
+                ", account=" + account +
+                ", cart=" + cart +
+                '}';
+    }
+
+    private double total;
+    private String payment;
+    private int orderId;
+    private Date orderDate;
+    private Account account;
+    private Cart cart;
+
 }

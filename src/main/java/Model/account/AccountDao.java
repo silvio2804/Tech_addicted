@@ -11,9 +11,13 @@ public interface AccountDao<E extends  Exception>{
 
     Optional<Account> fetchAccount(int id)  throws E;
 
-    boolean creaAccount(Account utente) throws E ; //mettiamo boolean al posto di integer
+    boolean createAccount(Account utente) throws E ; //mettiamo boolean al posto di integer
 
-    boolean eliminaAccount(int id) throws E;
+    boolean deleteAccount(int id) throws E;
 
-    boolean modificaAccount(Account utente) throws E;
+    boolean updateAccount(Account utente) throws E;
+
+    int countAll() throws E;
+
+    Optional<Account> findAccount(String email, String password, boolean admin) throws E;
 }

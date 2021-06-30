@@ -2,7 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 
 <table class="table product-table">
-    <caption><a href="../products/create"> Lista Prodotti</a></caption>
+    <caption><a href="/products/create"> Lista Prodotti</a></caption>
     <thead>
     <tr>
         <th>Id</th>
@@ -13,22 +13,22 @@
     </thead>
     <tbody>
     <c:choose>
-        <c:when test="${product.isEmpty()}">
+        <c:when test="${products.isEmpty()}">
         <tr>
             <td>Nessun prodotto presente!</td>
         </tr>
         </c:when>
         <c:otherwise>
-            <c:forEach items="resource" var="product">
+            <c:forEach items="${products}" var="product">
                 <tr>
                     <td data-head="Id">
-                            <a href="/Techaddicted/products/show?id=${product.id}">${product.id}</a>
+                            <a href="/progetto_war_exploded/products/show?id=${product.productId}">${product.productId}</a>
                     </td>
                     <td data-head="Url">
-                            <a href="/Techaddicted/covers/${product.cover}">Immagine</a>
+                            <a href="/progetto_war_exploded/covers/${product.cover}">Immagine</a>
                     </td>
-                    <td data-head="Nome">${product.nome}</td>
-                    <td data-head="Prezzo">${product.prezzo}</td>
+                    <td data-head="Nome">${product.name}</td>
+                    <td data-head="Prezzo">${product.price}</td>
                 </tr>
             </c:forEach>
         </c:otherwise>

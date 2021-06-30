@@ -8,7 +8,7 @@ import java.sql.SQLException;
 public class CategoryExtractor implements ResultSetExtractor<Category> {
     public Category extract(ResultSet rs) throws SQLException {
         Category cat = new Category();
-        cat.setNomeCategoria(rs.getString(1));
+        cat.setCategoryName(rs.getString(1));
         return cat;
     }
 }

@@ -4,23 +4,23 @@ import Model.product.Product;
 
 public class CarItem {
 
-    public CarItem(Product product, int quantita) {
+    public CarItem(Product product, int quantity) {
         this.product = product;
-        this.quantita = quantita;
+        this.quantity = quantity;
     }
 
-    public Product getProdotto() {
+    public Product getProduct() {
         return product;
     }
 
     public int getQuantity() {
-        return quantita;
+        return quantity;
     }
 
-    public double totale(){
-        return this.product.getPrezzo()*quantita;
+    public double total(){
+        return this.product.getPrice()* quantity;
     }
 
     private final Product product;
-    private final int quantita;
+    private final int quantity;
 }

@@ -1,6 +1,8 @@
 package Model.category;
 
-import Model.product.ProdottoExtractor;
+import Model.product.Product;
+import Model.product.ProductExtractor;
+import Model.search.Paginator;
 import Model.storage.Manager;
 import Model.storage.QueryBuilder;
 import Model.account.Account;
@@ -20,32 +22,84 @@ public class CategoryManager extends Manager implements CategoryDao {
     }
 
     @Override
-    public ArrayList<Category> fetchCategorie(int start, int end) throws Exception {
-        return null;
+    public ArrayList<Category> fetchCategories(Paginator paginator) throws SQLException {
+        try (Connection conn = source.getConnection()) {
+            QueryBuilder queryBuilder = new QueryBuilder("categoria", "cat");
+            String query = queryBuilder.select().limit(true).generateQuery();
+            try (PreparedStatement ps = conn.prepareStatement(query)) {
+                ps.setInt(1, paginator.getOffset());
+                ps.setInt(2, paginator.getLimit());
+                ResultSet rs = ps.executeQuery();
+                CategoryExtractor ex = new CategoryExtractor();
+                ArrayList<Category> categories = new ArrayList<>();
+                while (rs.next()) {
+                    Category cat = ex.extract(rs);
+                    categories.add(cat);
+                }
+                return categories;
+            }
+        }
     }
 
     @Override
-    public Optional<Account> fetchCategoria(int id) throws Exception {
-        return Optional.empty();
+    public Optional<Category> fetchCategory(int id) throws Exception {
+        try (Connection conn = source.getConnection()) {
+            QueryBuilder queryBuilder = new QueryBuilder("categoria", "cat");
+            String query = queryBuilder.select().where("id=?").generateQuery();
+            try (PreparedStatement ps = conn.prepareStatement(query)) {
+                ps.setInt(1, id);
+                ResultSet rs = ps.executeQuery();
+                Category cat = null;
+                if (rs.next()) {
+                    cat = new CategoryExtractor().extract(rs);
+                }
+                return Optional.ofNullable(cat); //restituisce un oggetto che incapsula null
+            }
+        }
     }
 
     @Override
-    public boolean creaCategoria(Category cat) throws Exception {
-        return false;
+    public boolean createCategory(Category cat) throws SQLException {
+        try (Connection conn = source.getConnection()) {
+            QueryBuilder queryBuilder = new QueryBuilder("categoria", "cat");
+            queryBuilder.insert("idCategoria,nomeCategoria");
+            try (PreparedStatement ps = conn.prepareStatement(queryBuilder.generateQuery())) {
+                ps.setInt(1, cat.getCategoryId());
+                ps.setString(2, cat.getCategoryName());
+                int updRet = ps.executeUpdate();
+                return updRet == 1;
+            }
+        }
     }
 
     @Override
-    public boolean eliminaCategoria(int id) throws Exception {
-        return false;
+    public boolean deleteCategory(int id) throws SQLException {
+        try (Connection conn = source.getConnection()) {
+            QueryBuilder queryBuilder = new QueryBuilder("categoria", "cat");
+            queryBuilder.delete().where("id=?");
+            try (PreparedStatement ps = conn.prepareStatement(queryBuilder.generateQuery())) {
+                ps.setInt(1, id);
+                int updRet = ps.executeUpdate();
+                return updRet == 1;
+            }
+        }
     }
 
     @Override
-    public boolean modifica(Category cat) throws Exception {
-        return false;
+    public boolean updateCategory(Category cat) throws SQLException {
+        try (Connection conn = source.getConnection()) {
+            QueryBuilder queryBuilder = new QueryBuilder("categoria", "cat");
+            queryBuilder.update("").where("id=?");
+            try (PreparedStatement ps = conn.prepareStatement(queryBuilder.generateQuery())) {
+                ps.setInt(1, cat.getCategoryId());
+                int updRet = ps.executeUpdate();
+                return updRet == 1;
+            }
+        }
     }
 
     @Override
-    public Optional<Category> fetchCategoriaConProdotti(int catId) throws SQLException { //dammi tutti i prodotti che appartengono a una categoria
+    public Optional<Category> fetchCategoryWithProducts(int catId) throws SQLException { //dammi tutti i prodotti che appartengono a una categoria
         try(Connection conn = source.getConnection()){
             QueryBuilder queryBuilder = new QueryBuilder("categoria","cat");
             queryBuilder.select().innerJoin("prodotto","pro").on("cat.id=pro.idCategoria").where("cat.id=?");
@@ -56,18 +110,18 @@ public class CategoryManager extends Manager implements CategoryDao {
                 Category cat = null;
                 if(rs.next()){
                     cat = categoryExtractor.extract(rs);
-                    cat.setProdotti(new ArrayList<>());
-                    ProdottoExtractor prodottoExtractor = new ProdottoExtractor();
-                    cat.getProdotti().add(prodottoExtractor.extract(rs));
+                    cat.setProducts(new ArrayList<>());
+                    ProductExtractor productExtractor = new ProductExtractor();
+                    cat.getProducts().add(productExtractor.extract(rs));
                     while(rs.next())
-                        cat.getProdotti().add(prodottoExtractor.extract(rs));
+                        cat.getProducts().add(productExtractor.extract(rs));
                 }
                 return Optional.ofNullable(cat);
             }
         }
     }
 
-    public Optional<Category> fetchCategoriaConProdotto(int catId) throws SQLException { //dammi tutti i prodotti che appartengono a una categoria
+    public Optional<Category> fetchProductWithCategory(int catId) throws SQLException { //dammi tutti i prodotti che appartengono a una categoria
         try(Connection conn = source.getConnection()){
             QueryBuilder queryBuilder = new QueryBuilder("prodotto","pro");
             queryBuilder.select().innerJoin("categoria","cat").on("cat.idCat=pro.idCategoria").where("cat.idCat=?");
@@ -79,11 +133,11 @@ public class CategoryManager extends Manager implements CategoryDao {
                 Category cat = null;
                 if(rs.next()){
                     cat = categoryExtractor.extract(rs);
-                    cat.setProdotti(new ArrayList<>());
-                    ProdottoExtractor prodottoExtractor = new ProdottoExtractor();
-                    cat.getProdotti().add(prodottoExtractor.extract(rs));//aggiungo il primo prodotto, a causa del while
+                    cat.setProducts(new ArrayList<>());
+                    ProductExtractor productExtractor = new ProductExtractor();
+                    cat.getProducts().add(productExtractor.extract(rs));//aggiungo il primo prodotto, a causa del while
                     while(rs.next()){
-                        cat.getProdotti().add(prodottoExtractor.extract(rs));
+                        cat.getProducts().add(productExtractor.extract(rs));
                     }
                 }
                 return Optional.ofNullable(cat);

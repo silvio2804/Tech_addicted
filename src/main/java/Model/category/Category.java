@@ -10,28 +10,28 @@ public class Category {
         super();
     }
 
-    public String getNomeCategoria() {
-        return nomeCategoria;
+    public String getCategoryName() {
+        return categoryName;
     }
 
-    public void setNomeCategoria(String nomeCategoria) {
-        this.nomeCategoria = nomeCategoria;
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
-    public ArrayList<Product> getProdotti() {
-        return prodotti;
+    public ArrayList<Product> getProducts() {
+        return products;
     }
 
-    public void setProdotti(ArrayList<Product> prodotti) {
-        this.prodotti = prodotti;
+    public void setProducts(ArrayList<Product> products) {
+        this.products = products;
     }
 
-    public int getIdCategoria() {
-        return idCategoria;
+    public int getCategoryId() {
+        return categoryId;
     }
 
-    public void setIdCategoria(int idCategoria) {
-        this.idCategoria = idCategoria;
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 
     @Override
@@ -39,19 +39,19 @@ public class Category {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Category category = (Category) o;
-        return idCategoria == category.idCategoria;
+        return categoryId == category.categoryId;
     }
 
     @Override
     public String toString() {
         return "Category{" +
-                "nomeCategoria='" + nomeCategoria + '\'' +
-                ", idCategoria=" + idCategoria +
-                ", prodotti=" + prodotti +
+                "nomeCategoria='" + categoryName + '\'' +
+                ", idCategoria=" + categoryId +
+                ", prodotti=" + products +
                 '}';
     }
 
-    private String nomeCategoria;
-    private int idCategoria;
-    private ArrayList<Product> prodotti;   //lista di prodotti appartenente alla categoria
+    private String categoryName;
+    private int categoryId;
+    private ArrayList<Product> products;   //lista di prodotti appartenente alla categoria
 }

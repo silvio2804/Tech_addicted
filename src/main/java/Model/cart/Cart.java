@@ -15,42 +15,42 @@ public class Cart {
         return items;
     }
 
-    public String getIdCarrello() {
-        return idCarrello;
+    public String getIdCart() {
+        return idCart;
     }
 
-    public void setIdCarrello(String idCarrello) {
-        this.idCarrello = idCarrello;
+    public void setIdCart(String idCart) {
+        this.idCart = idCart;
     }
 
-    public ArrayList<Product> getListaProdotti() {
-        return listaProdotti;
+    public ArrayList<Product> getProductList() {
+        return productList;
     }
 
-    public void setListaProdotti(ArrayList<Product> listaProdotti) {
-        this.listaProdotti = listaProdotti;
+    public void setProductList(ArrayList<Product> productList) {
+        this.productList = productList;
     }
 
-    public String getDataAcquisto() {
-        return dataAcquisto;
+    public String getDatePurchase() {
+        return datePurchase;
     }
 
-    public void setDataAcquisto(String dataAcquisto) {
-        this.dataAcquisto = dataAcquisto;
+    public void setDatePurchase(String datePurchase) {
+        this.datePurchase = datePurchase;
     }
 
-    public Account getUtente() {
-        return utente;
+    public Account getAccount() {
+        return account;
     }
 
-    public void setUtente(Account utente) {
-        this.utente = utente;
+    public void setAccount(Account account) {
+        this.account = account;
     }
 
     public  double totaleCarrello(){
         double totale=0;
         for(CarItem i: items){
-            totale +=i.totale();
+            totale +=i.total();
         }
         return totale;
     }
@@ -59,9 +59,9 @@ public class Cart {
         items.add(item);
     }
 
-    private String idCarrello;
-    private ArrayList<Product> listaProdotti;
-    private String dataAcquisto;
-    private Account utente;
+    private String idCart;
+    private ArrayList<Product> productList;
+    private String datePurchase;
+    private Account account;
     private ArrayList<CarItem> items;
 }

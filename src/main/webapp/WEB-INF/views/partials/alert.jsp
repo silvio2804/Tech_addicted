@@ -6,6 +6,6 @@
         </c:forEach>
     </ol>
     <span id="notification-close" class="close">
-        <%@include file="../../../icons/x.svg"%>
+        <%@include file="../../../icons/close.svg"%>
     </span>
 </div>
