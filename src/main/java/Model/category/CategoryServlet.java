@@ -35,8 +35,7 @@ public class CategoryServlet extends Controller{
                 case "/": //mostra tutte le categorie
                     authorize(request.getSession());
                     request.setAttribute("back",view("crm/home"));
-                    ArrayList<Category> categories = categoryManager.fetchCategories(new Paginator(1, 2));
-                    System.out.println(categories);
+                    ArrayList<Category> categories = categoryManager.fetchCategories(new Paginator(1, 30));
                     request.setAttribute("categories",categories);
                     request.getRequestDispatcher(view("crm/manageCategory")).forward(request, response);
                     break;

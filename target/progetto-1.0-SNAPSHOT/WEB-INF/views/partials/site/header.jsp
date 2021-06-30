@@ -1,24 +1,16 @@
-<header class="navbar align-center">
-    <div class="grid-inline align-center icons">
-        <%@ include file="../../../../icons/user.svg"%>
-        <span class="shopping-cart">
-            <%@ include file="../../../../icons/shopping-cart-empty-side-view.svg"%>
-            <span class="badge">0</span>
-        </span>
-        <%@ include file="../../../../icons/menu.svg"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<header class="topbar grid-x align-center">
+    <div class="grid-y">
+        <img src="../images/logo.png" width="150" height="120">
+        <button class="btn">Categorie</button>
     </div>
-    <nav class="grid-inline align-center">
-        <a href="#" class="">Home</a>
-        <a href="#">Prodotti</a>
-        <a href="#" class="dropdown">
-            Categorie
-            <ul class="dropdown-menu">
-                <li>Frutta</li>
-                <li>Verdura</li>
-                <li>Sottaceti</li>
-            </ul>
-    </a>
-        <a href="#">Info</a>
-    </nav>
-    <h2 class="title">Tech Addicted</h2>
+    <label class="field command">
+        <input type="text" placeholder="Cerca..." class="search">
+    </label>
+    <span class="account">
+        <%@include file="../../../../icons/user.svg" %>
+            ${accountSession.firstName.concat(" ").concat(accountSession.lastName)}
+        <%@include file="../../../../icons/shopping-cart-empty-side-view.svg"%>
+    </span>
 </header>

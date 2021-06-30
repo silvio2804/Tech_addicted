@@ -5,6 +5,7 @@ import Model.storage.ResultSetExtractor;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.Date;
 
 public class AccountExtractor implements ResultSetExtractor<Account> {
     @Override
@@ -13,7 +14,7 @@ public class AccountExtractor implements ResultSetExtractor<Account> {
         u.setId(rs.getInt(1));
         u.setName(rs.getString(2));
         u.setLastName(rs.getString(3));
-        u.setDateBirth(LocalDate.parse(rs.getString(4)));
+        u.setDate(rs.getDate(4));
         u.setEmail(rs.getString(5));
         u.setGender(rs.getString(7));
         u.setAdmin(rs.getBoolean(8));

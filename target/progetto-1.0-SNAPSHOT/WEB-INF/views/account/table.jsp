@@ -23,7 +23,7 @@
             <c:forEach items="${accounts}" var="account">
                 <tr>
                     <td data-head="Id">
-                        <a href="/progetto_war_exploded/products/show?id=${account.id}">${account.id}</a>
+                        <a href="/progetto_war_exploded/accounts/show?id=${account.id}">${account.id}</a>
                     </td>
                     <td data-head="Nome">${account.name}</td>
                     <td data-head="Cognome">${account.lastName}</td>

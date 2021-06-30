@@ -9,6 +9,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Account {
 
@@ -40,12 +41,20 @@ public class Account {
         this.id = id;
     }
 
-    public LocalDate getDateBirth() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDateBirth(LocalDate dataNa) {
-        this.date = dataNa;
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public ArrayList<Product> getWishList() {
+        return wishList;
+    }
+
+    public void setWishList(ArrayList<Product> wishList) {
+        this.wishList = wishList;
     }
 
     public String getEmail() {
@@ -139,10 +148,18 @@ public class Account {
         return this.id == ut.getId();
     }
 
+    @Override
+    public String toString() {
+        return "Account{" +
+                "email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
+
     private String name;
     private String lastName;
     private int id;
-    private LocalDate date;
+    private Date date;
     private String email;
     private String street;
     private int houseNumber;
@@ -154,13 +171,4 @@ public class Account {
     private ArrayList<Product> wishList;
     private ArrayList<Order> orders;
     private ArrayList<Cart> purchaseHistory;
-
-
-    @Override
-    public String toString() {
-        return "Account{" +
-                "email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                '}';
-    }
 }
