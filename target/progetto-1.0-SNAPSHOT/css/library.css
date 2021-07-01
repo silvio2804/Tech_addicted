@@ -33,7 +33,7 @@
     font-size: clamp(16px, 2vw, 24px);
     --white: #ffffff;
     --black: #000000;
-    --primary: #65863B;
+    --primary: #3E505B;
     --grey: #D4D4D4;
     --error: #EE4037;
     --success: #89C540;
@@ -48,6 +48,7 @@ input, select, textarea {
     border-style: solid;
     border-radius: 0;
     box-shadow: 0 0 10px rgba(212,212,212,.54);
+
 }
 
 input:focus, textarea:focus, select:focus {

@@ -14,15 +14,15 @@ public class PageServlet extends Controller {
             String path = getPath(request);
             switch (path) {
                 case "/dashboard":
-                    System.out.println("aa");
-                    //authorize(request.getSession(false));
+                    authorize(request.getSession(false));
                     request.getRequestDispatcher(view("crm/home")).forward(request, response);
                     break;
                 case "/":
                     request.getRequestDispatcher(view("site/home")).forward(request, response);
                     break;
+                default: notAllowed();
             }
-        } catch (ServletException e) {
+        } catch (ServletException  | InvalidRequestException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();

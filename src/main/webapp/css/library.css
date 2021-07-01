@@ -48,6 +48,7 @@ input, select, textarea {
     border-style: solid;
     border-radius: 0;
     box-shadow: 0 0 10px rgba(212,212,212,.54);
+
 }
 
 input:focus, textarea:focus, select:focus {

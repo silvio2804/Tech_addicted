@@ -9,6 +9,7 @@ public class CategoryExtractor implements ResultSetExtractor<Category> {
     public Category extract(ResultSet rs) throws SQLException {
         Category cat = new Category();
         cat.setCategoryName(rs.getString(1));
+        cat.setCategoryId(rs.getInt(2));
         return cat;
     }
 }

@@ -128,7 +128,7 @@ div > .btn{
 
 .topbar > .command {
     flex: 1;
-    max-width: 70%;
+    max-width: 100%;
 }
 
 .search {

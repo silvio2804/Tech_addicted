@@ -33,7 +33,7 @@ public class OrderServlet extends Controller {
                 case "/":
                     authorize(request.getSession());
                     request.setAttribute("back",view("crm/home"));
-                    ArrayList<Order> orders = orderManager.fetchOrders(new Paginator(-1,30));
+                    ArrayList<Order> orders = orderManager.fetchOrders(new Paginator(1,30));
                     request.setAttribute("orders",orders);
                     request.getRequestDispatcher(view("crm/manageOrder")).forward(request, response);
                     break;

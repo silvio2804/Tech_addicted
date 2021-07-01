@@ -32,7 +32,7 @@ public class DiscountServlet extends Controller {
                 case "/":
                     authorize(request.getSession());
                     request.setAttribute("back",view("crm/product"));
-                    ArrayList<Discount> discounts = discountManager.fetchDiscounts(new Paginator(-1,30));
+                    ArrayList<Discount> discounts = discountManager.fetchDiscounts(new Paginator(1,30));
                     request.setAttribute("discounts",discounts);
                     request.getRequestDispatcher(view("crm/manageDiscount")).forward(request, response);
                     break;

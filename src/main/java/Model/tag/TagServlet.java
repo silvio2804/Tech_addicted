@@ -1,4 +1,4 @@
-package Model.discount;
+package Model.tag;
 
 import Model.http.Controller;
 import Model.http.InvalidRequestException;
@@ -36,7 +36,7 @@ public class TagServlet extends Controller {
                 case "/":
                     authorize(request.getSession());
                     request.setAttribute("back",view("crm/product"));
-                    ArrayList<Tag> tags = tagManager.fetchTags(new Paginator(-1,30));
+                    ArrayList<Tag> tags = tagManager.fetchTags(new Paginator(1,30));
                     request.setAttribute("tags",tags);
                     request.getRequestDispatcher(view("crm/manageTag")).forward(request, response);
                     break;

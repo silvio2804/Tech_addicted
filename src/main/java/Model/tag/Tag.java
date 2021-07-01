@@ -42,6 +42,15 @@ public class Tag {
         return tagId == tag.tagId;
     }
 
+    @Override
+    public String toString() {
+        return "Tag{" +
+                "word='" + word + '\'' +
+                ", tagId=" + tagId +
+                ", products=" + products +
+                '}';
+    }
+
     private String word;
     private int tagId;
     private ArrayList<Product> products;

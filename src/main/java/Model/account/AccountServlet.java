@@ -38,12 +38,10 @@ public class AccountServlet extends Controller {
                 case "/":
                     authorize(request.getSession());
                     request.setAttribute("back", view("crm/accounts"));
-                    //validate(CommonValidator.validatePage(request));
-                    //int page = parsePage(request);
-                    //System.out.println(page);
-                    Paginator paginator = new Paginator(-1, 50);
+                    validate(CommonValidator.validatePage(request));
+                    int page = parsePage(request);
+                    Paginator paginator = new Paginator(page, 50);
                     int size = accountManager.countAll();
-                    System.out.println(size);
                     request.setAttribute("pages", paginator.getPages(size));
                     List<Account> accounts = accountManager.fetchAccounts(paginator);
                     request.setAttribute("accounts", accounts);
