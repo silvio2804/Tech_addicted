@@ -98,6 +98,7 @@ input:focus, textarea:focus, select:focus {
 
 .field > input, .field > select, .field > textarea {
     width: 100%;
+
 }
 
 .field > input[disabled], .field > select[disabled], .field > textarea[disabled] {

@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: silvi
-  Date: 18/06/2021
-  Time: 23:44
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <html>
 <head>
@@ -66,7 +59,7 @@
             </div>
         </div>
     </section>
-    <%@include file="../partials/site/footer.jsp" %>
 </main>
+<%@include file="../partials/site/footer.jsp" %>
 </body>
 </html>
