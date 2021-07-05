@@ -2,14 +2,14 @@
 <html>
 <head>
     <style>
-        div{
+        div*{
             background-image: url("../../../images/error404.jpg");
         }
     </style>
 </head>
 <body>
 <div>
-    <p>Pagina non trovata</p>
+    <p>Pagina non trovata, assicurati di aver digitato l'indirizzo correttamente</p>
     <a href="${pageContext.request.contextPath}/pages/">Torna alla home page</a>
 </div>
 </body>

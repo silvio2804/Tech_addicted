@@ -5,6 +5,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
+
 //servlet per le pagine utente
 @WebServlet(name = "pageServlet",value = "/pages/*")
 public class PageServlet extends Controller {
@@ -20,12 +23,14 @@ public class PageServlet extends Controller {
                 case "/":
                     request.getRequestDispatcher(view("site/home")).forward(request, response);
                     break;
+                case "":
+                    break;
                 default: notAllowed();
             }
-        } catch (ServletException  | InvalidRequestException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (InvalidRequestException ex) {
+            ex.printStackTrace();
+            log(ex.getMessage());
+            ex.handle(request, response);
         }
     }
-    }
+}

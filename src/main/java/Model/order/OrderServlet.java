@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -41,9 +42,14 @@ public class OrderServlet extends Controller {
                     notFound();
             }
         }
-        catch(InvalidRequestException | SQLException t){
-            t.printStackTrace();
-        }
+      catch ( SQLException t) {
+        t.printStackTrace();
+        log(t.getMessage());
+    } catch (InvalidRequestException ex) {
+        ex.printStackTrace();
+        log(ex.getMessage());
+        ex.handle(request, response);
+    }
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {

@@ -11,6 +11,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -52,9 +53,14 @@ public class CategoryServlet extends Controller{
                     notFound();
             }
         }
-        catch(InvalidRequestException | SQLException t){
-            t.printStackTrace();
-        }
+     catch (SQLException t) {
+        t.printStackTrace();
+        log(t.getMessage());
+    } catch (InvalidRequestException ex) {
+        ex.printStackTrace();
+        log(ex.getMessage());
+        ex.handle(request, response);
+    }
 
     }
 
