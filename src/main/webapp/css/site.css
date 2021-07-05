@@ -1,4 +1,6 @@
-* {box-sizing:border-box}
+* {
+    box-sizing: border-box
+}
 
 /* Slideshow container */
 .slideshow-container {
@@ -13,60 +15,13 @@
     display: none;
 }
 
-/* Next & previous buttons */
-.prev, .next {
-    cursor: pointer;
-    position: absolute;
-    top: 50%;
-    width: auto;
-    margin-top: -22px;
-    padding: 16px;
-    color: white;
-    font-weight: bold;
-    font-size: 18px;
-    transition: 0.6s ease;
-    border-radius: 0 3px 3px 0;
-    user-select: none;
-}
-
-/* Position the "next button" to the right */
-.next {
-    right: 0;
-    border-radius: 3px 0 0 3px;
-}
-
-/* On hover, add a black background color with a little bit see-through */
-.prev:hover, .next:hover {
-    background-color: rgba(0,0,0,0.8);
-}
-
-/* Caption text */
-.text {
-    color: #f2f2f2;
-    font-size: 15px;
-    padding: 8px 12px;
-    position: absolute;
-    bottom: 8px;
-    width: 100%;
-    text-align: center;
-}
-
-/* Number text (1/3 etc) */
-.numbertext {
-    color: #f2f2f2;
-    font-size: 12px;
-    padding: 8px 12px;
-    position: absolute;
-    top: 0;
-}
-
 /* The dots/bullets/indicators */
 .dot {
     cursor: pointer;
     height: 15px;
     width: 15px;
     margin: 0 2px;
-    background-color: #bbb;
+    background-color: var(--primary);
     border-radius: 50%;
     display: inline-block;
     transition: background-color 0.6s ease;
@@ -91,36 +46,67 @@
 .topbar {
     background-color: var(--primary);
     padding: .5rem;
-    /*position: fixed;*/
+    position: fixed;
     top: 0;
     width: 100%;
     overflow: hidden;
+    z-index: 9999;
+    height: 23%;
 }
 
-div > .btn{
+.leftside {
+    height: 90%;
+    flex-flow: column nowrap;
+}
+
+div > .btn {
     background-color: transparent;
     border-color: var(--white);
     border-width: medium;
     border-radius: 15px;
     border-style: solid;
-    text-decoration-color: var(--white);
+    color: var(--white);
     font-weight: bold;
-    width: 100%;
+    width: fit-content;
+    font-size: 12px;
+    display: inline-block;
+    text-align: center;
 }
 
-.main{
+main {
     margin-top: 144px;
     height: 1500px;
 }
 
-.info {
-    text-align: right;
-    font-style: italic;
-    font-weight: normal;
-    padding-right: .1rem;
-    border: 1px solid darkgrey;
+.footer-basic {
+    padding: 10px 0;
+    background-color: #ffffff;
+    color: #4b4c4d;
 }
 
+.footer-basic ul {
+    padding: 0;
+    list-style: none;
+    text-align: center;
+    font-size: 18px;
+    line-height: 1.6;
+    margin-bottom: 0;
+}
+
+.footer-basic li {
+    padding: 0 10px;
+    display: inline-block;
+}
+
+.footer-basic ul a {
+    color: inherit;
+    text-decoration: none;
+    opacity: 0.8;
+}
+
+.footer-basic ul a:hover {
+    opacity: 1;
+}
 
 .topbar > .account {
     display: none;
@@ -128,7 +114,14 @@ div > .btn{
 
 .topbar > .command {
     flex: 1;
-    max-width: 100%;
+    max-width: 750px;
+}
+
+.info {
+    margin-left: auto;
+    text-align: right;
+    font-style: italic;
+    padding-right: .1rem;
 }
 
 .search {
@@ -137,13 +130,54 @@ div > .btn{
     height: 42px;
 }
 
+.bsi {
+    width: 100%;
+    height: auto;
+    max-height: 400px;
+}
+
 .topbar > * {
     color: var(--white);
     margin-right: 8px;
 }
 
-.topbar > svg {
+.topbar > img {
     cursor: pointer;
+}
+
+
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    max-width: 300px;
+    margin: auto;
+    text-align: center;
+    font-family: arial;
+}
+
+.price {
+    color: grey;
+    font-size: 22px;
+}
+
+.card button {
+    border: none;
+    outline: 0;
+    padding: 12px;
+    color: white;
+    background-color: #000;
+    text-align: center;
+    cursor: pointer;
+    width: 100%;
+    font-size: 18px;
+}
+
+.card button:hover {
+    opacity: 0.7;
+}
+
+.bs {
+    text-align: center;
+    padding: 3px;
 }
 
 @media screen and (min-width: 769px) {
@@ -153,11 +187,19 @@ div > .btn{
 }
 
 @-webkit-keyframes fade {
-    from {opacity: .4}
-    to {opacity: 1}
+    from {
+        opacity: .4
+    }
+    to {
+        opacity: 1
+    }
 }
 
 @keyframes fade {
-    from {opacity: .4}
-    to {opacity: 1}
+    from {
+        opacity: .4
+    }
+    to {
+        opacity: 1
+    }
 }
