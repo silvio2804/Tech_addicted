@@ -1,9 +1,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <header class="topbar grid-x align-center">
-    <div class="grid-y leftside">
-            <img src="../images/logo.png" width="150" height="120">
-        <button class="btn justify-center">Categorie</button>
+    <div class="grid-y">
+        <img src="../images/logo.png" width="150" height="120">
+        <button class="btn">Categorie</button>
     </div>
     <label class="field command">
         <input type="text" placeholder="Cerca..." class="search">
