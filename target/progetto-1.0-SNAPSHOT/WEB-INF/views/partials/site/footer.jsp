@@ -1,16 +1,16 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: silvi
-  Date: 18/06/2021
-  Time: 23:32
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>Title</title>
-</head>
-<body>
+<footer>
+    <div class="grid-x footer-basic">
+        <ul>
+            <li><a href="#">Chi siamo?</a></li>
+            <li><a href="#">F.A.Q</a></li>
+            <li><a href="#">Contattaci</a></li>
+            <li><a href="#">Garanzia</a></li>
+        </ul>
+    </div>
+        <div class="footer-basic info">
+            <ul>
+                <li>Copyright 2021 All Rights Reserved</li>
+            </ul>
 
-</body>
-</html>
+    </div>
+</footer>

@@ -14,6 +14,6 @@
     </style>
 </head>
 <body>
-<% response.sendRedirect("./site/home"); %>
+<% response.sendRedirect("./site/product"); %>
 </body>
 </html>

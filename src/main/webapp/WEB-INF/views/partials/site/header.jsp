@@ -2,15 +2,23 @@
 
 <header class="topbar grid-x align-center">
     <div class="grid-y leftside">
-            <img src="../images/logo.png" width="150" height="120">
+        <img src="../images/logo.png" width="150" height="120">
         <button class="btn justify-center">Categorie</button>
     </div>
     <label class="field command">
         <input type="text" placeholder="Cerca..." class="search">
     </label>
-    <span class="account">
+    <div class="account">
+    <span>
         <%@include file="../../../../icons/user.svg" %>
             ${accountSession.firstName.concat(" ").concat(accountSession.lastName)}
-        <%@include file="../../../../icons/shopping-cart-empty-side-view.svg"%>
+            </span>
+<div class="grid-y account-content">
+    <a href="#">Profilo</a>
+    <a href="#">Logout</a>
+</div>
+    </div>
+    <span>
+        <%@include file="../../../../icons/shopping-cart-empty-side-view.svg" %>
     </span>
 </header>

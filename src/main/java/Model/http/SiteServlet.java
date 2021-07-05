@@ -17,6 +17,8 @@ public class SiteServlet extends Controller {
                     request.getRequestDispatcher(view("site/home")).forward(request, response);
                 default:
                     internalError();
+                case "/product":
+                    request.getRequestDispatcher(view("site/product")).forward(request, response);
             }
         }
         catch (InvalidRequestException e) {

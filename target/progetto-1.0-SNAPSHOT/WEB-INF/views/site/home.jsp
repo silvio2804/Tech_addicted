@@ -4,7 +4,7 @@
     <jsp:include page="../partials/head.jsp">
         <jsp:param name="title" value="Benvenuti in Tech Addicted"/>
         <jsp:param name="styles" value="site"/>
-        <jsp:param name="scripts" value="site"/>
+        <jsp:param name="scripts" value="site, slide"/>
     </jsp:include>
 </head>
 <body>
@@ -61,5 +61,6 @@
     </section>
 </main>
 <%@include file="../partials/site/footer.jsp" %>
+
 </body>
 </html>

@@ -4,7 +4,7 @@
     <jsp:include page="../partials/head.jsp">
         <jsp:param name="title" value="Benvenuti in Tech Addicted"/>
         <jsp:param name="styles" value="site"/>
-        <jsp:param name="scripts" value="site"/>
+        <jsp:param name="scripts" value="site, slide"/>
     </jsp:include>
 </head>
 <body>
@@ -45,7 +45,10 @@
                 <h1>?</h1>
                 <p class="price">€?</p>
                 <p>
+                <form action="/site/product">
+                <input type="hidden" value="${product.id}">
                     <button>Visualizza prodotto</button>
+                </form>
                 </p>
             </div>
 
@@ -54,12 +57,16 @@
                 <h1>?</h1>
                 <p class="price">€?</p>
                 <p>
+                <form action="/site/product">
+                    <input type="hidden" value="${product.id}">
                     <button>Visualizza prodotto</button>
+                </form>
                 </p>
             </div>
         </div>
     </section>
 </main>
 <%@include file="../partials/site/footer.jsp" %>
+
 </body>
 </html>
