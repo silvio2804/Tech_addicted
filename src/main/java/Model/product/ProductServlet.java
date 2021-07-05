@@ -2,6 +2,7 @@ package Model.product;
 
 import Components.Alert;
 import Model.category.Category;
+import Model.category.CategoryManager;
 import Model.http.Controller;
 import Model.http.ErrorHandler;
 import Model.http.InvalidRequestException;
@@ -51,7 +52,10 @@ public class ProductServlet extends Controller implements ErrorHandler {
                     request.getRequestDispatcher(view("crm/product")).forward(request, response);
                     break;
                 case "/create":
-                    request.getRequestDispatcher(view("crm/product")).forward(request, response);
+                    ArrayList<Category> categories = productManager.fetchCategoriesByProducts();
+                    System.out.println(categories);
+                    request.setAttribute("categories",categories);
+                    request.getRequestDispatcher(view("product/form")).forward(request, response);
                     break;
                 case "/search":
                     request.getRequestDispatcher(view("site/search")).forward(request, response);
@@ -75,7 +79,7 @@ public class ProductServlet extends Controller implements ErrorHandler {
             switch (path) {
                 case "/create":
                     authorize(request.getSession(false));
-                    request.setAttribute("back",view("crm/product"));
+                    request.setAttribute("back",view("product/form"));
                     validate(ProductValidator.validateForm(request));
                     Product product = new ProductFormExtractor().extract(request,false);
                     ProductDao<SQLException> prodottoDao = new ProductManager(source);
@@ -92,7 +96,7 @@ public class ProductServlet extends Controller implements ErrorHandler {
                         product.writeCover(getUploadPath(), request.getPart("cover"));
                         request.setAttribute("alert",new Alert(List.of("Prodotto creato!"),"success"));
                         response.setStatus(HttpServletResponse.SC_CREATED);
-                        request.getRequestDispatcher(view("crm/product")).forward(request, response);
+                        request.getRequestDispatcher(view("product/form")).forward(request, response);
                     } else
                         internalError();
                     break;
@@ -122,11 +126,14 @@ public class ProductServlet extends Controller implements ErrorHandler {
                 default:
                     notFound();
             }
-        } catch (SQLException | InvalidRequestException t) {
-            t.printStackTrace();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, ex.getMessage());
+        }
+        catch (InvalidRequestException inv){
+            log(inv.getMessage());
+            inv.handle(request,response);
         }
     }
 }
-
-
 // DA COMPLETARE

@@ -42,7 +42,7 @@ public class AccountManager extends Manager implements AccountDao { // E' il mio
     public Optional<Account> fetchAccount(int id) throws SQLException {
         try (Connection conn = source.getConnection()) {
             QueryBuilder queryBuilder = new QueryBuilder("utente", "ute");
-            String query = queryBuilder.select().where("id=?").generateQuery();
+            String query = queryBuilder.select().where("idUte=?").generateQuery();
             try (PreparedStatement ps = conn.prepareStatement(query)) {
                 ps.setInt(1, id);
                 ResultSet rs = ps.executeQuery();

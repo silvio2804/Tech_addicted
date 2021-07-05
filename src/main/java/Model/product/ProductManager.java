@@ -1,5 +1,6 @@
 package Model.product;
 
+import Model.category.Category;
 import Model.category.CategoryExtractor;
 import Model.search.Condition;
 import Model.search.Operator;
@@ -143,4 +144,27 @@ public class ProductManager extends Manager implements ProductDao<SQLException> 
             }
         }
     }
+
+    /*select distinct categoria.idCat
+    from categoria
+    left join prodotto on (categoria.idCat = prodotto.idCategoria);*/
+
+   public  ArrayList<Category> fetchCategoriesByProducts() throws SQLException {
+       ArrayList<Category> categories = new ArrayList<>();
+       try (Connection conn = source.getConnection()) {
+           QueryBuilder queryBuilder = new QueryBuilder("categoria", "cat");
+           String query = queryBuilder.selectDistinct("idCat","nomeCategoria").outerJoin(true,"prodotto","pro").
+                   on("(cat.idCat = pro.idCategoria)").generateQuery();
+           System.out.println(query);
+           try (PreparedStatement ps = conn.prepareStatement(query)) {
+               ResultSet rs = ps.executeQuery();
+               CategoryExtractor extractor = new CategoryExtractor();
+               while (rs.next()){
+                   Category category = extractor.extract(rs);
+                   categories.add(category);
+               }
+               return categories;
+           }
+       }
+   }
 }

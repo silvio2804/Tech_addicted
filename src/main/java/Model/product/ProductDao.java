@@ -1,5 +1,6 @@
 package Model.product;
 
+import Model.category.Category;
 import Model.search.Condition;
 import Model.search.Paginator;
 
@@ -22,4 +23,6 @@ public interface ProductDao<E extends Exception>{
     ArrayList<Product> fetchProductAccount(int idUtente) throws E;
 
     List<Product> search(List <Condition> conditions) throws E;
+
+    ArrayList<Category> fetchCategoriesByProducts() throws E;
 }

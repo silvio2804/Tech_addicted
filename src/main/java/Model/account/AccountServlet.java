@@ -15,8 +15,6 @@ import java.util.List;
 import java.util.Optional;
 
 @WebServlet(name = "AccountServlet", value = "/accounts/*")
-
-
 //quando chiamo create di doGet mi da il form e dopo averlo compilato, send redirect a questa servlet chiamando create di doPost per crearlo effettivamete
 
 public class AccountServlet extends Controller {
@@ -38,9 +36,9 @@ public class AccountServlet extends Controller {
                 case "/":
                     authorize(request.getSession());
                     request.setAttribute("back", view("crm/accounts"));
-                    validate(CommonValidator.validatePage(request));
-                    int page = parsePage(request);
-                    Paginator paginator = new Paginator(page, 50);
+                    //validate(CommonValidator.validatePage(request));
+                    //int page = parsePage(request);
+                    Paginator paginator = new Paginator(1, 50);
                     int size = accountManager.countAll();
                     request.setAttribute("pages", paginator.getPages(size));
                     List<Account> accounts = accountManager.fetchAccounts(paginator);
@@ -60,7 +58,6 @@ public class AccountServlet extends Controller {
                     HttpSession session = request.getSession(false);
                     authenticate(session);
                     AccountSession accountSession = getSessionAccount(session);
-                    System.out.println(accountSession);
                     String redirect = accountSession.isAdmin() ? "/progetto_war_exploded/accounts/secret" : "/progetto_war_exploded/accounts/signin";
                     session.removeAttribute("accountSession");
                     session.invalidate();
@@ -75,14 +72,16 @@ public class AccountServlet extends Controller {
                     break;
                 case "/profile":
                     AccountSession account = getSessionAccount(request.getSession(false));
+                    String red = account.isAdmin() ? view("crm/showProfile") : view("site/profile");
                     int id = account.getId();
                     Optional<Account> profileAccount = accountManager.fetchAccount(id);
                     if(profileAccount.isPresent()){
                         request.setAttribute("profileAccount",profileAccount);
-                        request.getRequestDispatcher(view("site/profile")).forward(request,response);
+                        request.getRequestDispatcher(red).forward(request,response);
                     }
-                    else
+                    else {
                         notFound();
+                    }
                 default:
                     notFound();
             }

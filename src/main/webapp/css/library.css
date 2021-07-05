@@ -35,7 +35,7 @@
     --black: #000000;
     --primary: #3E505B;
     --grey: #D4D4D4;
-    --error: #EE4037;
+    --error: #ee4037;
     --success: #89C540;
 }
 
@@ -230,5 +230,4 @@ button.primary:hover {
         right: 10px;
         fill: var(--white);
     }
-
 }

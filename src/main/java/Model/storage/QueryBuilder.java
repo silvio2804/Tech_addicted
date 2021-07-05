@@ -40,6 +40,21 @@ public class QueryBuilder {
         return this;
     }
 
+    public QueryBuilder selectDistinct(String... fields){
+        query.append("SELECT DISTINCT ");
+        if(fields.length == 0){
+            query.append("*");
+        }else{
+            StringJoiner commaJoiner = new StringJoiner(",");
+            for(String field : fields){
+                commaJoiner.add(String.format("%s.%s",alias,field));//serve per concatenare alias.attributo ruotando sull'array di fields
+            }
+            query.append(commaJoiner.toString()); //concateni quello che crea il commajoiner
+        }
+        query.append(" FROM ").append(table).append(" AS ").append(alias); //alias della tabella
+        return this;
+    }
+
     public QueryBuilder where(String condition){
         query.append(" WHERE ").append(condition);
         return this;

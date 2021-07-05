@@ -31,6 +31,5 @@ public class InvalidRequestException extends Exception {
                 response.sendError(errorCode,errors.get(0));
         }
     }
-
     public List<String> getErrors(){ return errors;}
 }
