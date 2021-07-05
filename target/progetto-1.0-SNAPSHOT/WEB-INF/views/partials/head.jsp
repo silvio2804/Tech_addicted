@@ -19,7 +19,6 @@
     <link rel="stylesheet" href="${context}/css/${style}.css">
     </c:forTokens>
 </c:if>
-
 <c:if test="${not empty param.scripts}">
     <c:forTokens items="${param.scripts}" delims="," var="script">
     <script src="${context}/js/${script}.js" defer></script>
