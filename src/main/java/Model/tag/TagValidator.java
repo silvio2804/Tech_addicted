@@ -1,18 +1,17 @@
-package Model.category;
+package Model.tag;
 
 import Model.http.RequestValidator;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.regex.Pattern;
 
-public class CategoryValidator {
-
+public class TagValidator {
     static RequestValidator validateForm(HttpServletRequest request, boolean update){
         RequestValidator validator = new RequestValidator(request);
-        validator.assertMatch("categoryName", Pattern.compile("^\\w{4,20}$"),"Il nome deve avere lunghezza tra 4 e 20 caratteri");
         if(update){
-            validator.assertInt("categoryId","Id deve essere un numero intero");
+            validator.assertInt("tagId","Id tag deve essere un intero");
         }
+        validator.assertMatch("word", Pattern.compile("^[a-zA-Z 0-9 ]{1,30}$"),"La parola deve essere compresa fra i 2 e i 30 caratteri");
         return validator;
     }
 }

@@ -45,7 +45,10 @@
                 <h1>?</h1>
                 <p class="price">€?</p>
                 <p>
+                <form action="/site/product">
+                <input type="hidden" value="${product.id}">
                     <button>Visualizza prodotto</button>
+                </form>
                 </p>
             </div>
 
@@ -54,7 +57,10 @@
                 <h1>?</h1>
                 <p class="price">€?</p>
                 <p>
+                <form action="/site/product">
+                    <input type="hidden" value="${product.id}">
                     <button>Visualizza prodotto</button>
+                </form>
                 </p>
             </div>
         </div>

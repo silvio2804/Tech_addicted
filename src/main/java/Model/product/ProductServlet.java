@@ -14,23 +14,28 @@ import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @WebServlet(name = "ProductServlet", value = "/products/*")
 @MultipartConfig
 public class ProductServlet extends Controller implements ErrorHandler {
 
     private ProductManager productManager;
+    private ArrayList<Category> categories;
 
     public void init() throws ServletException {
         super.init();
         try {
             productManager = new ProductManager(source);
+            categories = productManager.fetchCategoriesByProducts();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -42,19 +47,27 @@ public class ProductServlet extends Controller implements ErrorHandler {
             String path = getPath(request);
             switch (path) {
                 case "/":
-                    authorize(request.getSession());
+                    HttpSession session = request.getSession();
+                    authorize(session);
                     request.setAttribute("back",view("crm/product"));
                     ArrayList<Product> products = productManager.fetchProducts(new Paginator(1,30));
                     request.setAttribute("products",products);
+                    session.setAttribute("categories",categories);
                     request.getRequestDispatcher(view("crm/manageProduct")).forward(request, response);
                     break;
                 case "/show":
-                    request.getRequestDispatcher(view("crm/product")).forward(request, response);
+                    int id = Integer.parseInt(request.getParameter("id"));
+                    Optional<Product> product = productManager.fetchProduct(id);
+                    if(product.isPresent()){
+                        request.setAttribute("product",product.get());
+                        request.setAttribute("categories",categories);
+                        request.getRequestDispatcher(view("product/form")).forward(request, response);
+                    }
+                    else
+                        internalError();
                     break;
                 case "/create":
-                    ArrayList<Category> categories = productManager.fetchCategoriesByProducts();
-                    System.out.println(categories);
-                    request.setAttribute("categories",categories);
+                    authorize(request.getSession());
                     request.getRequestDispatcher(view("product/form")).forward(request, response);
                     break;
                 case "/search":
@@ -67,10 +80,16 @@ public class ProductServlet extends Controller implements ErrorHandler {
                     notFound();
             }
         }
-        catch (InvalidRequestException | SQLException t){
-            t.printStackTrace();
+        catch (SQLException sqlException){
+            sqlException.printStackTrace();
         }
+     catch (InvalidRequestException ex) {
+        ex.printStackTrace();
+        log(ex.getMessage());
+        ex.handle(request, response);
     }
+}
+
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -82,17 +101,10 @@ public class ProductServlet extends Controller implements ErrorHandler {
                     request.setAttribute("back",view("product/form"));
                     validate(ProductValidator.validateForm(request));
                     Product product = new ProductFormExtractor().extract(request,false);
-                    ProductDao<SQLException> prodottoDao = new ProductManager(source);
-                    product.setPrice(Double.parseDouble(request.getParameter("price")));
-                    product.setName(request.getParameter("name"));
-                    product.setDescription(request.getParameter("description"));
                     Part filePart = request.getPart("cover");
                     String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
                     product.setCover(fileName);
-                    Category category = new Category();
-                    category.setCategoryId(Integer.parseInt(request.getParameter("categoryId")));
-                    product.setCategory(category);
-                    if(prodottoDao.createProduct(product)) {
+                    if(productManager.createProduct(product)) {
                         product.writeCover(getUploadPath(), request.getPart("cover"));
                         request.setAttribute("alert",new Alert(List.of("Prodotto creato!"),"success"));
                         response.setStatus(HttpServletResponse.SC_CREATED);
@@ -101,7 +113,6 @@ public class ProductServlet extends Controller implements ErrorHandler {
                         internalError();
                     break;
                 case "/search":
-                    ProductDao<SQLException> productManager = new ProductManager(source);
                     List<Condition> conditions = new ProductSearch().buildSearch(request);
                     List<Product> searchProducts = conditions.isEmpty() ? productManager.fetchProducts(new Paginator(1,50)):
                             productManager.search(conditions);
@@ -112,28 +123,29 @@ public class ProductServlet extends Controller implements ErrorHandler {
                     authorize(request.getSession(false));
                     request.setAttribute("back",view("crm/product"));
                     validate(ProductValidator.validateForm(request));
-                    /*Product updateProduct = new ProductFormMapper().map(request,false);
+                    Product updateProduct = new ProductFormExtractor().extract(request,true);
                     request.setAttribute("product",updateProduct);
-                    if(prodottoDao.updateProduct(updateProduct)){
+                    if(productManager.updateProduct(updateProduct)){
+                        Part filePart1 = request.getPart("cover");
+                        String fileName1 = Paths.get(filePart1.getSubmittedFileName()).getFileName().toString();
+                        updateProduct.setCover(fileName1);
                         updateProduct.writeCover(getUploadPath(), request.getPart("cover"));
-                        request.setAttribute("alert",new Alert(List.of("Prodotto aggiornato!"),"sucess"));
-                        request.getRequestDispatcher(view("crm/product")).forward(request, response);
+                        request.setAttribute("alert",new Alert(List.of("Prodotto aggiornato!"),"success"));
+                        request.getRequestDispatcher(view("product/form")).forward(request, response);
                     }
-                    else{
+                    else
                         internalError();
-                    }*/
                     break;
                 default:
                     notFound();
             }
-        } catch (SQLException ex) {
+        } catch (SQLException t) {
+            t.printStackTrace();
+            log(t.getMessage());
+        } catch (InvalidRequestException ex) {
             ex.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, ex.getMessage());
-        }
-        catch (InvalidRequestException inv){
-            log(inv.getMessage());
-            inv.handle(request,response);
+            log(ex.getMessage());
+            ex.handle(request, response);
         }
     }
 }
-// DA COMPLETARE

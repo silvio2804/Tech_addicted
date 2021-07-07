@@ -1,5 +1,6 @@
 package Model.category;
 
+import Model.account.AccountManager;
 import Model.product.Product;
 import Model.product.ProductExtractor;
 import Model.search.Paginator;
@@ -42,10 +43,10 @@ public class CategoryManager extends Manager implements CategoryDao {
     }
 
     @Override
-    public Optional<Category> fetchCategory(int id) throws Exception {
+    public Optional<Category> fetchCategory(int id) throws SQLException {
         try (Connection conn = source.getConnection()) {
             QueryBuilder queryBuilder = new QueryBuilder("categoria", "cat");
-            String query = queryBuilder.select().where("id=?").generateQuery();
+            String query = queryBuilder.select().where("idCat=?").generateQuery();
             try (PreparedStatement ps = conn.prepareStatement(query)) {
                 ps.setInt(1, id);
                 ResultSet rs = ps.executeQuery();
@@ -53,7 +54,7 @@ public class CategoryManager extends Manager implements CategoryDao {
                 if (rs.next()) {
                     cat = new CategoryExtractor().extract(rs);
                 }
-                return Optional.ofNullable(cat); //restituisce un oggetto che incapsula null
+                return Optional.ofNullable(cat);
             }
         }
     }
@@ -62,10 +63,10 @@ public class CategoryManager extends Manager implements CategoryDao {
     public boolean createCategory(Category cat) throws SQLException {
         try (Connection conn = source.getConnection()) {
             QueryBuilder queryBuilder = new QueryBuilder("categoria", "cat");
-            queryBuilder.insert("idCategoria,nomeCategoria");
+            queryBuilder.insert("nomeCategoria","idCat");
             try (PreparedStatement ps = conn.prepareStatement(queryBuilder.generateQuery())) {
-                ps.setInt(1, cat.getCategoryId());
-                ps.setString(2, cat.getCategoryName());
+                ps.setString(1, cat.getCategoryName());
+                ps.setInt(2, cat.getCategoryId());
                 int updRet = ps.executeUpdate();
                 return updRet == 1;
             }
@@ -76,7 +77,7 @@ public class CategoryManager extends Manager implements CategoryDao {
     public boolean deleteCategory(int id) throws SQLException {
         try (Connection conn = source.getConnection()) {
             QueryBuilder queryBuilder = new QueryBuilder("categoria", "cat");
-            queryBuilder.delete().where("id=?");
+            queryBuilder.delete().where("idCat=?");
             try (PreparedStatement ps = conn.prepareStatement(queryBuilder.generateQuery())) {
                 ps.setInt(1, id);
                 int updRet = ps.executeUpdate();
@@ -89,9 +90,10 @@ public class CategoryManager extends Manager implements CategoryDao {
     public boolean updateCategory(Category cat) throws SQLException {
         try (Connection conn = source.getConnection()) {
             QueryBuilder queryBuilder = new QueryBuilder("categoria", "cat");
-            queryBuilder.update("").where("id=?");
+            queryBuilder.update("nomeCategoria").where("idCat=?");
             try (PreparedStatement ps = conn.prepareStatement(queryBuilder.generateQuery())) {
-                ps.setInt(1, cat.getCategoryId());
+                ps.setString(1, cat.getCategoryName());
+                ps.setInt(2, cat.getCategoryId());
                 int updRet = ps.executeUpdate();
                 return updRet == 1;
             }

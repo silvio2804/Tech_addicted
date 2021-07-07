@@ -9,7 +9,7 @@ public class CategoryFormExtractor implements FormExtractor<Category> {
     public Category extract(HttpServletRequest request, boolean update) {
         Category category = new Category();
         if(update){
-            category.setCategoryId(Integer.parseInt(request.getParameter("id")));
+            category.setCategoryId(Integer.parseInt(request.getParameter("categoryId")));
         }
         category.setCategoryName(request.getParameter("categoryName"));
         return category;

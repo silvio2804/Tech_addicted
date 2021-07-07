@@ -1,7 +1,7 @@
 <%@ taglib prefix ="c" uri ="http://java.sun.com/jsp/jstl/core"%>
 
-<jsp:useBean id="category" class="Model.category.Category" scope="request"/>
-<c:set var="isCreate" value="${category.categoryId == 0}"/>
+<jsp:useBean id="tag" class="Model.tag.Tag" scope="request"/>
+<c:set var="isCreate" value="${tag.tagId == 0}"/>
 
 <c:if test="${not empty alert}">
     <%@include file="../partials/alert.jsp"%>
@@ -29,14 +29,14 @@
         <div class="body grid-x justify-center">
 
 
-<form method="post"action="/progetto_war_exploded/categories/${isCreate ? 'create': 'update'}">
+<form method="post"action="/progetto_war_exploded/tags/${isCreate ? 'create': 'update'}">
     <c:if test="${not isCreate}">
-        <input type="hidden" name="categoryId" value="${category.categoryId}">
+        <input type="hidden" name="tagId" value="${tag.tagId}">
     </c:if>
     <fieldset class="grid-x cell category-form">
-        <legend>${isCreate ? 'Crea' : 'Aggiorna'} Categoria</legend>
-        <label for="categoryName" class="field cell w 40">
-            <input id="categoryName" name="categoryName" placeholder="Nome categoria" type="text" value="${category.categoryName}">
+        <legend>${isCreate ? 'Crea' : 'Aggiorna'} Tag</legend>
+        <label for="word" class="field cell w 40">
+            <input id="word" name="word" placeholder="Parola" type="text" value="${tag.word}">
         </label>
         <button type="submit" class="cell w40 btn primary">${isCreate ? 'Crea' : 'Aggiorna'}</button>
     </fieldset>

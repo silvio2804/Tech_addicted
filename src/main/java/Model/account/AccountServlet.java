@@ -102,6 +102,8 @@ public class AccountServlet extends Controller {
                     tmp.setEmail(request.getParameter("email"));
                     tmp.setPassword(request.getParameter("password"));
                     Optional<Account> optAccount = accountManager.findAccount(tmp.getEmail(), tmp.getPassword(),true);
+                    Integer accounts = accountManager.countAll();
+                    request.setAttribute("accounts",accounts);
                     if (optAccount.isPresent()) {
                         AccountSession accountSession = new AccountSession(optAccount.get());
                         request.getSession(true).setAttribute("accountSession", accountSession);
@@ -150,13 +152,13 @@ public class AccountServlet extends Controller {
                     request.setAttribute("back", view("crm/account"));
                     validate(AccountValidator.validateForm(request, true));
                     Account updateAccount = new AccountFormExtractor().extract(request, true);
-                /*if(accountManager.updateAccount(updateAccount)){
+                if(accountManager.updateAccount(updateAccount)){
                     request.setAttribute("account",updateAccount);
                     request.setAttribute("alert",new Alert(List.of("Account aggiornato !"),"success"));
-                    request.getRequestDispatcher(view("crm/account")).forward(request,response);
+                    request.getRequestDispatcher(view("crm/")).forward(request,response);
                 }
                 else
-                    internalError();*/
+                    internalError();
                     break;
                 case "profile": //aggiorna profilo cliente
                     break;

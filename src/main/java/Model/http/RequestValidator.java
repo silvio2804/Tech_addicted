@@ -39,7 +39,6 @@ public class RequestValidator {
 
     public boolean assertMatch(String value, Pattern regexp, String msg){//value è il noe del campo da analizzare
         String param = request.getParameter(value);
-        System.out.println(param);
         boolean condition = required(param) && regexp.matcher(param).matches();
         return gatherError(condition,msg);
     }

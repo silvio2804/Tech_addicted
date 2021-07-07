@@ -11,7 +11,9 @@ public interface TagDao <E extends Exception>{
 
     Optional<Tag> fetchTag(int id)  throws E;
 
-    boolean createTag(int id, String tag) throws E ; //mettiamo boolean al posto di integer
+    boolean createTag(Tag tag) throws E ; //mettiamo boolean al posto di integer
 
     boolean deleteTag(int id) throws E;
+
+    boolean updateTag(Tag tag) throws E;
 }

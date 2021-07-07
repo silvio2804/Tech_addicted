@@ -13,11 +13,12 @@ public class ProductFormExtractor implements FormExtractor<Product> {
             product.setProductId(Integer.parseInt(request.getParameter("productId")));
         }
         product.setName(request.getParameter("name"));
-        product.setPrice(Integer.parseInt(request.getParameter("price")));
+        product.setPrice(Double.parseDouble(request.getParameter("price")));
         product.setDescription(request.getParameter("description"));
         Category category = new Category();
         category.setCategoryId(Integer.parseInt(request.getParameter("categoryId")));
         product.setCategory(category);
+
         return product;
     }
 }

@@ -60,6 +60,7 @@ public class Order {
     public void setCarrello(Cart cart) {
         this.cart = cart;
     }
+
     public int entries() {
         int entries = 0;
         for(CarItem item: cart.getItems()){
@@ -71,7 +72,6 @@ public class Order {
     @Override
     public String toString() {
         return "Order{" +
-                "total=" + total +
                 ", payment='" + payment + '\'' +
                 ", orderId=" + orderId +
                 ", orderDate=" + orderDate +
@@ -86,5 +86,6 @@ public class Order {
     private Date orderDate;
     private Account account;
     private Cart cart;
+
 
 }

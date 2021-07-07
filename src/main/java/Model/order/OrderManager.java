@@ -22,20 +22,19 @@ import java.util.Optional;
 
 public class OrderManager extends Manager implements OrderDao {
 
-    protected OrderManager(DataSource source) throws SQLException {
+    public OrderManager(DataSource source) throws SQLException {
         super(source);
     }
 
     @Override
     public ArrayList<Order> fetchOrders(Paginator paginator) throws SQLException {
         try (Connection conn = source.getConnection()) {
-            QueryBuilder queryBuilder = new QueryBuilder("ordine","ord");
+            QueryBuilder queryBuilder = new QueryBuilder("ordine", "ord");
             String query = queryBuilder.select().limit(true).generateQuery();
             try (PreparedStatement ps = conn.prepareStatement(query)) {
-                ps.setInt(1,paginator.getOffset());
-                ps.setInt(2,paginator.getLimit());
+                ps.setInt(1, paginator.getOffset());
+                ps.setInt(2, paginator.getLimit());
                 ResultSet rs = ps.executeQuery();
-                System.out.println(query);
                 ArrayList<Order> ordini = new ArrayList<>();
                 while (rs.next()) {
                     Order order = new OrderExtractor().extract(rs);
@@ -46,10 +45,11 @@ public class OrderManager extends Manager implements OrderDao {
         }
     }
 
+
     @Override
     public Optional<Order> fetchOrder(int id) throws SQLException {
         try (Connection conn = source.getConnection()) {
-            QueryBuilder queryBuilder = new QueryBuilder("ordine","ord");
+            QueryBuilder queryBuilder = new QueryBuilder("ordine", "ord");
             String query = queryBuilder.select().where("id=?").generateQuery();
             try (PreparedStatement ps = conn.prepareStatement(query)) {
                 ps.setInt(1, id);
@@ -63,21 +63,21 @@ public class OrderManager extends Manager implements OrderDao {
         }
     }
 
-    public ArrayList<Order> fethOrdersWithProduct(int id, Paginator paginator) throws SQLException{
-        try (Connection conn = source.getConnection()){
+    public ArrayList<Order> fethOrdersWithProduct(int id, Paginator paginator) throws SQLException {
+        try (Connection conn = source.getConnection()) {
             String query = QueryOrder.fetchOrdiniConProdotti(id);
-            try(PreparedStatement ps = conn.prepareStatement(query)){
-                ps.setInt(1,id);
-                ps.setInt(2,paginator.getLimit());
-                ps.setInt(3,paginator.getOffset());
+            try (PreparedStatement ps = conn.prepareStatement(query)) {
+                ps.setInt(1, id);
+                ps.setInt(2, paginator.getLimit());
+                ps.setInt(3, paginator.getOffset());
                 ResultSet resultSet = ps.executeQuery();
                 Map<Integer, Order> ordineMap = new LinkedHashMap<>();
                 OrderExtractor orderExtractor = new OrderExtractor();
                 ProductExtractor productExtractor = new ProductExtractor();
                 CategoryExtractor categoryExtractor = new CategoryExtractor();
-                while(resultSet.next()){
+                while (resultSet.next()) {
                     int idOrdine = resultSet.getInt("ord.idOrdine");
-                    if(!ordineMap.containsKey(idOrdine)){
+                    if (!ordineMap.containsKey(idOrdine)) {
                         Order order = orderExtractor.extract(resultSet);
                         order.setCarrello(new Cart(new ArrayList<>()));
                         ordineMap.put(idOrdine, order);
@@ -85,9 +85,9 @@ public class OrderManager extends Manager implements OrderDao {
                     Product product = productExtractor.extract(resultSet);
                     Category category = categoryExtractor.extract(resultSet);
                     product.setCategory(category);
-                    ordineMap.get(idOrdine).getCarrello().addProdotto(product,resultSet.getInt("proInCar.quantita"));
+                    ordineMap.get(idOrdine).getCarrello().addProdotto(product, resultSet.getInt("proInCar.quantita"));
                 }
-                return  new ArrayList<>(ordineMap.values());
+                return new ArrayList<>(ordineMap.values());
             }
         }
     }
@@ -98,24 +98,23 @@ public class OrderManager extends Manager implements OrderDao {
             conn.setAutoCommit(false);
             String query = QueryOrder.createOrdine();
             String query2 = QueryOrder.insertCar();
-            try(
+            try (
                     PreparedStatement ps = conn.prepareStatement(query);
                     PreparedStatement psAssoc = conn.prepareStatement(query2);
-                    ){
+            ) {
                 int rows = ps.executeUpdate();
                 int total = rows;
-                for(CarItem item : order.getCarrello().getItems()){
-                    psAssoc.setInt(1,item.getProduct().getProductId());
+                for (CarItem item : order.getCarrello().getItems()) {
+                    psAssoc.setInt(1, item.getProduct().getProductId());
                     psAssoc.setInt(2, order.getOrderId());
-                    psAssoc.setInt(3,item.getQuantity());
+                    psAssoc.setInt(3, item.getQuantity());
                     total += psAssoc.executeUpdate();
                 }
-                if(total == (rows + order.entries())){
+                if (total == (rows + order.entries())) {
                     conn.commit();
                     conn.setAutoCommit(true);
                     return true;
-                }
-                else{
+                } else {
                     conn.rollback();
                     conn.setAutoCommit(true);
                     return false;
@@ -147,4 +146,38 @@ public class OrderManager extends Manager implements OrderDao {
         }
     }
 
+    public int countAll() throws SQLException {
+        try (Connection conn = source.getConnection()) {
+            QueryBuilder queryBuilder = new QueryBuilder("ordine", "ord");
+            queryBuilder.count("allOrders");
+            try (PreparedStatement ps = conn.prepareStatement(queryBuilder.generateQuery())) {
+                ResultSet rs = ps.executeQuery();
+                if (rs.next())
+                    return rs.getInt(1);
+            }
+        }
+        return 0;
+    }
+
+    @Override
+    public double totalReveneus() throws SQLException {
+        double total = 0;
+        try (Connection conn = source.getConnection()) {
+            QueryBuilder queryBuilder = new QueryBuilder("ordine", "ord");
+            String query = queryBuilder.select().generateQuery();
+            System.out.println(query);
+            try (PreparedStatement ps = conn.prepareStatement(query)) {
+                ResultSet rs = ps.executeQuery();
+                OrderExtractor ex = new OrderExtractor();
+                ArrayList<Order> orders = new ArrayList<>();
+                while (rs.next()) {
+                    Order order = ex.extract(rs);
+                    orders.add(order);
+                }
+                for (Order order : orders)
+                    total += order.getTotal();
+                return total;
+            }
+        }
+    }
 }

@@ -94,7 +94,7 @@ public class QueryBuilder {
     }
 
     public QueryBuilder update(String... fields){
-        query.append("UPDATE ").append(table);
+        query.append("UPDATE ").append(table).append(" SET ");
         StringJoiner commaJoiner = new StringJoiner(",");
         for(String field : fields){
             commaJoiner.add(String.format("%s = %s",field,QM));

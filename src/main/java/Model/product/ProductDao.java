@@ -4,6 +4,7 @@ import Model.category.Category;
 import Model.search.Condition;
 import Model.search.Paginator;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -25,4 +26,6 @@ public interface ProductDao<E extends Exception>{
     List<Product> search(List <Condition> conditions) throws E;
 
     ArrayList<Category> fetchCategoriesByProducts() throws E;
+
+     int countAll() throws E;
 }

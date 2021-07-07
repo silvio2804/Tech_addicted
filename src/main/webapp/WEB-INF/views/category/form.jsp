@@ -7,15 +7,43 @@
     <%@include file="../partials/alert.jsp"%>
 </c:if>
 
-<form method="post"action="/TechAddicted/categories/${isCreate ? 'create': 'update'}">
+<!doctype html>
+<html>
+<head>
+    <jsp:include page="../partials/head.jsp">
+        <jsp:param name="param" value="Tech addicted home"/>
+        <jsp:param name="styles" value="crm,products"/>
+        <jsp:param name="scripts" value="crm,"/>
+    </jsp:include>
+    <style>
+        .product-form > * {
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+<main class="app">
+    <%@include file="../partials/crm/sidebar.jsp" %>
+    <section class="content grid-y">
+        <%@include file="../partials/crm/header.jsp" %>
+        <div class="body grid-x justify-center">
+
+
+<form method="post"action="/progetto_war_exploded/categories/${isCreate ? 'create': 'update'}">
     <c:if test="${not isCreate}">
-        <input type="hidden" name="id" value="${category.categoryId}">
+        <input type="hidden" name="categoryId" value="${category.categoryId}">
     </c:if>
     <fieldset class="grid-x cell category-form">
         <legend>${isCreate ? 'Crea' : 'Aggiorna'} Categoria</legend>
-        <label for="label" class="field cell w 40">
-            <input id="label" name="label" placeholder="Nome" type="text" value="${category.categoryName}">
+        <label for="categoryName" class="field cell w 40">
+            <input id="categoryName" name="categoryName" placeholder="Nome categoria" type="text" value="${category.categoryName}">
         </label>
         <button type="submit" class="cell w40 btn primary">${isCreate ? 'Crea' : 'Aggiorna'}</button>
     </fieldset>
 </form>
+        </div>
+        <%@include file="../partials/crm/footer.jsp" %>
+    </section>
+</main>
+</body>
+</html>

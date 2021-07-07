@@ -32,18 +32,18 @@
 
 <form method="post"action="/progetto_war_exploded/products/${isCreate ? 'create': 'update'}" enctype="multipart/form-data">
     <c:if test="${not isCreate}">
-        <input type="hidden" name="id" value="${product.productId}">
+        <input type="hidden" name="productId" value="${product.productId}">
     </c:if>
     <fieldset class="grid-y cell product-form">
         <legend>${isCreate ? 'Crea' : 'Aggiorna'} Prodotto</legend>
             <label for="name" class="field cell w50">
-                <input type="text" id="name" name="name" placeholder="Nome">
+                <input type="text" id="name" name="name" placeholder="Nome" value="${product.name}">
             </label>
             <label for="price" class="field cell w50">
-                <input type="text" id="price" name="price" placeholder="Prezzo">
+                <input type="text" id="price" name="price" placeholder="Prezzo" value="${product.price}">
             </label>
             <label for="description" class="field cell w50">
-                <input type="text" id="description" name="description" placeholder="Descrizione">
+                <input type="text" id="description" name="description" placeholder="Descrizione" value="${product.description}">
             </label>
             <label for="categoryId" class="field cell w50">
                     <select name="categoryId" id="categoryId">

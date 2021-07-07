@@ -9,6 +9,7 @@ import Model.storage.Manager;
 import Model.storage.QueryBuilder;
 import Model.account.Account;
 
+import javax.servlet.ServletOutputStream;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,7 +21,7 @@ import java.util.Optional;
 
 public class ProductManager extends Manager implements ProductDao<SQLException> {
 
-    protected ProductManager(DataSource source)throws SQLException{
+    public ProductManager(DataSource source)throws SQLException{
         super(source);
     }
 
@@ -48,7 +49,8 @@ public class ProductManager extends Manager implements ProductDao<SQLException> 
     public Optional<Product> fetchProduct(int id) throws SQLException {
         try (Connection conn = source.getConnection()) {
             QueryBuilder queryBuilder = new QueryBuilder("prodotto", "pro");
-            String query = queryBuilder.select().limit(true).generateQuery();
+            String query = queryBuilder.select().where("idProd=?").generateQuery();
+            System.out.println(query);
             try (PreparedStatement ps = conn.prepareStatement(query)) {
                 ps.setInt(1, id);
                 ResultSet rs = ps.executeQuery();
@@ -83,7 +85,7 @@ public class ProductManager extends Manager implements ProductDao<SQLException> 
     public boolean deleteProduct(int idProd) throws SQLException {
         try (Connection conn = source.getConnection()) {
             QueryBuilder queryBuilder = new QueryBuilder("prodotto", "pro");
-            queryBuilder.delete().where("id=?");
+            queryBuilder.delete().where("idProd=?");
             try (PreparedStatement ps = conn.prepareStatement(queryBuilder.generateQuery())) {
                 ps.setInt(1, idProd);
                 int updRet = ps.executeUpdate();
@@ -96,9 +98,15 @@ public class ProductManager extends Manager implements ProductDao<SQLException> 
     public boolean updateProduct(Product product) throws SQLException {
         try (Connection conn = source.getConnection()) {
             QueryBuilder queryBuilder = new QueryBuilder("prodotto", "pro");
-            queryBuilder.update("").where("id=?");
-            try (PreparedStatement ps = conn.prepareStatement(queryBuilder.generateQuery())) {
-                ps.setInt(1, product.getProductId());
+            String query = queryBuilder.update("nome","descrizione","immagine",
+                    "prezzo","idCategoria").where("idProd=?").generateQuery();
+            try (PreparedStatement ps = conn.prepareStatement(query)) {
+                ps.setString(1, product.getName());
+                ps.setString(2, product.getDescription());
+                ps.setString(3, product.getCover());
+                ps.setDouble(4, product.getPrice());
+                ps.setString(5, product.getCategory().getCategoryName());
+                ps.setInt(6, product.getProductId());
                 int updRet = ps.executeUpdate();
                 return updRet == 1;
             }
@@ -145,17 +153,12 @@ public class ProductManager extends Manager implements ProductDao<SQLException> 
         }
     }
 
-    /*select distinct categoria.idCat
-    from categoria
-    left join prodotto on (categoria.idCat = prodotto.idCategoria);*/
-
    public  ArrayList<Category> fetchCategoriesByProducts() throws SQLException {
        ArrayList<Category> categories = new ArrayList<>();
        try (Connection conn = source.getConnection()) {
            QueryBuilder queryBuilder = new QueryBuilder("categoria", "cat");
-           String query = queryBuilder.selectDistinct("idCat","nomeCategoria").outerJoin(true,"prodotto","pro").
+           String query = queryBuilder.selectDistinct("nomeCategoria","idCat").outerJoin(true,"prodotto","pro").
                    on("(cat.idCat = pro.idCategoria)").generateQuery();
-           System.out.println(query);
            try (PreparedStatement ps = conn.prepareStatement(query)) {
                ResultSet rs = ps.executeQuery();
                CategoryExtractor extractor = new CategoryExtractor();
@@ -167,4 +170,17 @@ public class ProductManager extends Manager implements ProductDao<SQLException> 
            }
        }
    }
+
+    public int countAll() throws SQLException{
+        try (Connection conn = source.getConnection()) {
+            QueryBuilder queryBuilder = new QueryBuilder("prodotto", "pro");
+            queryBuilder.count("allProducts");
+            try (PreparedStatement ps = conn.prepareStatement(queryBuilder.generateQuery())) {
+                ResultSet rs = ps.executeQuery();
+                if (rs.next())
+                    return rs.getInt(1);
+            }
+        }
+        return 0;
+    }
 }

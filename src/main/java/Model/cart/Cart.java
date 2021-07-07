@@ -15,11 +15,11 @@ public class Cart {
         return items;
     }
 
-    public String getIdCart() {
+    public int getIdCart() {
         return idCart;
     }
 
-    public void setIdCart(String idCart) {
+    public void setIdCart(int idCart) {
         this.idCart = idCart;
     }
 
@@ -54,12 +54,13 @@ public class Cart {
         }
         return totale;
     }
+
     public void addProdotto(Product product, int quantita) {
         CarItem item = new CarItem(product,quantita);
         items.add(item);
     }
 
-    private String idCart;
+    private int idCart;
     private ArrayList<Product> productList;
     private String datePurchase;
     private Account account;

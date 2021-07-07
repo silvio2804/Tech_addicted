@@ -11,6 +11,7 @@ public class DiscountFormExtractor implements FormExtractor<Discount> {
         if(update){
             discount.setDiscountId(Integer.parseInt(request.getParameter("discountId")));
         }
+        discount.setDiscountName(request.getParameter("discountName"));
         discount.setPercentage(Integer.parseInt(request.getParameter("percentage")));
         return discount;
     }

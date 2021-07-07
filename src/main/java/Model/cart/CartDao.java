@@ -1,4 +1,7 @@
 package Model.cart;
 
-public interface CartDao {
+import java.util.ArrayList;
+
+public interface CartDao <E extends Exception> {
+
 }

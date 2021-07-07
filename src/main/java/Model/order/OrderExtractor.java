@@ -2,11 +2,14 @@ package Model.order;
 
 import Model.account.Account;
 import Model.account.AccountManager;
+import Model.cart.CarItem;
+import Model.cart.Cart;
 import Model.storage.ResultSetExtractor;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class OrderExtractor implements ResultSetExtractor<Order> {
@@ -21,6 +24,9 @@ public class OrderExtractor implements ResultSetExtractor<Order> {
         Account account = new Account();
         account.setId(idAccount);
         order.setAccount(account);
+        Cart cart = new Cart(new ArrayList<CarItem>());
+        cart.setIdCart(rs.getInt(6));
+        order.setCarrello(cart);
         return order;
     }
 }

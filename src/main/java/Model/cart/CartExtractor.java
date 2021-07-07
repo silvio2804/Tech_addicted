@@ -1,4 +1,13 @@
 package Model.cart;
 
-public class CartExtractor {
+import Model.storage.ResultSetExtractor;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class CartExtractor implements ResultSetExtractor<Cart> {
+    @Override
+    public Cart extract(ResultSet rs) throws SQLException {
+        return  null;
+    }
 }

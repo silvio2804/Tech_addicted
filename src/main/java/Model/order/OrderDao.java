@@ -19,4 +19,8 @@ public interface OrderDao<E extends SQLException> {
     boolean updateOrder(Order order) throws E;
 
     ArrayList<Order> fethOrdersWithProduct(int id, Paginator paginator) throws E;
+
+    int countAll()throws E;
+
+    double totalReveneus()throws E;
 }

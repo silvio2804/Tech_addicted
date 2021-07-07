@@ -41,10 +41,10 @@ public class DiscountManager extends Manager implements DiscountDao {
     }
 
     @Override
-    public Optional<Discount> fetchDiscount(int id) throws Exception {
+    public Optional<Discount> fetchDiscount(int id) throws SQLException {
         try (Connection conn = source.getConnection()) {
             QueryBuilder queryBuilder = new QueryBuilder("sconto", "sco");
-            String query = queryBuilder.select().where("id=?").generateQuery();
+            String query = queryBuilder.select().where("idSconto=?").generateQuery();
             try (PreparedStatement ps = conn.prepareStatement(query)) {
                 ps.setInt(1, id);
                 ResultSet rs = ps.executeQuery();
@@ -61,10 +61,11 @@ public class DiscountManager extends Manager implements DiscountDao {
     public boolean createDiscount(Discount discount) throws SQLException {
         try (Connection conn = source.getConnection()) {
             QueryBuilder queryBuilder = new QueryBuilder("sconto","sco");
-            queryBuilder.insert("idSconto","percentuale");
+            queryBuilder.insert("idSconto","nomeSconto","percentuale");
             try (PreparedStatement ps = conn.prepareStatement(queryBuilder.generateQuery())) {
                 ps.setInt(1, discount.getDiscountId());
-                ps.setInt(2, discount.getPercentage());
+                ps.setString(2,discount.getDiscountName());
+                ps.setInt(3, discount.getPercentage());
                 int updRet = ps.executeUpdate();
                 return updRet == 1;
             }
@@ -74,8 +75,8 @@ public class DiscountManager extends Manager implements DiscountDao {
     @Override
     public boolean deleteDiscount(int idSconto) throws SQLException {
         try (Connection conn = source.getConnection()) {
-            QueryBuilder queryBuilder = new QueryBuilder("utente","ute");
-            queryBuilder.delete().where("id=?");
+            QueryBuilder queryBuilder = new QueryBuilder("sconto","sco");
+            queryBuilder.delete().where("idSconto=?");
             try (PreparedStatement ps = conn.prepareStatement(queryBuilder.generateQuery())) {
                 ps.setInt(1,idSconto);
                 int updRet = ps.executeUpdate();
@@ -87,10 +88,11 @@ public class DiscountManager extends Manager implements DiscountDao {
     @Override
     public boolean updateDiscount(Discount discount) throws SQLException {
         try (Connection conn = source.getConnection()) {
-            QueryBuilder queryBuilder = new QueryBuilder("utente","ute");
-            queryBuilder.update("percentuale").where("id=?");
+            QueryBuilder queryBuilder = new QueryBuilder("sconto","sco");
+            queryBuilder.update("nomeSconto","percentuale").where("idSconto=?");
             try (PreparedStatement ps = conn.prepareStatement(queryBuilder.generateQuery())) {
-                ps.setInt(1, discount.getPercentage());
+                ps.setString(1, discount.getDiscountName());
+                ps.setInt(2, discount.getPercentage());
                 int updRet = ps.executeUpdate();
                 return updRet == 1;
             }

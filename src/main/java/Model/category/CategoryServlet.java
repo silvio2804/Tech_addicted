@@ -1,9 +1,15 @@
 package Model.category;
 
+import Components.Alert;
+import Model.account.Account;
+import Model.account.AccountFormExtractor;
+import Model.account.AccountValidator;
 import Model.http.Controller;
 import Model.http.InvalidRequestException;
 import Model.http.RequestValidator;
 import Model.product.Product;
+import Model.product.ProductFormExtractor;
+import Model.product.ProductValidator;
 import Model.search.Paginator;
 import org.apache.tomcat.jdbc.pool.DataSource;
 
@@ -14,58 +20,105 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @WebServlet(name = "categoryServlet", value = "/categories/*")
 
-public class CategoryServlet extends Controller{
+public class CategoryServlet extends Controller {
 
     private CategoryManager categoryManager;
-    public void init()throws ServletException{
+
+    public void init() throws ServletException {
         try {
             categoryManager = new CategoryManager(source);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try{
+        try {
             String path = getPath(request);
-            switch (path){
+            switch (path) {
                 case "/": //mostra tutte le categorie
                     authorize(request.getSession());
-                    request.setAttribute("back",view("crm/home"));
+                    request.setAttribute("back", view("crm/home"));
                     ArrayList<Category> categories = categoryManager.fetchCategories(new Paginator(1, 30));
-                    request.setAttribute("categories",categories);
+                    request.setAttribute("categories", categories);
                     request.getRequestDispatcher(view("crm/manageCategory")).forward(request, response);
                     break;
                 case "/create":
-                    request.getRequestDispatcher(view("crm/category")).forward(request,response);
+                    authorize(request.getSession());
+                    request.getRequestDispatcher(view("category/form")).forward(request, response);
                     break;
                 case "/show":
-                    request.getRequestDispatcher(view("crm/product")).forward(request, response);
+                    int id = Integer.parseInt(request.getParameter("categoryId"));
+                    Optional<Category> category = categoryManager.fetchCategory(id);
+                    if(category.isPresent()){
+                        request.setAttribute("category",category.get());
+                        request.getRequestDispatcher(view("category/form")).forward(request, response);
+                    }
+                    else
+                        internalError();
                     break;
                 case "/search":
                     request.getRequestDispatcher(view("site/search")).forward(request, response);
                     break;
+
                 default:
                     notFound();
             }
+        } catch (SQLException t) {
+            t.printStackTrace();
+            log(t.getMessage());
+        } catch (InvalidRequestException ex) {
+            ex.printStackTrace();
+            log(ex.getMessage());
+            ex.handle(request, response);
         }
-     catch (SQLException t) {
-        t.printStackTrace();
-        log(t.getMessage());
-    } catch (InvalidRequestException ex) {
-        ex.printStackTrace();
-        log(ex.getMessage());
-        ex.handle(request, response);
-    }
-
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doGet(request,response);
+        try {
+            String path = (request.getPathInfo() != null) ? request.getPathInfo() : "null";
+            switch (path) {
+                case "/create":
+                    authorize(request.getSession(false));
+                    request.setAttribute("back",view("category/form"));
+                    validate(CategoryValidator.validateForm(request,false));
+                    Category category = new CategoryFormExtractor().extract(request,false);
+                    if(categoryManager.createCategory(category)) {
+                        request.setAttribute("alert",new Alert(List.of("Categoria creata !"),"success"));
+                        response.setStatus(HttpServletResponse.SC_CREATED);
+                        request.getRequestDispatcher(view("category/form")).forward(request, response);
+                    } else
+                        internalError();
+                    break;
+                case "/update":
+                    authorize(request.getSession(false));
+                    request.setAttribute("back", view("crm/manageCategory"));
+                    validate(CategoryValidator.validateForm(request,false));
+                    Category updateCategory = new CategoryFormExtractor().extract(request, true);
+                    if (categoryManager.updateCategory(updateCategory)) {
+                        request.setAttribute("category", updateCategory);
+                        request.setAttribute("alert", new Alert(List.of("categoria aggiornata !"), "success"));
+                        request.getRequestDispatcher(view("category/form")).forward(request, response);
+                    } else
+                        internalError();
+                    break;
+            }
+        }
+        catch (SQLException t) {
+            t.printStackTrace();
+            log(t.getMessage());
+        }
+        catch (InvalidRequestException ex) {
+            ex.printStackTrace();
+            log(ex.getMessage());
+            ex.handle(request, response);
+        }
     }
 }

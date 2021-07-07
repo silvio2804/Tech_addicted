@@ -2,7 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 
 <table class="table product-table">
-    <caption><a href=${pageContext.request.contextPath}/products/create> Lista Prodotti</a></caption>
+    <caption>Lista prodotti<a href=${pageContext.request.contextPath}/products/create class="btn primary"> Crea prodotto</a></caption>
     <thead>
     <tr>
         <th>Id</th>

@@ -1,7 +1,7 @@
 <%@ taglib prefix ="c" uri ="http://java.sun.com/jsp/jstl/core"%>
 
-<jsp:useBean id="category" class="Model.category.Category" scope="request"/>
-<c:set var="isCreate" value="${category.categoryId == 0}"/>
+<jsp:useBean id="discount" class="Model.discount.Discount" scope="request"/>
+<c:set var="isCreate" value="${discount.discountId == 0}"/>
 
 <c:if test="${not empty alert}">
     <%@include file="../partials/alert.jsp"%>
@@ -29,15 +29,20 @@
         <div class="body grid-x justify-center">
 
 
-<form method="post"action="/progetto_war_exploded/categories/${isCreate ? 'create': 'update'}">
+<form method="post"action="/progetto_war_exploded/discounts/${isCreate ? 'create': 'update'}">
     <c:if test="${not isCreate}">
-        <input type="hidden" name="categoryId" value="${category.categoryId}">
+        <input type="hidden" name="discountId" value="${discount.discountId}">
     </c:if>
     <fieldset class="grid-x cell category-form">
-        <legend>${isCreate ? 'Crea' : 'Aggiorna'} Categoria</legend>
-        <label for="categoryName" class="field cell w 40">
-            <input id="categoryName" name="categoryName" placeholder="Nome categoria" type="text" value="${category.categoryName}">
+        <legend >${isCreate ? 'Crea' : 'Aggiorna'} Sconto</legend>
+        <label for="discountName" class="field cell w 40">
+            <input id="discountName" name="discountName" placeholder="Nome sconto" type="text" value="${discount.discountName}">
         </label>
+
+        <label for="percentage" class="field cell w 40">
+            <input id="percentage" name="percentage" placeholder="Percentuale sconto" type="text" value="${discount.percentage}">
+        </label>
+
         <button type="submit" class="cell w40 btn primary">${isCreate ? 'Crea' : 'Aggiorna'}</button>
     </fieldset>
 </form>
