@@ -18,7 +18,7 @@ import java.util.Optional;
 
 public class CategoryManager extends Manager implements CategoryDao {
 
-    protected CategoryManager(DataSource source) throws SQLException {
+    public CategoryManager(DataSource source) throws SQLException {
         super(source);
     }
 

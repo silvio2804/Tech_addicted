@@ -2,7 +2,7 @@
     box-sizing: border-box
 }
 
-/* Slideshow container */
+
 .slideshow-container {
     max-width: 100%;
     position: relative;
@@ -10,12 +10,12 @@
     display: block;
 }
 
-/* Hide the images by default */
+
 .mySlides {
     display: none;
 }
 
-/* The dots/bullets/indicators */
+
 .dot {
     cursor: pointer;
     height: 15px;
@@ -31,7 +31,7 @@
     background-color: #717171;
 }
 
-/* Fading animation */
+
 .fade {
     -webkit-animation-name: fade;
     -webkit-animation-duration: 1.5s;
@@ -106,7 +106,8 @@ div > .btn {
 }
 
 .topbar > .account {
-    display: none;
+    display: inline-block;
+    position: relative;
 }
 
 .account-content {
@@ -126,6 +127,14 @@ div > .btn {
     color: var(--black);
     padding: 16px;
     display: block;
+}
+
+.leftside > img {
+    cursor: pointer;
+}
+
+.topbar svg {
+    cursor: pointer;
 }
 
 .account a {
@@ -205,10 +214,10 @@ div > .btn {
     padding: 3px;
 }
 
-@media screen and (min-width: 769px) {
-    .topbar > .account {
-        display: inline-block;
-        position: relative;
+@media screen and (max-width: 768px) {
+
+    #login, #account {
+        display: none;
     }
 }
 

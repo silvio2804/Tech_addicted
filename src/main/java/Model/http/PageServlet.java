@@ -1,8 +1,11 @@
 package Model.http;
 
 import Model.account.AccountManager;
+import Model.category.Category;
+import Model.category.CategoryManager;
 import Model.order.OrderManager;
 import Model.product.ProductManager;
+import Model.search.Paginator;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,6 +15,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 //servlet per le pagine utente
 @WebServlet(name = "pageServlet",value = "/pages/*")
