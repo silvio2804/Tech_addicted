@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
-//servlet per le pagine utente
+//navigazione sito lato admin
 @WebServlet(name = "pageServlet",value = "/pages/*")
 public class PageServlet extends Controller {
 

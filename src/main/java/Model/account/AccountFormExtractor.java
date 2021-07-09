@@ -4,6 +4,8 @@ import Model.storage.FormExtractor;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 
 public class AccountFormExtractor implements FormExtractor<Account> {
@@ -16,14 +18,12 @@ public class AccountFormExtractor implements FormExtractor<Account> {
         }
         formAccount.setName(request.getParameter("name"));
         formAccount.setLastName(request.getParameter("lastName"));
-        //formAccount.setDate();
-        Date date = (Date)  request.getAttribute("date");
-
+        formAccount.setDate(LocalDate.parse(request.getParameter("dataNa")));
         formAccount.setEmail(request.getParameter("email"));
         formAccount.setStreet(request.getParameter("street"));
-        formAccount.setHouseNumber(Integer.parseInt("houseNumber"));
+        formAccount.setHouseNumber(Integer.parseInt(request.getParameter("houseNumber")));
         formAccount.setCity(request.getParameter("city"));
-        formAccount.setGender("gender");
+        formAccount.setGender(request.getParameter("gender"));
         return formAccount;
     }
 }

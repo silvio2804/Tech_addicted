@@ -9,8 +9,9 @@ public class OrderValidator {
     static RequestValidator validateForm(HttpServletRequest request, boolean update){
         RequestValidator validator = new RequestValidator(request);
         validator.assertMatch("categoryName", Pattern.compile("^\\w{4,20}$"),"Il nome deve avere lunghezza tra 4 e 20 caratteri");
+        validator.assertMatch("payment",Pattern.compile("^\\w{4,20}$"),"pagamento deve avere lunghezza tra 4 e 20 caratteri");
         if(update){
-            validator.assertInt("id","Id deve essere un numero intero");
+            validator.assertInt("orderId","Id deve essere un numero intero");
         }
         return validator;
     }

@@ -27,7 +27,7 @@
 }
 
 :root {
-    font-family: 'Quattrocento', sans-serif;
+    font-family: 'Roboto Thin', sans-serif;
     font-style: normal;
     font-weight: normal;
     font-size: clamp(16px, 2vw, 24px);
@@ -87,6 +87,10 @@ input:focus, textarea:focus, select:focus {
     align-items: center;
 }
 
+.align-left {
+    align-items: flex-start;
+}
+
 .cell {
     flex-basis: 100%;
 }
@@ -114,6 +118,8 @@ input:focus, textarea:focus, select:focus {
 button.primary {
     background-color: var(--primary);
     color: var(--white);
+    border-radius: 15px;
+    flex-basis: 20%;
 }
 
 button.primary:hover {
@@ -208,27 +214,27 @@ button.primary:hover {
         content: "";
         float: none;
     }
+}
 
-    .notification {
-        position: relative;
-        color: var(--white);
-        border-radius: 10px;
-        padding: .2rem;
-        margin-bottom: .2rem;
-    }
+.notification {
+    position: relative;
+    color: var(--white);
+    border-radius: 10px;
+    padding: .2rem;
+    margin-bottom: .2rem;
+}
 
-    .notification.success {
-        background-color: var(--success);
-    }
+.notification.success {
+    background-color: var(--success);
+}
 
-    .notification.danger {
-        background-color: var(--error);
-    }
+.notification.danger {
+    background-color: var(--error);
+}
 
-    .notification.close {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        fill: var(--white);
-    }
+.notification.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    fill: var(--white);
 }

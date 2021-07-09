@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
-
+//navigazione pagine del sito lato customer
 @WebServlet(name = "SiteServlet",value ="/site/*")
 public class SiteServlet extends Controller {
 

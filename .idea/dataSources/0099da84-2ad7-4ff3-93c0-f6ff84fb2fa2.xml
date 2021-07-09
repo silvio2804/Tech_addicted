@@ -1240,10 +1240,19 @@ idTag</ColNames>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <key id="361" parent="299" name="PRIMARY">
+    <index id="361" parent="299" name="utente_email_uindex">
+      <ColNames>email</ColNames>
+      <Unique>1</Unique>
+      <Type>btree</Type>
+    </index>
+    <key id="362" parent="299" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>idUte</ColNames>
       <Primary>1</Primary>
+    </key>
+    <key id="363" parent="299" name="utente_email_uindex">
+      <ColNames>email</ColNames>
+      <UnderlyingIndexName>utente_email_uindex</UnderlyingIndexName>
     </key>
   </database-model>
 </dataSource>

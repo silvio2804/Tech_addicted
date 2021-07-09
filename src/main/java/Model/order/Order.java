@@ -86,6 +86,4 @@ public class Order {
     private Date orderDate;
     private Account account;
     private Cart cart;
-
-
 }

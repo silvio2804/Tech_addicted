@@ -1,7 +1,6 @@
 package Model.account;
 
 import Components.Alert;
-import Model.http.CommonValidator;
 import Model.http.Controller;
 import Model.http.InvalidRequestException;
 import Model.search.Paginator;
@@ -54,6 +53,9 @@ public class AccountServlet extends Controller {
                     user.setEmail(request.getParameter("email"));
                     user.setPassword("password");
                     break;
+                case "/signup":
+                    request.getRequestDispatcher(view("site/signup")).forward(request,response);
+                    break;
                 case "/logout": //logout utente admin e non
                     HttpSession session = request.getSession(false);
                     authenticate(session);
@@ -67,8 +69,18 @@ public class AccountServlet extends Controller {
                     request.getRequestDispatcher(view("crm/secret")).forward(request, response);
                     break;
                 case "/create":
+                    authorize(request.getSession());
+                    request.getRequestDispatcher(view("account/form")).forward(request, response);
                     break;
                 case "/show":
+                    int idShowed = Integer.parseInt(request.getParameter("id"));
+                    Optional<Account> accountShowed = accountManager.fetchAccount(idShowed);
+                    if(accountShowed.isPresent()){
+                        request.setAttribute("accountShowed",accountShowed.get());
+                        request.getRequestDispatcher(view("account/form")).forward(request, response);
+                    }
+                    else
+                        internalError();
                     break;
                 case "/profile":
                     AccountSession account = getSessionAccount(request.getSession(false));
@@ -137,13 +149,13 @@ public class AccountServlet extends Controller {
                     break;
                 case "/create":
                     authorize(request.getSession(false));
-                    request.setAttribute("back", view("crm/account"));
+                    request.setAttribute("back", view("crm/dashboard"));
                     validate(AccountValidator.validateForm(request, false));
                     Account account = new AccountFormExtractor().extract(request, false);
                     account.setPassword(request.getParameter("password"));
                     if (accountManager.createAccount(account)) {
                         request.setAttribute("alert", new Alert(List.of("Account creato!"), "success"));
-                        request.getRequestDispatcher(view("crm/account")).forward(request, response);
+                        request.getRequestDispatcher(view("account/form")).forward(request, response);
                     } else
                         internalError();
                     break;
@@ -155,7 +167,7 @@ public class AccountServlet extends Controller {
                 if(accountManager.updateAccount(updateAccount)){
                     request.setAttribute("account",updateAccount);
                     request.setAttribute("alert",new Alert(List.of("Account aggiornato !"),"success"));
-                    request.getRequestDispatcher(view("crm/")).forward(request,response);
+                    request.getRequestDispatcher(view("account/form")).forward(request,response);
                 }
                 else
                     internalError();

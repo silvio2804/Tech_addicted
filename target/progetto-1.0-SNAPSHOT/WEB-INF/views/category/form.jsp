@@ -12,7 +12,7 @@
 <head>
     <jsp:include page="../partials/head.jsp">
         <jsp:param name="param" value="Tech addicted home"/>
-        <jsp:param name="styles" value="crm,products"/>
+        <jsp:param name="styles" value="crm,crmTable"/>
         <jsp:param name="scripts" value="crm,"/>
     </jsp:include>
     <style>
@@ -26,9 +26,8 @@
     <%@include file="../partials/crm/sidebar.jsp" %>
     <section class="content grid-y">
         <%@include file="../partials/crm/header.jsp" %>
+
         <div class="body grid-x justify-center">
-
-
 <form method="post"action="/progetto_war_exploded/categories/${isCreate ? 'create': 'update'}">
     <c:if test="${not isCreate}">
         <input type="hidden" name="categoryId" value="${category.categoryId}">
@@ -42,8 +41,8 @@
     </fieldset>
 </form>
         </div>
-        <%@include file="../partials/crm/footer.jsp" %>
     </section>
 </main>
+<%@include file="../partials/crm/footer.jsp" %>
 </body>
 </html>

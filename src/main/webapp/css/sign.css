@@ -1,0 +1,33 @@
+*{
+    font-family: "Rockwell";
+}
+.app {
+    background: linear-gradient(var(--primary), var(--white));
+}
+.login {
+    padding: 1rem;
+    background-color: var(--white);
+    border-radius: 10px;
+}
+.login > * {
+    margin: 10px;
+}
+label input{
+    border-style: none none solid none;
+    border-bottom-width: 2px;
+    box-shadow: none;
+}
+a {
+    text-decoration: none;
+    font-size: medium;
+}
+
+.backImage {
+    background-image: url("/progetto_war_exploded/images/logo.png");
+    background-position: center;
+    background-repeat: no-repeat;
+}
+span > h2{
+    text-align: left;
+    margin-bottom: 5px;
+}

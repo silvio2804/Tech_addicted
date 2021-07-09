@@ -9,7 +9,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Account {
 
@@ -41,11 +40,11 @@ public class Account {
         this.id = id;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
@@ -159,7 +158,7 @@ public class Account {
     private String name;
     private String lastName;
     private int id;
-    private Date date;
+    private LocalDate date;
     private String email;
     private String street;
     private int houseNumber;

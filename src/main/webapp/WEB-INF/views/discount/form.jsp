@@ -12,11 +12,11 @@
 <head>
     <jsp:include page="../partials/head.jsp">
         <jsp:param name="param" value="Tech addicted home"/>
-        <jsp:param name="styles" value="crm,products"/>
+        <jsp:param name="styles" value="crm,crmTable"/>
         <jsp:param name="scripts" value="crm,"/>
     </jsp:include>
     <style>
-        .product-form > * {
+        .discount-form > * {
             margin-bottom: 1rem;
         }
     </style>
@@ -33,7 +33,7 @@
     <c:if test="${not isCreate}">
         <input type="hidden" name="discountId" value="${discount.discountId}">
     </c:if>
-    <fieldset class="grid-x cell category-form">
+    <fieldset class="grid-x cell discount-form">
         <legend >${isCreate ? 'Crea' : 'Aggiorna'} Sconto</legend>
         <label for="discountName" class="field cell w 40">
             <input id="discountName" name="discountName" placeholder="Nome sconto" type="text" value="${discount.discountName}">
@@ -47,8 +47,8 @@
     </fieldset>
 </form>
         </div>
-        <%@include file="../partials/crm/footer.jsp" %>
     </section>
 </main>
+<%@include file="../partials/crm/footer.jsp" %>
 </body>
 </html>
