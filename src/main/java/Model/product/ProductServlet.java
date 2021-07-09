@@ -30,6 +30,7 @@ public class ProductServlet extends Controller implements ErrorHandler {
 
     private ProductManager productManager;
     private ArrayList<Category> categories;
+    private CategoryManager categoryManager;
 
     public void init() throws ServletException {
         super.init();
@@ -75,6 +76,19 @@ public class ProductServlet extends Controller implements ErrorHandler {
                     break;
                 case "/advancedSearch":
                     request.getRequestDispatcher(view("site/search")).forward(request, response);
+                    break;
+                case "/searchByCat":
+                    int idCat = Integer.parseInt(request.getParameter("categoryId"));
+                    Optional<Category> category = categoryManager.fetchCategory(idCat);
+                    if (category.isPresent()){
+                        ArrayList<Product> prod = productManager.fetchProductsByCategory(category.get());
+                        request.setAttribute("products", prod);
+                        request.getRequestDispatcher(view("site/search")).forward(request, response);
+                    }
+                    else notFound();
+
+
+
                     break;
                 default:
                     notFound();

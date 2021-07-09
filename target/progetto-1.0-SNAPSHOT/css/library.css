@@ -1,33 +1,33 @@
 @font-face {
-    font-family:'Quattrocento';
+    font-family: 'Quattrocento';
     font-weight: normal;
     font-style: italic;
     src: url("../fonts/QuattrocentoSans-BoldItalic.otf");
 }
 
 @font-face {
-    font-family:'Quattrocento' ;
+    font-family: 'Quattrocento' ;
     font-weight: bold;
     font-style: normal;
     src: url("../fonts/QuattrocentoSans-Bold.otf");
 }
 
 @font-face {
-    font-family:'Quattrocento' ;
+    font-family: 'Quattrocento' ;
     font-weight: normal;
     font-style: italic;
     src: url("../fonts/QuattrocentoSans-Italic.otf");
 }
 
 @font-face {
-    font-family:'Quattrocento' ;
+    font-family: 'Quattrocento' ;
     font-weight: normal;
     font-style: normal;
     src: url("../fonts/QuattrocentoSans-Regular.otf");
 }
 
 :root {
-    font-family: 'Roboto Thin', sans-serif;
+    font-family: 'Quattrocento', sans-serif;
     font-style: normal;
     font-weight: normal;
     font-size: clamp(16px, 2vw, 24px);
@@ -47,7 +47,7 @@ input, select, textarea {
     color: var(--black);
     border-style: solid;
     border-radius: 0;
-    box-shadow: 0 0 10px rgba(212,212,212,.54);
+    box-shadow: 0 0 10px rgba(212, 212, 212, .54);
 
 }
 
@@ -87,10 +87,6 @@ input:focus, textarea:focus, select:focus {
     align-items: center;
 }
 
-.align-left {
-    align-items: flex-start;
-}
-
 .cell {
     flex-basis: 100%;
 }
@@ -118,8 +114,6 @@ input:focus, textarea:focus, select:focus {
 button.primary {
     background-color: var(--primary);
     color: var(--white);
-    border-radius: 15px;
-    flex-basis: 20%;
 }
 
 button.primary:hover {
@@ -163,7 +157,7 @@ button.primary:hover {
     text-decoration: none;
 }
 
-@media screen and (min-width:769px) {
+@media screen and (min-width: 769px) {
 
     .w10 {
         flex-basis: 10%;
@@ -214,27 +208,47 @@ button.primary:hover {
         content: "";
         float: none;
     }
+
+    .notification {
+        position: relative;
+        color: var(--white);
+        border-radius: 10px;
+        padding: .2rem;
+        margin-bottom: .2rem;
+    }
+
+    .notification.success {
+        background-color: var(--success);
+    }
+
+    .notification.danger {
+        background-color: var(--error);
+    }
+
+    .notification.close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        fill: var(--white);
+    }
 }
 
-.notification {
+input {
+    height: 42px;
+}
+
+.body > .proimg {
+    align-items: center;
+    background-color: transparent;
+    max-height: 600px;
+    display: none;
+    box-shadow: none;
+    margin: 40px 20px 20px;
+}
+
+.body > .profile {
+    padding: 20px;
     position: relative;
-    color: var(--white);
-    border-radius: 10px;
-    padding: .2rem;
-    margin-bottom: .2rem;
-}
-
-.notification.success {
-    background-color: var(--success);
-}
-
-.notification.danger {
-    background-color: var(--error);
-}
-
-.notification.close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    fill: var(--white);
+    transform: translate3d(40px, 0px, 0px);
+    margin-top: 40px;
 }

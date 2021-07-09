@@ -1,4 +1,4 @@
-.app{
+.app {
     display: flex;
     flex-flow: row nowrap;
 }
@@ -13,6 +13,7 @@
     color: var(--white);
     padding: 1rem;
 }
+
 .menu > img {
     cursor: pointer;
 }
@@ -66,5 +67,18 @@
 @media screen and (min-width: 769px) {
     .topbar > .account {
         display: block;
+    }
+
+    .body > .proimg {
+        display: flex;
+    }
+}
+
+@media screen and (max-width: 768px) {
+
+    #profileform * {
+        flex-basis: 80%;
+        align-items: center;
+        margin: 6px;
     }
 }

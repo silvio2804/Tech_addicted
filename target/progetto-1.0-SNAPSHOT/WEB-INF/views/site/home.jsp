@@ -4,12 +4,12 @@
     <jsp:include page="../partials/head.jsp">
         <jsp:param name="title" value="Benvenuti in Tech Addicted"/>
         <jsp:param name="styles" value="site"/>
-        <jsp:param name="scripts" value="site, slide"/>
+        <jsp:param name="scripts" value="site,slide"/>
     </jsp:include>
 </head>
 <body>
 <%@include file="../partials/site/header.jsp" %>
-<main class=" grid-y">
+<main class="app grid-y">
     <section class="grid-y">
 
         <div class="slideshow-container align-center">

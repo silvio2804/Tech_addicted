@@ -14,30 +14,33 @@
 <main class="app">
     <%@include file="../partials/crm/sidebar.jsp" %>
     <section class="content grid-y">
-        <%@include file="../partials/crm/header.jsp"%>
+        <%@include file="../partials/crm/header.jsp" %>
 
-        <%@include file="../../../icons/user.svg"%>
-        <div class="body grid-x justify-center">
-        <div class="body grid-y justify-center">
-            <label for="id utente">id utente: </label> <br>
-            <input type="text" readonly id="id utente" value="<%=profileAccount.get().getId()%>"> <br>
 
-            <label for="nome">nome:</label> <br>
-            <input type="text" readonly id="nome" value="<%=profileAccount.get().getName()%>"> <br>
+        <div class="body grid-x align-center">
+            <div class="proimg">
+                <div style="align-items: center"> <img src="../images/profile.png" width="250" height="270"></div></div>
+            <div class="grid-y justify-center profile" id="profileform">
+                <label for="id utente">id utente: </label> <br>
+                <input type="text" readonly id="id utente" value="<%=profileAccount.get().getId()%>"> <br>
 
-            <label for="cognome">cognome:  </label> <br>
-            <input type="text" readonly id="cognome" value="<%=profileAccount.get().getLastName()%>"> <br>
+                <label for="nome">nome:</label> <br>
+                <input type="text" readonly id="nome" value="<%=profileAccount.get().getName()%>"> <br>
 
-            <label for="email">email:  </label> <br>
-            <input type="text" readonly id="email" value="<%=profileAccount.get().getEmail()%>"> <br>
+                <label for="cognome">cognome: </label> <br>
+                <input type="text" readonly id="cognome" value="<%=profileAccount.get().getLastName()%>"> <br>
 
-            <label for="sesso">sesso:  </label> <br>
-            <input type="text" readonly id="sesso" value="<%=profileAccount.get().getGender()%>"> <br>
+                <label for="email">email: </label> <br>
+                <input type="text" readonly id="email" value="<%=profileAccount.get().getEmail()%>"> <br>
+
+                <label for="sesso">sesso: </label> <br>
+                <input type="text" readonly id="sesso" value="<%=profileAccount.get().getGender()%>"> <br>
+            </div>
         </div>
-    </div>
-        <%@include file="../partials/site/footer.jsp"%>
+
     </section>
 </main>
+<%@include file="../partials/crm/footer.jsp" %>
 </body>
 </html>
 
