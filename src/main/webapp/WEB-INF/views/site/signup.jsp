@@ -3,35 +3,44 @@
 <html lang="it" dir="ltr">
 
 <body>
-<div class="backImage"></div>
-
-<main class="app">
-
 <jsp:include page="../partials/head.jsp">
     <jsp:param name="title" value="Singup"/>
     <jsp:param name="styles" value="sign"/>
 </jsp:include>
 
+<main class="app">
+<form class="app grid-x justify-center align-center" action="/progetto_war_exploded/accounts/signup" method="post">
 
-<form class="app grid-x justify-center align-center" action="/progetto_war_exploded/site/home" method="post"> <!-- qui chiama la servlet crm in http/crm/dashboard!-->
     <fieldset class="grid-y cell w33 login">
 
         <span style="text-align: center; margin: 0px"><h2 >Registrazione</h2></span>
+
+        <label for="name" class="field cell w33">
+            <input id="name" name="name" placeholder="Nome" type="text" required>
+        </label>
+
+        <label for="lastName" class="field cell w33">
+            <input id="lastName" name="lastName" placeholder="Cognome" type="text" required>
+        </label>
+
+        <label for="dataNa" class="field cell w33">
+            <input id="dataNa" name="dataNa" placeholder="Data nascita" type="date" required>
+        </label>
 
         <label for="email" class="field cell w33">
             <input id="email" name="email" placeholder="Email" type="email">
         </label>
 
-        <label for="emailCheck" class="field cell w 40">
+        <label for="emailCheck" class="field cell w33">
             <input id="emailCheck" name="emailCheck" placeholder="Conferma email" type="email">
         </label>
 
         <label for="password" class="field cell w33" >
-            <input id="password" name="password" placeholder="password" type="text">
+            <input id="password" name="password" type="password" placeholder="password" type="text" required>
         </label>
 
         <label for="passwordCheck" class="field cell w33" >
-            <input id="passwordCheck" name="passwordCheck" placeholder="Conferma password" type="text">
+            <input id="passwordCheck" name="passwordCheck" type="password" placeholder="Conferma password" type="text" required>
         </label>
 
         <button type="submit" class="cell w33 btn primary">Registrati</button>
@@ -39,6 +48,6 @@
     </fieldset>
 </form>
 </main>
+
 </body>
-<%@include file="../partials/crm/footer.jsp" %>
 </html>

@@ -4,8 +4,8 @@
 <html>
 <head>
     <jsp:include page="../partials/head.jsp">
-        <jsp:param name="param" value="Tech addicted home"/>
-        <jsp:param name="styles" value="crm,crmTable"/>
+        <jsp:param name="param" value="Gestione categorie"/>
+        <jsp:param name="styles" value="crm,dashboard,crmTable"/>
         <jsp:param name="scripts" value="crm"/>
     </jsp:include>
 </head>
@@ -18,12 +18,13 @@
             <section class="grid-y cell ">
                 <%@include file="../category/table.jsp"%>
                 <jsp:include page="../partials/paginator.jsp">
-                    <jsp:param name="categories" value="categories"/>
+                    <jsp:param name="resource" value="categories"/>
                 </jsp:include>
             </section>
         </div>
         <%@include file="../partials/crm/footer.jsp" %>
     </section>
 </main>
+<%@include file="../partials/crm/footer.jsp" %>
 </body>
 </html>

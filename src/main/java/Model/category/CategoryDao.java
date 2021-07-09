@@ -23,4 +23,6 @@ public interface CategoryDao<E extends Exception>{
 
     Optional<Category> fetchProductWithCategory(int catId) throws E;
 
+    int countAll() throws E;
+
     }

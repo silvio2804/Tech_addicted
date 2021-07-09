@@ -37,7 +37,10 @@ public class OrderServlet extends Controller {
                 case "/":
                     authorize(request.getSession());
                     request.setAttribute("back",view("crm/home"));
-                    ArrayList<Order> orders = orderManager.fetchOrders(new Paginator(1,30));
+                    Paginator paginator = new Paginator(1, 5);
+                    int size = orderManager.countAll();
+                    request.setAttribute("pages", paginator.getPages(size));
+                    ArrayList<Order> orders = orderManager.fetchOrders(paginator);
                     request.setAttribute("orders",orders);
                     request.getRequestDispatcher(view("crm/manageOrder")).forward(request, response);
                     break;
@@ -46,7 +49,7 @@ public class OrderServlet extends Controller {
                     request.getRequestDispatcher(view("category/form")).forward(request, response);
                     break;
                 case "/show":
-                    int id = Integer.parseInt(request.getParameter("categoryId"));
+                    int id = Integer.parseInt(request.getParameter("id"));
                     Optional<Order> order = orderManager.fetchOrder(id);
                     if(order.isPresent()){
                         request.setAttribute("order",order.get());

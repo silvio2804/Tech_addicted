@@ -208,29 +208,29 @@ button.primary:hover {
         content: "";
         float: none;
     }
+}
 
-    .notification {
-        position: relative;
-        color: var(--white);
-        border-radius: 10px;
-        padding: .2rem;
-        margin-bottom: .2rem;
-    }
+.notification {
+    position: relative;
+    color: var(--white);
+    border-radius: 10px;
+    padding: .2rem;
+    margin-bottom: .2rem;
+}
 
-    .notification.success {
-        background-color: var(--success);
-    }
+.notification.success {
+    background-color: var(--success);
+}
 
-    .notification.danger {
-        background-color: var(--error);
-    }
+.notification.danger {
+    background-color: var(--error);
+}
 
-    .notification.close {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        fill: var(--white);
-    }
+.notification.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    fill: var(--white);
 }
 
 input {

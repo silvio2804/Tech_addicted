@@ -16,6 +16,10 @@ public class Account {
         super();
     }
 
+    public Account(String email){
+        this.email = email;
+    }
+
     public String getName() {
         return name;
     }

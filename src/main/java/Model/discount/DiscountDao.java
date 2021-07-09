@@ -16,4 +16,6 @@ public interface DiscountDao<E extends Exception>{
     boolean deleteDiscount(int idSconto) throws E;
 
     boolean updateDiscount(Discount discount) throws E;
+
+    int countAll() throws E;
 }

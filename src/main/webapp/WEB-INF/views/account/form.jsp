@@ -93,6 +93,5 @@
         </div>
     </section>
 </main>
-<%@include file="../partials/crm/footer.jsp" %>
 </body>
 </html>

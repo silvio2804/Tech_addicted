@@ -147,5 +147,19 @@ public class CategoryManager extends Manager implements CategoryDao {
         }
     }
 
+    @Override
+    public int countAll() throws SQLException {
+        try (Connection conn = source.getConnection()) {
+            QueryBuilder queryBuilder = new QueryBuilder("categoria", "cat");
+            queryBuilder.count("allCategories");
+            try (PreparedStatement ps = conn.prepareStatement(queryBuilder.generateQuery())) {
+                ResultSet rs = ps.executeQuery();
+                if (rs.next())
+                    return rs.getInt(1);
+            }
+        }
+        return 0;
+    }
+
 
 }

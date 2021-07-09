@@ -110,14 +110,13 @@ public class AccountManager extends Manager implements AccountDao {
     }
 
     @Override
-    public Optional<Account> findAccount(String email, String password, boolean admin) throws SQLException {
+    public Optional<Account> findAccount(String email, String password) throws SQLException {
         try (Connection conn = source.getConnection()) {
             QueryBuilder queryBuilder = new QueryBuilder("utente", "ute");
-            queryBuilder.select().where("email=?").andCondition("passw=?").andCondition("adm=?");
+            queryBuilder.select().where("email=?").andCondition("passw=?");
             try (PreparedStatement ps = conn.prepareStatement(queryBuilder.generateQuery())) {
                 ps.setString(1, email);
                 ps.setString(2, password);
-                ps.setBoolean(3, admin);
                 ResultSet rs = ps.executeQuery();
                 Account account = null;
                 if (rs.next())

@@ -1204,7 +1204,6 @@ idTag</ColNames>
     <column id="353" parent="299" name="dataNascita">
       <Position>4</Position>
       <DataType>date|0s</DataType>
-      <NotNull>1</NotNull>
     </column>
     <column id="354" parent="299" name="email">
       <Position>5</Position>
@@ -1228,17 +1227,14 @@ idTag</ColNames>
     <column id="358" parent="299" name="citta">
       <Position>9</Position>
       <DataType>varchar(30)|0s</DataType>
-      <NotNull>1</NotNull>
     </column>
     <column id="359" parent="299" name="via">
       <Position>10</Position>
       <DataType>varchar(30)|0s</DataType>
-      <NotNull>1</NotNull>
     </column>
     <column id="360" parent="299" name="numeroCivico">
       <Position>11</Position>
       <DataType>int|0s</DataType>
-      <NotNull>1</NotNull>
     </column>
     <index id="361" parent="299" name="utente_email_uindex">
       <ColNames>email</ColNames>

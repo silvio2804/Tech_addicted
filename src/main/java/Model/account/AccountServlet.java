@@ -18,6 +18,8 @@ import java.util.Optional;
 
 public class AccountServlet extends Controller {
 
+    private AccountManager accountManager;
+
     public void init() throws ServletException {
         super.init();
         try {
@@ -37,21 +39,12 @@ public class AccountServlet extends Controller {
                     request.setAttribute("back", view("crm/accounts"));
                     //validate(CommonValidator.validatePage(request));
                     //int page = parsePage(request);
-                    Paginator paginator = new Paginator(1, 50);
+                    Paginator paginator = new Paginator(1, 5);
                     int size = accountManager.countAll();
                     request.setAttribute("pages", paginator.getPages(size));
                     List<Account> accounts = accountManager.fetchAccounts(paginator);
                     request.setAttribute("accounts", accounts);
                     request.getRequestDispatcher(view("crm/manageAccount")).forward(request, response);
-                    break;
-                case "/signin": //registrazione pagina
-                    //operazioni di accesso e reindirizzamento alla homePage --> home.jsp
-                    authorize(request.getSession());
-                    request.setAttribute("back", view("home qualcosa"));
-                    validate(AccountValidator.validateSignin(request));
-                    Account user = new Account();
-                    user.setEmail(request.getParameter("email"));
-                    user.setPassword("password");
                     break;
                 case "/signup":
                     request.getRequestDispatcher(view("site/signup")).forward(request,response);
@@ -60,13 +53,13 @@ public class AccountServlet extends Controller {
                     HttpSession session = request.getSession(false);
                     authenticate(session);
                     AccountSession accountSession = getSessionAccount(session);
-                    String redirect = accountSession.isAdmin() ? "/progetto_war_exploded/accounts/secret" : "/progetto_war_exploded/accounts/signin";
+                    String redirect = accountSession.isAdmin() ? "/progetto_war_exploded/accounts/signin" : "/progetto_war_exploded/site/home";
                     session.removeAttribute("accountSession");
                     session.invalidate();
                     response.sendRedirect(redirect);
                     break;
-                case "/secret": //pannello admin
-                    request.getRequestDispatcher(view("crm/secret")).forward(request, response);
+                case "/signin":
+                    request.getRequestDispatcher(view("site/signin")).forward(request, response);
                     break;
                 case "/create":
                     authorize(request.getSession());
@@ -97,7 +90,7 @@ public class AccountServlet extends Controller {
                 default:
                     notFound();
             }
-        } catch (SQLException | InvalidRequestException | NoSuchAlgorithmException t) {
+        } catch (SQLException | InvalidRequestException t) {
             t.printStackTrace();
         }
     }
@@ -107,7 +100,7 @@ public class AccountServlet extends Controller {
         try {
             String path = (request.getPathInfo() != null) ? request.getPathInfo() : "null";
             switch (path) {
-                case "/secret": //login admin (ricerca nel db)
+                /*case "/secret": //login admin (ricerca nel db)
                     request.setAttribute("back", view("crm/secret"));
                     validate(AccountValidator.validateSignin(request));
                     Account tmp = new Account();
@@ -123,26 +116,36 @@ public class AccountServlet extends Controller {
                     } else
                         throw new InvalidRequestException("Credenziali non valide",
                                 List.of("Credenziali non valide"), HttpServletResponse.SC_BAD_REQUEST);
-                    break;
+                    break;*/
                 case "/signup": //registrazione cliente
-                    validate(AccountValidator.validateForm(request, false));
-                    Account customer = new AccountFormExtractor().extract(request, false);
-                    if (accountManager.createAccount(customer))
-                        response.sendRedirect("./accounts/signin");
-                    else
-                        internalError();
+                    Account registerAccount = new RegisterAccountExtractor().extract(request,false);
+                    registerAccount.setPassword(request.getParameter("password"));
+                    Optional<Account> accountOpt= accountManager.findAccount(registerAccount.getEmail(), registerAccount.getPassword());
+                    if (!accountOpt.isPresent()) {
+                        accountManager.createAccount(registerAccount);
+                        System.out.println("account creatoo");
+                        response.sendRedirect("../site/home");
+                    }
+                    else{
+                        throw new InvalidRequestException("Email già presente",List.of("Credenziali non valide"),
+                                HttpServletResponse.SC_BAD_REQUEST);
+                    }
                     break;
-                case "/signin": //login utente
+                case "/signin": //login unificato
                     request.setAttribute("back", view("site/signin"));
                     validate(AccountValidator.validateSignin(request));
                     Account tmpCustomer = new Account();
                     tmpCustomer.setEmail(request.getParameter("email"));
                     tmpCustomer.setPassword(request.getParameter("password"));
-                    Optional<Account> optCustomer = accountManager.findAccount(tmpCustomer.getEmail(), tmpCustomer.getPassword(), false);
+                    System.out.println(tmpCustomer);
+                    Integer accounts = accountManager.countAll();
+                    request.setAttribute("accounts",accounts);
+                    Optional<Account> optCustomer = accountManager.findAccount(tmpCustomer.getEmail(), tmpCustomer.getPassword());
                     if (optCustomer.isPresent()) {
                         AccountSession accountSession = new AccountSession(optCustomer.get());
+                        String red = accountSession.isAdmin() ? "../pages/dashboard" :"../site/home";
                         request.getSession(true).setAttribute("accountSession", accountSession);
-                        response.sendRedirect("./site/home");
+                        response.sendRedirect(red);
                     } else
                         throw new InvalidRequestException("Credenziali non valide!",
                                 List.of("Credenziali non valide"), HttpServletResponse.SC_BAD_REQUEST);
@@ -188,6 +191,4 @@ public class AccountServlet extends Controller {
             ex.handle(request, response);
         }
     }
-
-    private AccountManager accountManager;
 }
