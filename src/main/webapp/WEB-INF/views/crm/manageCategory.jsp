@@ -22,8 +22,8 @@
                 </jsp:include>
             </section>
         </div>
-        <%@include file="../partials/crm/footer.jsp" %>
     </section>
 </main>
+<%@include file="../partials/crm/footer.jsp" %>
 </body>
 </html>

@@ -19,7 +19,7 @@
                 <label for="category">
                     <select id="category">
                     <c:forEach items="${categories}" var="category">
-                        <option value="${category.id}">${category.name}</option>
+                        <option value="${category.categoryId}">${category.categoryName}</option>
                     </c:forEach>
                     </select>
                 </label>

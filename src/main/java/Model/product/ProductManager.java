@@ -190,8 +190,8 @@ public class ProductManager extends Manager implements ProductDao<SQLException> 
             QueryBuilder queryBuilder = new QueryBuilder("prodotto", "pro");
             String query = queryBuilder.select().where("idCategoria=?").generateQuery();
             try (PreparedStatement ps = conn.prepareStatement(query)) {
-                ResultSet rs = ps.executeQuery();
                 ps.setInt(1,category.getCategoryId());
+                ResultSet rs = ps.executeQuery();
                 ProductExtractor productExtractor = new ProductExtractor();
                 while (rs.next()){
                     Product product = productExtractor.extract(rs);

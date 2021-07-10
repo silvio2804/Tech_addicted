@@ -40,29 +40,9 @@
     <section id="best">
         <h1 class="bs">IN EVIDENZA</h1>
         <div class="grid-x">
-            <div class="card">
-                <img src="?.jpg" alt="?" style="width:100%">
-                <h1>?</h1>
-                <p class="price">€?</p>
-                <p>
-                <form action="/site/product">
-                <input type="hidden" value="${product.id}">
-                    <button>Visualizza prodotto</button>
-                </form>
-                </p>
-            </div>
-
-            <div class="card">
-                <img src="?.jpg" alt="?" style="width:100%">
-                <h1>?</h1>
-                <p class="price">€?</p>
-                <p>
-                <form action="/site/product">
-                    <input type="hidden" value="${product.id}">
-                    <button>Visualizza prodotto</button>
-                </form>
-                </p>
-            </div>
+            <c:forEach items="${products}" var="product">
+                <%@include file="../partials/site/card.jsp"%>
+            </c:forEach>
         </div>
     </section>
 </main>

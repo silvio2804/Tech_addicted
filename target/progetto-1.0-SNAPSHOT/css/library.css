@@ -243,12 +243,12 @@ input {
     max-height: 600px;
     display: none;
     box-shadow: none;
-    margin: 40px 20px 20px;
+    margin: 20px 20px 0px 70px;
 }
 
 .body > .profile {
     padding: 20px;
     position: relative;
-    transform: translate3d(40px, 0px, 0px);
+    transform: translate3d(200px, 0px, 0px);
     margin-top: 40px;
 }

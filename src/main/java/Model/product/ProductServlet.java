@@ -78,6 +78,7 @@ public class ProductServlet extends Controller implements ErrorHandler {
                     request.getRequestDispatcher(view("site/search")).forward(request, response);
                     break;
                 case "/searchByCat":
+                    categoryManager = new CategoryManager(source);
                     int idCat = Integer.parseInt(request.getParameter("categoryId"));
                     Optional<Category> category = categoryManager.fetchCategory(idCat);
                     if (category.isPresent()){
