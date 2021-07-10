@@ -98,4 +98,18 @@ public class DiscountManager extends Manager implements DiscountDao {
             }
         }
     }
+
+    @Override
+    public int countAll() throws SQLException {
+        try (Connection conn = source.getConnection()) {
+            QueryBuilder queryBuilder = new QueryBuilder("sconto", "sco");
+            queryBuilder.count("allDiscounts");
+            try (PreparedStatement ps = conn.prepareStatement(queryBuilder.generateQuery())) {
+                ResultSet rs = ps.executeQuery();
+                if (rs.next())
+                    return rs.getInt(1);
+            }
+        }
+        return 0;
+    }
 }

@@ -51,7 +51,10 @@ public class ProductServlet extends Controller implements ErrorHandler {
                     HttpSession session = request.getSession();
                     authorize(session);
                     request.setAttribute("back",view("crm/product"));
-                    ArrayList<Product> products = productManager.fetchProducts(new Paginator(1,30));
+                    Paginator paginator = new Paginator(1, 5);
+                    int size = productManager.countAll();
+                    request.setAttribute("pages", paginator.getPages(size));
+                    ArrayList<Product> products = productManager.fetchProducts(paginator);
                     request.setAttribute("products",products);
                     session.setAttribute("categories",categories);
                     request.getRequestDispatcher(view("crm/manageProduct")).forward(request, response);
@@ -87,9 +90,6 @@ public class ProductServlet extends Controller implements ErrorHandler {
                         request.getRequestDispatcher(view("site/search")).forward(request, response);
                     }
                     else notFound();
-
-
-
                     break;
                 default:
                     notFound();

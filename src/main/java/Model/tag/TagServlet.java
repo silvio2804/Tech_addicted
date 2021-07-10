@@ -42,7 +42,10 @@ public class TagServlet extends Controller {
                 case "/":
                     authorize(request.getSession());
                     request.setAttribute("back", view("crm/dashboard"));
-                    ArrayList<Tag> tags = tagManager.fetchTags(new Paginator(1, 30));
+                    Paginator paginator = new Paginator(1, 5);
+                    int size = tagManager.countAll();
+                    request.setAttribute("pages", paginator.getPages(size));
+                    ArrayList<Tag> tags = tagManager.fetchTags(paginator);
                     request.setAttribute("tags", tags);
                     request.getRequestDispatcher(view("crm/manageTag")).forward(request, response);
                     break;
@@ -51,7 +54,7 @@ public class TagServlet extends Controller {
                     request.getRequestDispatcher(view("tag/form")).forward(request, response);
                     break;
                 case "/show":
-                    int id = Integer.parseInt(request.getParameter("tagId"));
+                    int id = Integer.parseInt(request.getParameter("id"));
                     Optional<Tag> tag = tagManager.fetchTag(id);
                     if (tag.isPresent()) {
                         request.setAttribute("tag", tag.get());

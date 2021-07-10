@@ -45,8 +45,11 @@ public class CategoryServlet extends Controller {
                 case "/": //mostra tutte le categorie
                     authorize(request.getSession());
                     request.setAttribute("back", view("crm/home"));
-                    ArrayList<Category> categories = categoryManager.fetchCategories(new Paginator(1, 30));
-                    request.setAttribute("categories", categories);
+                    Paginator paginator = new Paginator(1, 10);
+                    int size = categoryManager.countAll();
+                    request.setAttribute("pages", paginator.getPages(size));
+                    List<Category> cat = categoryManager.fetchCategories(paginator);
+                    request.setAttribute("category", cat);
                     request.getRequestDispatcher(view("crm/manageCategory")).forward(request, response);
                     break;
                 case "/create":
@@ -54,7 +57,7 @@ public class CategoryServlet extends Controller {
                     request.getRequestDispatcher(view("category/form")).forward(request, response);
                     break;
                 case "/show":
-                    int id = Integer.parseInt(request.getParameter("categoryId"));
+                    int id = Integer.parseInt(request.getParameter("id"));
                     Optional<Category> category = categoryManager.fetchCategory(id);
                     if(category.isPresent()){
                         request.setAttribute("category",category.get());

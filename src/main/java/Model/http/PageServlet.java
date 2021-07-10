@@ -17,7 +17,7 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-//servlet per le pagine utente
+//navigazione sito lato admin
 @WebServlet(name = "pageServlet",value = "/pages/*")
 public class PageServlet extends Controller {
 

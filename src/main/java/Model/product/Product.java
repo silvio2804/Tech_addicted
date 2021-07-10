@@ -84,7 +84,6 @@ public class Product {
     public void writeCover(String uploadPath, Part stream) throws IOException {
         try(InputStream fileStream = stream.getInputStream()){
             File file = new File(uploadPath + cover);
-            System.out.println(cover);
             Files.copy(fileStream, file.toPath());
         }
     }

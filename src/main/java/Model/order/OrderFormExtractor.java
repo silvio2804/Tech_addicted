@@ -10,12 +10,11 @@ public class OrderFormExtractor implements FormExtractor<Order> {
     public Order extract(HttpServletRequest request, boolean update) {
         Order order = new Order();
         if(update){
-            order.setOrderId(Integer.parseInt(request.getParameter("id")));
+            order.setOrderId(Integer.parseInt(request.getParameter("orderId")));
         }
         Date date = new Date();
         order.setOrderDate(date);
         order.setPayment(request.getParameter("payement"));
-        order.setTotal(Double.parseDouble(request.getParameter("total")));
         return order;
     }
 }

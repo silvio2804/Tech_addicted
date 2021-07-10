@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Optional;
-
+//navigazione pagine del sito lato customer
 @WebServlet(name = "SiteServlet",value ="/site/*")
 public class SiteServlet extends Controller {
 

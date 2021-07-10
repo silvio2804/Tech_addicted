@@ -2,7 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 
 <table class="table product-table">
-    <caption><a href="/accounts/create"> Lista Account</a></caption>
+    <caption>Lista account<a href=${pageContext.request.contextPath}/accounts/create class="btn primary"> Crea account</a></caption>
     <thead>
     <tr>
         <th>Id</th>
@@ -27,8 +27,9 @@
                     </td>
                     <td data-head="Nome">${account.name}</td>
                     <td data-head="Cognome">${account.lastName}</td>
-                    <td data-head="email">${account.name}</td>
+                    <td data-head="email">${account.email}</td>
                     <td data-head="Data nascita">${account.date}</td>
+                    <td data-head="Admin">${account.admin ? "si" : "no"}</td>
                 </tr>
             </c:forEach>
         </c:otherwise>

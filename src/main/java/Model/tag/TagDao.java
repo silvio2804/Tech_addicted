@@ -16,4 +16,6 @@ public interface TagDao <E extends Exception>{
     boolean deleteTag(int id) throws E;
 
     boolean updateTag(Tag tag) throws E;
+
+    int countAll() throws E;
 }

@@ -97,7 +97,22 @@ public class TagManager extends Manager implements TagDao {
         }
     }
 
-    /*public ArrayList<TagProdotto> SearchTagAssociatedAtProduct(String NomeProdotto, Paginator paginator) throws SQLException {
+    @Override
+    public int countAll() throws SQLException {
+        try (Connection conn = source.getConnection()) {
+            QueryBuilder queryBuilder = new QueryBuilder("sconto", "sco");
+            queryBuilder.count("allDiscounts");
+            try (PreparedStatement ps = conn.prepareStatement(queryBuilder.generateQuery())) {
+                ResultSet rs = ps.executeQuery();
+                if (rs.next())
+                    return rs.getInt(1);
+            }
+        }
+        return 0;
+    }
+}
+
+/*public ArrayList<TagProdotto> SearchTagAssociatedAtProduct(String NomeProdotto, Paginator paginator) throws SQLException {
         //SELECT * from tag, associationtag where tag.idTag=associationTag.idtag where associationtag.idProdotto=?
         try (Connection con = dataSource.getConnection()) {
             try (PreparedStatement ps = con.prepareStatement("SELECT * from tag,associationtag,prodotto where " +
@@ -128,4 +143,3 @@ public class TagManager extends Manager implements TagDao {
             }
         }
     }*/
-}

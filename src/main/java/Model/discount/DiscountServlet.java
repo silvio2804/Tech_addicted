@@ -38,7 +38,10 @@ public class DiscountServlet extends Controller {
                 case "/":
                     authorize(request.getSession());
                     request.setAttribute("back",view("crm/product"));
-                    ArrayList<Discount> discounts = discountManager.fetchDiscounts(new Paginator(1,30));
+                    Paginator paginator = new Paginator(1, 5);
+                    int size = discountManager.countAll();
+                    request.setAttribute("pages", paginator.getPages(size));
+                    ArrayList<Discount> discounts = discountManager.fetchDiscounts(paginator);
                     request.setAttribute("discounts",discounts);
                     request.getRequestDispatcher(view("crm/manageDiscount")).forward(request, response);
                     break;
@@ -47,7 +50,7 @@ public class DiscountServlet extends Controller {
                     request.getRequestDispatcher(view("discount/form")).forward(request, response);
                     break;
                 case "/show":
-                    int id = Integer.parseInt(request.getParameter("discountId"));
+                    int id = Integer.parseInt(request.getParameter("id"));
                     Optional<Discount> discount = discountManager.fetchDiscount(id);
                     if(discount.isPresent()){
                         request.setAttribute("discount",discount.get());
@@ -96,7 +99,7 @@ public class DiscountServlet extends Controller {
                     if (discountManager.updateDiscount(updateDiscount)) {
                         request.setAttribute("discount", updateDiscount);
                         request.setAttribute("alert", new Alert(List.of("sconto aggiornato !"), "success"));
-                        request.getRequestDispatcher(view("category/form")).forward(request, response);
+                        request.getRequestDispatcher(view("discount/form")).forward(request, response);
                     } else
                         internalError();
                     break;

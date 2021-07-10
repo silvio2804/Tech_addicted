@@ -19,5 +19,5 @@ public interface AccountDao<E extends  Exception>{
 
     int countAll() throws E;
 
-    Optional<Account> findAccount(String email, String password, boolean admin) throws E;
+    Optional<Account> findAccount(String email, String password) throws E;
 }

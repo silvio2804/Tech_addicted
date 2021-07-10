@@ -12,7 +12,7 @@
 <head>
     <jsp:include page="../partials/head.jsp">
         <jsp:param name="param" value="Tech addicted home"/>
-        <jsp:param name="styles" value="crm,products"/>
+        <jsp:param name="styles" value="crm,crmTable"/>
         <jsp:param name="scripts" value="crm,"/>
     </jsp:include>
     <style>
@@ -42,8 +42,8 @@
     </fieldset>
 </form>
         </div>
-        <%@include file="../partials/crm/footer.jsp" %>
     </section>
 </main>
+<%@include file="../partials/crm/footer.jsp" %>
 </body>
 </html>

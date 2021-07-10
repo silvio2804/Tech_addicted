@@ -50,7 +50,7 @@ public class OrderManager extends Manager implements OrderDao {
     public Optional<Order> fetchOrder(int id) throws SQLException {
         try (Connection conn = source.getConnection()) {
             QueryBuilder queryBuilder = new QueryBuilder("ordine", "ord");
-            String query = queryBuilder.select().where("id=?").generateQuery();
+            String query = queryBuilder.select().where("idOrd=?").generateQuery();
             try (PreparedStatement ps = conn.prepareStatement(query)) {
                 ps.setInt(1, id);
                 ResultSet rs = ps.executeQuery();
@@ -76,7 +76,7 @@ public class OrderManager extends Manager implements OrderDao {
                 ProductExtractor productExtractor = new ProductExtractor();
                 CategoryExtractor categoryExtractor = new CategoryExtractor();
                 while (resultSet.next()) {
-                    int idOrdine = resultSet.getInt("ord.idOrdine");
+                    int idOrdine = resultSet.getInt("ord.idOrd");
                     if (!ordineMap.containsKey(idOrdine)) {
                         Order order = orderExtractor.extract(resultSet);
                         order.setCarrello(new Cart(new ArrayList<>()));

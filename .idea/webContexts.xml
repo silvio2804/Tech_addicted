@@ -5,6 +5,7 @@
       <map>
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/account/table.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/account" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/crm/home.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/crm" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/crm/secret.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/crm" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/partials/head.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/partials" />
       </map>
     </option>

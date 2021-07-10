@@ -27,5 +27,5 @@ public interface ProductDao<E extends Exception>{
 
     ArrayList<Category> fetchCategoriesByProducts() throws E;
 
-     int countAll() throws E;
+    int countAll() throws E;
 }

@@ -1,0 +1,102 @@
+*{
+    font-family: "Rockwell";
+}
+.app {
+    background: linear-gradient(var(--primary), var(--white));
+    background-image: url("/progetto_war_exploded/images/logo.png");
+    background-position: top left ;
+    background-size: 450px 450px;
+    background-repeat: no-repeat;
+    background-repeat: repeat;
+}
+.login {
+    padding: 1rem;
+    background-color: var(--white);
+    border-radius: 10px;
+}
+.login > * {
+    margin: 10px;
+}
+label input{
+    border-style: none none solid none;
+    border-bottom-width: 2px;
+    box-shadow: none;
+}
+a {
+    text-decoration: none;
+    font-size: medium;
+}
+
+.backimg {
+    background-image: url("/progetto_war_exploded/images/logo.png");
+    background-position: right;
+    background-size: 450px 450px;
+    background-repeat: repeat;
+}
+
+span > h2{
+    text-align: left;
+    margin-bottom: 5px;
+}
+.btn{
+    border-radius: 10px;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*.container{
+    display: flex;
+    border: 1px solid red;
+    align-items: center;
+    flex-direction: column;
+}
+
+.label-form{
+    border-style: none none solid none;
+    border-bottom-color: #3E505B;
+    align-self: center;
+    margin: 8px;
+    padding: 8px;
+}
+
+.sign-form {
+    display: flex;
+    flex-flow: column;
+    border-color: black;
+    border-radius: 20px;
+}
+.grid-row{
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.grid-col{
+    display: flex;
+    flex-flow: column wrap;
+}
+
+.button{
+    border-radius: 10px;
+}
+*/
