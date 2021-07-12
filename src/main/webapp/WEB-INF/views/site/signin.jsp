@@ -3,7 +3,7 @@
 <html lang="it" dir="ltr">
 <head>
     <jsp:include page="../partials/head.jsp">
-        <jsp:param name="title" value="Login"/>
+        <jsp:param name="title" value="Techaddicted Login"/>
         <jsp:param name="styles" value="css,sign"/>
     </jsp:include>
 
@@ -17,11 +17,13 @@
         </span>
         <span ><h2 >Login</h2></span>
         <label for="email" class="field">
-            <input type="email" name="email" id="email" placeholder="Email">
+            <input type="email" name="email" id="email" placeholder="Email" required>
         </label>
+        <small class="errMsg cell"></small>
         <label for="password" class="field">
-            <input type="password" name="password" id="password" placeholder="Password">
+            <input type="password" name="password" id="password" placeholder="Password" > <!--required minlength="8" -->>
         </label>
+        <small class="errMsg cell"></small>
         <button type="submit" class="btn primary">Accedi</button>
         <span style="margin: 15px">
             <a href="${pageContext.request.contextPath}/accounts/signup">Registrati qui</a>

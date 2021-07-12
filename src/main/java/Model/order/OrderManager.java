@@ -63,9 +63,13 @@ public class OrderManager extends Manager implements OrderDao {
         }
     }
 
-    public ArrayList<Order> fethOrdersWithProduct(int id, Paginator paginator) throws SQLException {
+    public ArrayList<Order> fetchOrdersWithProduct(int id, Paginator paginator) throws SQLException {
         try (Connection conn = source.getConnection()) {
-            String query = QueryOrder.fetchOrdiniConProdotti(id);
+            QueryBuilder queryBuilder = new QueryBuilder("ordine","ord");
+            String query = queryBuilder.select().innerJoin("carrello","car").on("car.idCar = ord.idCar")
+                    .innerJoin("prodottiInCarrello","proInCar").on("car.idCar=proInCar.idCarrello")
+                    .innerJoin("prodotto","pro").on("proInCar.idProdotto=pro.idProd")
+                    .where("car.idUtente=?").generateQuery();
             try (PreparedStatement ps = conn.prepareStatement(query)) {
                 ps.setInt(1, id);
                 ps.setInt(2, paginator.getLimit());
@@ -85,7 +89,7 @@ public class OrderManager extends Manager implements OrderDao {
                     Product product = productExtractor.extract(resultSet);
                     Category category = categoryExtractor.extract(resultSet);
                     product.setCategory(category);
-                    ordineMap.get(idOrdine).getCarrello().addProdotto(product, resultSet.getInt("proInCar.quantita"));
+                    ordineMap.get(idOrdine).getCarrello().addProduct(product, resultSet.getInt("proInCar.quantita"));
                 }
                 return new ArrayList<>(ordineMap.values());
             }
@@ -96,10 +100,15 @@ public class OrderManager extends Manager implements OrderDao {
     public boolean createOrder(Order order) throws SQLException {
         try (Connection conn = source.getConnection()) {
             conn.setAutoCommit(false);
-            String query = QueryOrder.createOrdine();
-            String query2 = QueryOrder.insertCar();
+
+            QueryBuilder qb = new QueryBuilder("ordine","ord");
+            QueryBuilder qb1 = new QueryBuilder("prodottiInCarrello","proInCar");
+
+            String query1 =  qb.insert("totale").generateQuery();
+            String query2 = qb1.insert("idProdotto","idCarrello","quantita").generateQuery();
+
             try (
-                    PreparedStatement ps = conn.prepareStatement(query);
+                    PreparedStatement ps = conn.prepareStatement(query1);
                     PreparedStatement psAssoc = conn.prepareStatement(query2);
             ) {
                 int rows = ps.executeUpdate();
@@ -126,8 +135,9 @@ public class OrderManager extends Manager implements OrderDao {
     @Override
     public boolean deleteOrder(int idOrdine) throws SQLException {
         try (Connection conn = source.getConnection()) {
-            String query = QueryOrder.deleteOrdine();
-            try (PreparedStatement ps = conn.prepareStatement(query)) {
+            QueryBuilder queryBuilder = new QueryBuilder("ordine", "ord");
+            queryBuilder.delete().where("idOrder=?");
+            try (PreparedStatement ps = conn.prepareStatement(queryBuilder.generateQuery())) {
                 ps.setInt(1, idOrdine);
                 int updRet = ps.executeUpdate();
                 return updRet == 1;
@@ -138,8 +148,11 @@ public class OrderManager extends Manager implements OrderDao {
     @Override
     public boolean updateOrder(Order order) throws SQLException {
         try (Connection conn = source.getConnection()) {
-            String query = QueryOrder.updateOrdine();
+            QueryBuilder queryBuilder = new QueryBuilder("ordine","ord");
+            String query = queryBuilder.update("pagamento","dataOrdine").generateQuery();
             try (PreparedStatement ps = conn.prepareStatement(query)) {
+                ps.setString(1,order.getPayment());
+                ps.setObject(2,order.getOrderDate());
                 int updRet = ps.executeUpdate();
                 return updRet == 1;
             }
@@ -165,7 +178,6 @@ public class OrderManager extends Manager implements OrderDao {
         try (Connection conn = source.getConnection()) {
             QueryBuilder queryBuilder = new QueryBuilder("ordine", "ord");
             String query = queryBuilder.select().generateQuery();
-            System.out.println(query);
             try (PreparedStatement ps = conn.prepareStatement(query)) {
                 ResultSet rs = ps.executeQuery();
                 OrderExtractor ex = new OrderExtractor();
@@ -177,6 +189,43 @@ public class OrderManager extends Manager implements OrderDao {
                 for (Order order : orders)
                     total += order.getTotal();
                 return total;
+            }
+        }
+    }
+
+    public boolean createOrderProva(Order order) throws SQLException {
+        try (Connection conn = source.getConnection()) {
+            conn.setAutoCommit(false);
+            //prendo i prodotti nel carrello
+            //devo aggiornare i campi
+            QueryBuilder qb = new QueryBuilder("ordine","ord");
+            qb.select().innerJoin("prodottiincarrello","proInCar")
+                    .on("ord.idCar = proInCar.idCar").innerJoin("prodotto","pro")
+                    .on("pro.idProd = proInCar.idProdotto").generateQuery();
+            QueryBuilder qbTotal = new QueryBuilder("ordine","ord");
+            String queryTotal = qbTotal.insert("totale","dataOrdine","pagamento").generateQuery();
+            String query2 ="";
+            try (
+                    PreparedStatement ps = conn.prepareStatement(queryTotal);
+                    PreparedStatement psAssoc = conn.prepareStatement(query2);
+            ) {
+                int rows = ps.executeUpdate();
+                int total = rows;
+                for (CarItem item : order.getCarrello().getItems()) {
+                    psAssoc.setInt(1, item.getProduct().getProductId());
+                    psAssoc.setInt(2, order.getOrderId());
+                    psAssoc.setInt(3, item.getQuantity());
+                    total += psAssoc.executeUpdate();
+                }
+                if (total == (rows + order.entries())) {
+                    conn.commit();
+                    conn.setAutoCommit(true);
+                    return true;
+                } else {
+                    conn.rollback();
+                    conn.setAutoCommit(true);
+                    return false;
+                }
             }
         }
     }

@@ -16,7 +16,7 @@ import java.util.Optional;
 
 public class DiscountManager extends Manager implements DiscountDao {
 
-    protected DiscountManager(DataSource source)throws SQLException {
+    public DiscountManager(DataSource source)throws SQLException {
         super(source);
     }
 

@@ -2,6 +2,8 @@ package Model.http;
 
 import Model.account.AccountSession;
 import Model.cart.Cart;
+import netscape.javascript.JSObject;
+import org.json.JSONObject;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -9,10 +11,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 public abstract class Controller extends HttpServlet implements ErrorHandler {
 
-   //@Resource(name = "jdbc/techaddicted")
     protected static DataSource source;
 
     //prende la path dalla richiesta per la navigazione delle pagine
@@ -52,5 +55,17 @@ public abstract class Controller extends HttpServlet implements ErrorHandler {
     //ritorna il carrello di sessione
     protected Cart getSessionCart(HttpSession session){
         return (Cart) session.getAttribute("accountCart");
+    }
+
+    protected boolean isAjax(HttpServletRequest request){
+        return "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
+    }
+
+    protected void sendJson(HttpServletResponse response, JSONObject object) throws IOException {
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        PrintWriter writer = response.getWriter();
+        writer.print(object.toString());
+        writer.flush();
     }
 }

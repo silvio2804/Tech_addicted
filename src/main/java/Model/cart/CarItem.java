@@ -21,6 +21,10 @@ public class CarItem {
         return this.product.getPrice()* quantity;
     }
 
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
     private final Product product;
-    private final int quantity;
+    private  int quantity;
 }

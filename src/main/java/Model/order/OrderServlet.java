@@ -46,7 +46,7 @@ public class OrderServlet extends Controller {
                     break;
                 case "/create":
                     authorize(request.getSession());
-                    request.getRequestDispatcher(view("category/form")).forward(request, response);
+                    request.getRequestDispatcher(view("order/form")).forward(request, response);
                     break;
                 case "/show":
                     int id = Integer.parseInt(request.getParameter("id"));
@@ -57,6 +57,8 @@ public class OrderServlet extends Controller {
                     }
                     else
                         internalError();
+                    break;
+                case "/createOrder":
                     break;
                 case "/search":
                     request.getRequestDispatcher(view("site/search")).forward(request, response);
@@ -91,6 +93,9 @@ public class OrderServlet extends Controller {
                         request.getRequestDispatcher(view("order/form")).forward(request, response);
                     } else
                         internalError();
+                    break;
+                case "/createOrder": //utente
+
                     break;
                 case "/update":
                     authorize(request.getSession(false));

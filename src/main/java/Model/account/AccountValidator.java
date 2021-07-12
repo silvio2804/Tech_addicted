@@ -10,11 +10,8 @@ public class AccountValidator {
 
     public static RequestValidator validateSignin(HttpServletRequest request){
         RequestValidator requestValidator = new RequestValidator(request);
-        Enumeration<String> params = request.getParameterNames();
-        String email = "email";
-        while (params.hasMoreElements())
-            if(email.compareToIgnoreCase(params.nextElement()) == 0)
-                requestValidator.assertEmail(email, "email non valida");
+        requestValidator.assertEmail("email", "email non valida");
+       //requestValidator.assertPassword("password","password non valida");
         return requestValidator;
     }
 

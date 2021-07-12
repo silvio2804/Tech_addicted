@@ -37,9 +37,8 @@ public class AccountServlet extends Controller {
                 case "/":
                     authorize(request.getSession());
                     request.setAttribute("back", view("crm/accounts"));
-                    //validate(CommonValidator.validatePage(request));
-                    //int page = parsePage(request);
-                    Paginator paginator = new Paginator(1, 5);
+                    int page = parsePage(request);
+                    Paginator paginator = new Paginator(page, 5);
                     int size = accountManager.countAll();
                     request.setAttribute("pages", paginator.getPages(size));
                     List<Account> accounts = accountManager.fetchAccounts(paginator);
@@ -100,30 +99,12 @@ public class AccountServlet extends Controller {
         try {
             String path = (request.getPathInfo() != null) ? request.getPathInfo() : "null";
             switch (path) {
-                /*case "/secret": //login admin (ricerca nel db)
-                    request.setAttribute("back", view("crm/secret"));
-                    validate(AccountValidator.validateSignin(request));
-                    Account tmp = new Account();
-                    tmp.setEmail(request.getParameter("email"));
-                    tmp.setPassword(request.getParameter("password"));
-                    Optional<Account> optAccount = accountManager.findAccount(tmp.getEmail(), tmp.getPassword(),true);
-                    Integer accounts = accountManager.countAll();
-                    request.setAttribute("accounts",accounts);
-                    if (optAccount.isPresent()) {
-                        AccountSession accountSession = new AccountSession(optAccount.get());
-                        request.getSession(true).setAttribute("accountSession", accountSession);
-                        response.sendRedirect("../pages/dashboard");
-                    } else
-                        throw new InvalidRequestException("Credenziali non valide",
-                                List.of("Credenziali non valide"), HttpServletResponse.SC_BAD_REQUEST);
-                    break;*/
                 case "/signup": //registrazione cliente
                     Account registerAccount = new RegisterAccountExtractor().extract(request,false);
                     registerAccount.setPassword(request.getParameter("password"));
                     Optional<Account> accountOpt= accountManager.findAccount(registerAccount.getEmail(), registerAccount.getPassword());
                     if (!accountOpt.isPresent()) {
                         accountManager.createAccount(registerAccount);
-                        System.out.println("account creato");
                         response.sendRedirect("../site/home");
                     }
                     else{
@@ -131,13 +112,12 @@ public class AccountServlet extends Controller {
                                 HttpServletResponse.SC_BAD_REQUEST);
                     }
                     break;
-                case "/signin": //login unificato
+                case "/signin":
                     request.setAttribute("back", view("site/signin"));
                     validate(AccountValidator.validateSignin(request));
                     Account tmpCustomer = new Account();
                     tmpCustomer.setEmail(request.getParameter("email"));
                     tmpCustomer.setPassword(request.getParameter("password"));
-                    System.out.println(tmpCustomer);
                     Integer accounts = accountManager.countAll();
                     request.setAttribute("accounts",accounts);
                     Optional<Account> optCustomer = accountManager.findAccount(tmpCustomer.getEmail(), tmpCustomer.getPassword());
@@ -169,7 +149,7 @@ public class AccountServlet extends Controller {
                     Account updateAccount = new AccountFormExtractor().extract(request, true);
                 if(accountManager.updateAccount(updateAccount)){
                     request.setAttribute("account",updateAccount);
-                    request.setAttribute("alert",new Alert(List.of("Account aggiornato!"),"success"));
+                    request.setAttribute("alert",new Alert(List.of("Account aggiornato !"),"success"));
                     request.getRequestDispatcher(view("account/form")).forward(request,response);
                 }
                 else
@@ -177,19 +157,6 @@ public class AccountServlet extends Controller {
                     break;
                 case "profile": //aggiorna profilo cliente
                     break;
-
-                case "delete":
-                    authorize(request.getSession(false));
-                    request.setAttribute("back", view("crm/account"));
-                    int id = Integer.parseInt(request.getParameter("id"));
-                    if(accountManager.deleteAccount(id)){
-                        request.setAttribute("alert",new Alert(List.of("Account eliminato!"),"success"));
-                        request.getRequestDispatcher(view("crm/manageAccount")).forward(request,response);
-                    } else
-                        internalError();
-                    break;
-
-
                 case "logout": //logout per entrambi
                     break;
                 default:
