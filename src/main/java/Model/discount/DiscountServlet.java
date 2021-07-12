@@ -62,6 +62,16 @@ public class DiscountServlet extends Controller {
                 case "/search":
                     request.getRequestDispatcher(view("site/search")).forward(request, response);
                     break;
+                case "/delete":
+                    authorize(request.getSession(false));
+                    request.setAttribute("back", view("crm/manageDiscount"));
+                    int idDisc = Integer.parseInt(request.getParameter("id"));
+                    if (discountManager.deleteDiscount(idDisc)) {
+                        request.setAttribute("alert", new Alert(List.of("Sconto eliminato!"), "success"));
+                        response.sendRedirect("/progetto_war_exploded/discounts?page=1");
+                    } else
+                        internalError();
+                    break;
                 default:
                     notFound();
             }

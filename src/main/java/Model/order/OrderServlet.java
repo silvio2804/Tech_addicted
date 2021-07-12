@@ -115,7 +115,7 @@ public class OrderServlet extends Controller {
                     int id = Integer.parseInt(request.getParameter("id"));
                     if (orderManager.deleteOrder(id)) {
                         request.setAttribute("alert", new Alert(List.of("Ordine eliminato!"), "success"));
-                        request.getRequestDispatcher(view("crm/manageOrder")).forward(request, response);
+                        response.sendRedirect("/progetto_war_exploded/orders?page=1");
                     } else
                         internalError();
                     break;

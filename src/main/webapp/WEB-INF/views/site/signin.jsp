@@ -21,7 +21,7 @@
         </label>
         <small class="errMsg cell"></small>
         <label for="password" class="field">
-            <input type="password" name="password" id="password" placeholder="Password" > <!--required minlength="8" -->>
+            <input type="password" name="password" id="password" placeholder="Password" required minlength="6">
         </label>
         <small class="errMsg cell"></small>
         <button type="submit" class="btn primary">Accedi</button>

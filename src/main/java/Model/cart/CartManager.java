@@ -40,7 +40,7 @@ public class CartManager extends Manager implements CartDao {
         }
     }
 
-   /* public boolean insertInCart(Cart cart,Product product)throws  SQLException {
+  /*  public boolean insertInCart(Cart cart,Product product)throws  SQLException {
         try (Connection conn = source.getConnection()) {
             QueryBuilder queryBuilder = new QueryBuilder("prodottiincarrello", "proInCar");
             String query = queryBuilder.insert("proInCar","proInCar.idProdotto").generateQuery();

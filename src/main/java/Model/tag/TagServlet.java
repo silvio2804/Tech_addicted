@@ -42,7 +42,7 @@ public class TagServlet extends Controller {
                 case "/":
                     authorize(request.getSession());
                     request.setAttribute("back", view("crm/dashboard"));
-                    Paginator paginator = new Paginator(1, 5);
+                    Paginator paginator = new Paginator(1, 30);
                     int size = tagManager.countAll();
                     request.setAttribute("pages", paginator.getPages(size));
                     ArrayList<Tag> tags = tagManager.fetchTags(paginator);
@@ -112,7 +112,7 @@ public class TagServlet extends Controller {
                     int id = Integer.parseInt(request.getParameter("id"));
                     if (tagManager.deleteTag(id)) {
                         request.setAttribute("alert", new Alert(List.of("Tag eliminato!"), "success"));
-                        request.getRequestDispatcher(view("crm/manageTag")).forward(request, response);
+                        response.sendRedirect("/progetto_war_exploded/tags?page=1");
                     } else
                         internalError();
                     break;

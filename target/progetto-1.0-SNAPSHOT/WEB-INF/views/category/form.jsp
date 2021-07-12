@@ -42,7 +42,7 @@
                 </fieldset>
             </form>
             <c:if test="${not isCreate}">
-                <form method="post" action="progetto_war_exploded/categories/delete">
+                <form method="post" action="/progetto_war_exploded/categories/delete">
                     <input type="hidden" name="id" value="${category.categoryId}">
                     <button type="submit" class="cell w40 btn">Elimina</button>
                 </form>

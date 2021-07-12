@@ -52,8 +52,8 @@ public class ProductServlet extends Controller implements ErrorHandler {
                     HttpSession session = request.getSession();
                     authorize(session);
                     request.setAttribute("back", view("crm/product"));
-                    int intPage = parsePage(request);
-                    Paginator paginator = new Paginator(intPage, 5);
+                    int page = parsePage(request);
+                    Paginator paginator = new Paginator(page, 10);
                     int size = productManager.countAll();
                     request.setAttribute("pages", paginator.getPages(size));
                     ArrayList<Product> products = productManager.fetchProducts(paginator);
@@ -160,7 +160,7 @@ public class ProductServlet extends Controller implements ErrorHandler {
                     int id = Integer.parseInt(request.getParameter("id"));
                     if (productManager.deleteProduct(id)) {
                         request.setAttribute("alert", new Alert(List.of("Prodotto eliminato!"), "success"));
-                        request.getRequestDispatcher(view("product/form")).forward(request, response);
+                        response.sendRedirect("/progetto_war_exploded/products?page=1");
                     } else
                         internalError();
                     break;

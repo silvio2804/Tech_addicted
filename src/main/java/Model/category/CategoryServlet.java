@@ -36,6 +36,7 @@ public class CategoryServlet extends Controller {
     public void init() throws ServletException {
         try {
             categoryManager = new CategoryManager(source);
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -49,11 +50,12 @@ public class CategoryServlet extends Controller {
                 case "/": //mostra tutte le categorie
                     authorize(request.getSession());
                     request.setAttribute("back", view("crm/home"));
-                    Paginator paginator = new Paginator(1, 10);
+                    int page = parsePage(request);
+                    Paginator paginator = new Paginator(page, 10);
                     int size = categoryManager.countAll();
                     request.setAttribute("pages", paginator.getPages(size));
                     List<Category> cat = categoryManager.fetchCategories(paginator);
-                    request.setAttribute("category", cat);
+                    request.setAttribute("categories", cat);
                     request.getRequestDispatcher(view("crm/manageCategory")).forward(request, response);
                     break;
                 case "/create":
@@ -84,6 +86,7 @@ public class CategoryServlet extends Controller {
                     }else{
                         notFound();
                     }
+                    break;
                 default:
                     notFound();
             }
@@ -126,14 +129,13 @@ public class CategoryServlet extends Controller {
                     } else
                         internalError();
                     break;
-
                 case "/delete":
                     authorize(request.getSession(false));
                     request.setAttribute("back", view("crm/manageCategory"));
                     int id = Integer.parseInt(request.getParameter("id"));
                     if (categoryManager.deleteCategory(id)) {
                         request.setAttribute("alert", new Alert(List.of("Categoria eliminata!"), "success"));
-                        request.getRequestDispatcher(view("crm/manageCategories")).forward(request, response);
+                        response.sendRedirect("/progetto_war_exploded/categories?page=1");
                     } else
                         internalError();
                     break;

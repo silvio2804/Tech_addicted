@@ -155,6 +155,16 @@ public class AccountServlet extends Controller {
                 else
                     internalError();
                     break;
+                case "/delete":
+                    authorize(request.getSession(false));
+                    request.setAttribute("back", view("crm/manageCategory"));
+                    int id = Integer.parseInt(request.getParameter("id"));
+                    if (accountManager.deleteAccount(id)) {
+                        request.setAttribute("alert", new Alert(List.of("Account eliminato!"), "success"));
+                        response.sendRedirect("/progetto_war_exploded/accounts?page=1");
+                    } else
+                        internalError();
+                    break;
                 case "profile": //aggiorna profilo cliente
                     break;
                 case "logout": //logout per entrambi
