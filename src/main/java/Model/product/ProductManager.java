@@ -2,6 +2,7 @@ package Model.product;
 
 import Model.category.Category;
 import Model.category.CategoryExtractor;
+import Model.category.CategoryManager;
 import Model.search.Condition;
 import Model.search.Operator;
 import Model.search.Paginator;
@@ -49,19 +50,22 @@ public class ProductManager extends Manager implements ProductDao<SQLException> 
     public Optional<Product> fetchProduct(int id) throws SQLException {
         try (Connection conn = source.getConnection()) {
             QueryBuilder queryBuilder = new QueryBuilder("prodotto", "pro");
-            String query = queryBuilder.select().where("idProd=?").generateQuery();
-            System.out.println(query);
+            String query = queryBuilder.select("*").innerJoin("categoria", "cat")
+                    .on("pro.idCategoria = cat.idCat").where("idProd=?").generateQuery();
             try (PreparedStatement ps = conn.prepareStatement(query)) {
                 ps.setInt(1, id);
                 ResultSet rs = ps.executeQuery();
-                Product p = null;
-                if (rs.next()) {
-                    p = new ProductExtractor().extract(rs);
+                Product product = null;
+                    while (rs.next()) {
+                        product =new ProductExtractor().extract(rs);
+                        CategoryManager categoryManager = new CategoryManager(source);
+                        Optional<Category> category = categoryManager.fetchCategory(rs.getInt(6));
+                        product.setCategory(category.get());
+                    }
+                     return Optional.ofNullable(product);
                 }
-                return Optional.ofNullable(p); //restituisce un oggetto che incapsula null
             }
         }
-    }
 
     @Override
     public boolean createProduct(Product product) throws SQLException {
@@ -127,12 +131,12 @@ public class ProductManager extends Manager implements ProductDao<SQLException> 
     public List<Product> search(List <Condition> conditions) throws SQLException {
         try (Connection conn = source.getConnection()) {
             QueryBuilder queryBuilder = new QueryBuilder("prodotto", "pro");
-            queryBuilder.select().innerJoin("categoria", "cat").on("pro.idCateria = cat.idCat");
-            //altre join se necessarie
+            String query = queryBuilder.select("*").innerJoin("categoria", "cat")
+                    .on("pro.idCategoria = cat.idCat").generateQuery();
+            System.out.println(query);
             if (!conditions.isEmpty()) {
                 queryBuilder.where("").search(conditions);
             }
-            String query = queryBuilder.generateQuery();
             try (PreparedStatement ps = conn.prepareStatement(query)) {
                 for (int i = 0; i < conditions.size(); i++) {
                     if (conditions.get(i).getOperator() == Operator.MATCH) {
@@ -143,9 +147,12 @@ public class ProductManager extends Manager implements ProductDao<SQLException> 
                 }
                 ResultSet rs = ps.executeQuery();
                 List<Product> products = new ArrayList<>();
+                Product product = null;
                 while (rs.next()) {
-                    Product product = new ProductExtractor().extract(rs);
-                    product.setCategory(new CategoryExtractor().extract(rs));
+                    product = new ProductExtractor().extract(rs);
+                    CategoryManager categoryManager = new CategoryManager(source);
+                    Optional<Category> category = categoryManager.fetchCategory(rs.getInt(6));
+                    product.setCategory(category.get());
                     products.add(product);
                 }
                 return products;

@@ -17,7 +17,7 @@
         </div>
     </div>
     <div class="search-container">
-        <form method="post" action="/products/search" class="searchbar-form">
+        <form method="post" action="/progetto_war_exploded/products/search" class="searchbar-form">
             <input type="search" name="name" placeholder="Cerca..." class="search-field">
             <button type="submit" class="search-button">
                 <img src="../images/search.png" height="30" width="30">

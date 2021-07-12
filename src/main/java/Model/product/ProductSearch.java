@@ -22,7 +22,7 @@ public class ProductSearch implements SearchBuilder {
             if(value != null && !value.isBlank()){
                 switch (param){
                     case "name":
-                        conditions.add(new Condition("name", Operator.MATCH,value));
+                        conditions.add(new Condition("nome", Operator.MATCH,value));
                         break;
                     case "categoryId":
                         conditions.add(new Condition("idCategoria", Operator.EQ,value)); //chiave esterna

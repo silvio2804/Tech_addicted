@@ -176,9 +176,10 @@ div > .btn, span > .btn {
 }
 
 .bsi {
-    width: 100%;
+    width: auto;
+    display: flex;
+    max-height: 402px;
     height: auto;
-    max-height: 400px;
 }
 
 .topbar > * {
@@ -314,4 +315,12 @@ div > .btn, span > .btn {
 .form-container > * {
     margin: 5px;
     padding: 2px;
+}
+
+
+dt {
+    font-weight: bold;
+    font-style: italic;
+    padding-top: 3px;
+    margin-bottom: 3px;
 }

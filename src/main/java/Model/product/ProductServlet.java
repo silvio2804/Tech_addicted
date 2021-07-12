@@ -71,6 +71,16 @@ public class ProductServlet extends Controller implements ErrorHandler {
                     } else
                         internalError();
                     break;
+                case "/showCli":
+                    int id2 = Integer.parseInt(request.getParameter("id"));
+                    Optional<Product> product2 = productManager.fetchProduct(id2);
+                    if (product2.isPresent()) {
+                        request.setAttribute("product", product2.get());
+                        request.setAttribute("categories", categories);
+                        request.getRequestDispatcher(view("site/product")).forward(request, response);
+                    } else
+                        internalError();
+                    break;
                 case "/create":
                     authorize(request.getSession());
                     request.getRequestDispatcher(view("product/form")).forward(request, response);

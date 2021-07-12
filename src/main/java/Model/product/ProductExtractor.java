@@ -14,6 +14,7 @@ public class ProductExtractor implements ResultSetExtractor<Product> {
         p.setDescription(rs.getString(3));
         p.setCover(rs.getString(4));
         p.setPrice(rs.getDouble(5));
+
         return p;
     }
 }

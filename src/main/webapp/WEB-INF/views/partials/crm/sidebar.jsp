@@ -1,6 +1,6 @@
 <aside class="sidebar">
     <nav class="menu grid-y align-center">
-        <img src="../images/logo.png" width="100" height="100">
+        <img src="${pageContext.request.contextPath}/images/logo.png" width="100" height="100">
         <a href="${pageContext.request.contextPath}/accounts?page=1">Gestione Clienti</a>
         <a href="${pageContext.request.contextPath}/products?page=1">Gestione Prodotti</a>
         <a href="${pageContext.request.contextPath}/orders?page=1">Gestione Ordini</a>

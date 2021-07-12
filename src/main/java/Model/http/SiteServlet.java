@@ -53,9 +53,8 @@ public class SiteServlet extends Controller {
                     request.getRequestDispatcher(view("site/home")).forward(request, response);
                 default:
                     internalError();
-                case "/product":
-                    //response.sendRedirect("progetto_war_exploded/products/show");
-                    request.getRequestDispatcher(view("site/product")).forward(request, response);
+                case "/lorem":
+                    request.getRequestDispatcher(view("site/lorem")).forward(request, response);
             }
         } catch (InvalidRequestException | SQLException e) {
             e.printStackTrace();
