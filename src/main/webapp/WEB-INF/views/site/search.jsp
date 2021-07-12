@@ -39,7 +39,6 @@
             <c:forEach items="${products}" var="product">
                 <%@ include file="../partials/site/card.jsp" %>
             </c:forEach>
-
         </div>
     </section>
 </main>

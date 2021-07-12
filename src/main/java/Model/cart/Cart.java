@@ -4,6 +4,7 @@ import Model.product.Product;
 import Model.account.Account;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class Cart {
 
@@ -47,7 +48,7 @@ public class Cart {
         this.account = account;
     }
 
-    public  double totaleCarrello(){
+    public  double totaleCart(){
         double totale=0;
         for(CarItem i: items){
             totale +=i.total();
@@ -55,9 +56,45 @@ public class Cart {
         return totale;
     }
 
-    public void addProdotto(Product product, int quantita) {
-        CarItem item = new CarItem(product,quantita);
-        items.add(item);
+    public boolean addProduct(Product product, int quantity) {
+        Optional<CarItem> optItem = find(product.getProductId());
+        if(optItem.isPresent()){
+            optItem.get().setQuantity(quantity);
+            return true;
+        }
+        else
+            return items.add(new CarItem(product,quantity));
+    }
+
+    public Optional<CarItem> find(int id) {
+        for (CarItem car : items) {
+            if (car.getProduct().getProductId() == id) {
+                return Optional.of(car);
+            }
+        }
+        return null;
+    }
+
+    public boolean removeProduct(int id) {
+        for (CarItem car : items) {
+            if (car.getProduct().getProductId() == id) {
+                items.remove(car);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void resetCart(){
+        items.clear();
+    }
+
+    public int quantity(){
+        int totalQuantity = 0;
+        for (CarItem item: items) {
+            totalQuantity+=item.getQuantity();
+        }
+        return totalQuantity;
     }
 
     private int idCart;

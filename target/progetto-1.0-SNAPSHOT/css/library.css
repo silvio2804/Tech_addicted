@@ -152,9 +152,18 @@ button.primary:hover {
 .paginator {
     list-style-type: none;
 }
-
+.paginator > li {
+    border: 1px solid var(--white);
+    padding: .5rem;
+    background-color: var(--primary);
+}
 .paginator > li > a {
     text-decoration: none;
+    color: var(--white);
+}
+
+.paginator > li:hover{
+    filter: brightness(110%);
 }
 
 @media screen and (min-width: 769px) {
@@ -208,29 +217,35 @@ button.primary:hover {
         content: "";
         float: none;
     }
+}
 
-    .notification {
-        position: relative;
-        color: var(--white);
-        border-radius: 10px;
-        padding: .2rem;
-        margin-bottom: .2rem;
-    }
+.notification {
+    position: relative;
+    color: var(--white);
+    border-radius: 10px;
+    padding: .2rem;
+    margin-bottom: .2rem;
+}
 
-    .notification.success {
-        background-color: var(--success);
-    }
+.notification.success {
+    background-color: var(--success);
+}
 
-    .notification.danger {
-        background-color: var(--error);
-    }
+.notification.danger {
+    background-color: var(--error);
+}
 
-    .notification.close {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        fill: var(--white);
-    }
+.notification.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    fill: var(--white);
+}
+
+.errMsg{
+    color: var(--error);
+    display: block;
+    font-size: .5rem;
 }
 
 input {

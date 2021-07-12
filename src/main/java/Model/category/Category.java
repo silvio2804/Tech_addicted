@@ -1,10 +1,13 @@
 package Model.category;
 
+import Model.http.JsonSerializable;
 import Model.product.Product;
+import netscape.javascript.JSObject;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class Category {
+public class Category implements JsonSerializable {
 
     public Category(){
         super();
@@ -51,7 +54,15 @@ public class Category {
                 '}';
     }
 
+    @Override
+    public JSONObject toJson() {
+        JSONObject object = new JSONObject();
+        object.put("categoryId",this.categoryId);
+        object.put("categoryName",this.categoryName);
+        return object;
+    }
+
     private String categoryName;
     private int categoryId;
-    private ArrayList<Product> products;   //lista di prodotti appartenente alla categoria
+    private ArrayList<Product> products;
 }

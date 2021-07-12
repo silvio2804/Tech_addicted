@@ -2,7 +2,7 @@
 <html>
 <head>
     <jsp:include page="../partials/head.jsp">
-        <jsp:param name="title" value="Dettagli ${product.fullName}"/>
+        <jsp:param name="title" value="Dettagli ${product.name}"/>
         <jsp:param name="styles" value="site"/>
         <jsp:param name="scripts" value="site"/>
     </jsp:include>
@@ -11,7 +11,7 @@
 <%@include file="../partials/site/header.jsp" %>
 <main class="app grid-y">
     <figure class="cell w25 product-card">
-        <img src="${product.image}" alt="Immagine prodotto" class="fluid-img">
+        <img src="${product.cover}" alt="Immagine prodotto" class="fluid-img">
         <figcaption>
             <form method="post" action="/progetto_war_exploded/carts/add" class="grid-y">
                 <input type="hidden" name="id" value="${product.id}">
@@ -24,13 +24,13 @@
     </figure>
     <dl class="cell w50">
         <dt>Nome</dt>
-        <dd>${product.fullName}</dd>
+        <dd>${product.name}</dd>
         <dt>Descrizione</dt>
-        <dd>${product.resume}</dd>
+        <dd>${product.description}</dd>
         <dt>Prezzo</dt>
         <dd>${product.price}</dd>
         <dt>Categoria</dt>
-        <dd>${product.category.label}</dd>
+        <dd>${product.category.categoryName}</dd>
     </dl>
 </main>
 <%@include file="../partials/site/footer.jsp" %>

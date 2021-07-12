@@ -11,7 +11,11 @@ import Model.product.Product;
 import Model.product.ProductFormExtractor;
 import Model.product.ProductValidator;
 import Model.search.Paginator;
+import com.mysql.cj.xdevapi.JsonArray;
+import netscape.javascript.JSObject;
 import org.apache.tomcat.jdbc.pool.DataSource;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -69,7 +73,18 @@ public class CategoryServlet extends Controller {
                 case "/search":
                     request.getRequestDispatcher(view("site/search")).forward(request, response);
                     break;
-
+                case "/api":
+                    if(isAjax(request)){
+                        List<Category> categoryList = categoryManager.fetchCategories(new Paginator(1,30));
+                        JSONObject root = new JSONObject();
+                        JSONArray arr = new JSONArray();
+                        root.put("categories",categoryList);
+                        categoryList.forEach(c -> arr.put(c.toJson()));
+                        sendJson(response,root);
+                        break;
+                    }else{
+                        notFound();
+                    }
                 default:
                     notFound();
             }

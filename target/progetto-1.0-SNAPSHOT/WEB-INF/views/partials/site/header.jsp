@@ -43,9 +43,17 @@
         </c:otherwise>
         </c:choose>
 
-
     </div>
     <span>
+        <a href="${not empty accountSession ? "/progetto_war_exploded/carts/show":"/progetto_war_exploded/accounts/signin"}"
         <%@include file="../../../../icons/shopping-cart-empty-side-view.svg" %>
+        <c:choose>
+            <c:when test="${not empty accountCart}">
+                <span class="badge">${accountCart.quantity()}</span>
+            </c:when>
+            <c:otherwise>
+                <span class="badge">0</span>
+            </c:otherwise>
+        </c:choose>
     </span>
 </header>
