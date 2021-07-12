@@ -10,6 +10,7 @@
         <th>Cognome</th>
         <th>Email</th>
         <th>Data nascita</th>
+        <th>Admin</th>
     </tr>
     </thead>
     <tbody>

@@ -1,10 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
-<html>
+<!doctype html>
+<html lang="it" dir="ltr">
 <head>
     <jsp:include page="../partials/head.jsp">
         <jsp:param name="title" value="Benvenuti in Tech Addicted"/>
         <jsp:param name="styles" value="site"/>
-        <jsp:param name="scripts" value="site,slide"/>
+        <jsp:param name="scripts" value="site,slide,header"/>
     </jsp:include>
 </head>
 <body>
@@ -29,14 +30,13 @@
         </div>
         <br>
 
-        <!-- The dots/circles -->
         <div style="text-align:center;">
             <span class="dot" onclick="currentSlide(1)"></span>
             <span class="dot" onclick="currentSlide(2)"></span>
             <span class="dot" onclick="currentSlide(3)"></span>
         </div>
     </section>
-
+<br>
     <section id="best">
         <h1 class="bs">IN EVIDENZA</h1>
         <div class="grid-x">
@@ -47,6 +47,5 @@
     </section>
 </main>
 <%@include file="../partials/site/footer.jsp" %>
-
 </body>
 </html>

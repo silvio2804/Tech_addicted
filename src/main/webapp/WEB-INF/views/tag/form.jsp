@@ -41,6 +41,12 @@
         <button type="submit" class="cell w40 btn primary">${isCreate ? 'Crea' : 'Aggiorna'}</button>
     </fieldset>
 </form>
+            <c:if test="${not isCreate}">
+                <form method="post" action="progetto_war_exploded/tags/delete">
+                    <input type="hidden" name="id" value="${tag.tagId}">
+                    <button type="submit" class="cell w40 btn">Elimina</button>
+                </form>
+            </c:if>
         </div>
     </section>
 </main>

@@ -8,5 +8,15 @@ hamburger.addEventListener('click', function(){
 
 const homeImg = document.getElementsByClassName("menu")[0].firstElementChild
 homeImg.addEventListener('click', function(){
-    window.location.href = "/progetto_war_exploded/crm/dashboard"
+    window.location.href = "/progetto_war_exploded/site/home"
 })
+
+
+
+const notification = document.getElementsByClassName('notification')[0]
+if (notification) {
+    const notycross = document.getElementById('notification-close')
+    notycross.addEventListener('click', function () {
+        notification.style.display = 'none'
+    })
+}

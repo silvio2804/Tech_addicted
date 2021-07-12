@@ -29,7 +29,7 @@
 <body>
     <div id="container">
         <p>Errore interno, qualcosa è andato storto..</p>
-        <p><a href="${pageContext.request.contextPath}/pages/">Torna alla home page</a></p>
+        <p><a href="${pageContext.request.contextPath}/site/home">Torna alla home page</a></p>
     </div>
 </body>
 </html>

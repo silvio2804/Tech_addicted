@@ -37,6 +37,7 @@
     --grey: #D4D4D4;
     --error: #ee4037;
     --success: #89C540;
+    --accent: #9e7bd1;
 }
 
 input, select, textarea {
@@ -152,18 +153,9 @@ button.primary:hover {
 .paginator {
     list-style-type: none;
 }
-.paginator > li {
-    border: 1px solid var(--white);
-    padding: .5rem;
-    background-color: var(--primary);
-}
+
 .paginator > li > a {
     text-decoration: none;
-    color: var(--white);
-}
-
-.paginator > li:hover{
-    filter: brightness(110%);
 }
 
 @media screen and (min-width: 769px) {
@@ -235,20 +227,14 @@ button.primary:hover {
     background-color: var(--error);
 }
 
-.notification.close {
+.notification .close {
     position: absolute;
     top: 10px;
     right: 10px;
     fill: var(--white);
 }
 
-.errMsg{
-    color: var(--error);
-    display: block;
-    font-size: .5rem;
-}
-
-input {
+input:not[type=radio]:not[type=checkbox] {
     height: 42px;
 }
 

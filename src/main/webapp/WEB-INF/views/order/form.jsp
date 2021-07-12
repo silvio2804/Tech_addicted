@@ -1,10 +1,10 @@
-<%@ taglib prefix ="c" uri ="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <jsp:useBean id="order" class="Model.order.Order" scope="request"/>
 <c:set var="isCreate" value="${order.orderId == 0}"/>
 
 <c:if test="${not empty alert}">
-    <%@include file="../partials/alert.jsp"%>
+    <%@include file="../partials/alert.jsp" %>
 </c:if>
 
 <!doctype html>
@@ -29,24 +29,31 @@
         <div class="body grid-x justify-center">
 
 
-<form method="post"action="/progetto_war_exploded/orders/${isCreate ? 'create': 'update'}">
-    <c:if test="${not isCreate}">
-        <input type="hidden" name="orderId" value="${order.orderId}">
-    </c:if>
-    <fieldset class="grid-x cell product-form">
-        <legend>${isCreate ? 'Crea' : 'Aggiorna'} Ordine </legend>
+            <form method="post" action="/progetto_war_exploded/orders/${isCreate ? 'create': 'update'}">
+                <c:if test="${not isCreate}">
+                    <input type="hidden" name="orderId" value="${order.orderId}">
+                </c:if>
+                <fieldset class="grid-x cell product-form">
+                    <legend>${isCreate ? 'Crea' : 'Aggiorna'} Ordine</legend>
 
-        <label for="orderDate" class="field cell w 40">
-            <input id="orderDate" name="orderDate" placeholder="Data ordine" type="text" value="${order.orderDate}">
-        </label>
+                    <label for="orderDate" class="field cell w 40">
+                        <input id="orderDate" name="orderDate" placeholder="Data ordine" type="text"
+                               value="${order.orderDate}">
+                    </label>
 
-        <label for="payment" class="field cell w 40">
-            <input id="payment" name="payment" placeholder="Pagamento" type="text" value="${order.payment}">
-        </label>
+                    <label for="payment" class="field cell w 40">
+                        <input id="payment" name="payment" placeholder="Pagamento" type="text" value="${order.payment}">
+                    </label>
 
-        <button type="submit" class="cell w40 btn primary">${isCreate ? 'Crea' : 'Aggiorna'}</button>
-    </fieldset>
-</form>
+                    <button type="submit" class="cell w40 btn primary">${isCreate ? 'Crea' : 'Aggiorna'}</button>
+                </fieldset>
+            </form>
+            <c:if test="${not isCreate}">
+                <form method="post" action="progetto_war_exploded/orders/delete">
+                    <input type="hidden" name="id" value="${order.orderId}">
+                    <button type="submit" class="cell w40 btn">Elimina</button>
+                </form>
+            </c:if>
         </div>
     </section>
 </main>
