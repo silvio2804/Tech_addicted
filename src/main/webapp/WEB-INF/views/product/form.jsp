@@ -1,11 +1,8 @@
-<%@ taglib prefix ="c" uri ="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <jsp:useBean id="product" class="Model.product.Product" scope="request"/>
 <c:set var="isCreate" value="${product.productId == 0}"/>
 
-<c:if test="${not empty alert}">
-    <%@include file="../partials/alert.jsp"%>
-</c:if>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 
@@ -28,38 +25,48 @@
     <%@include file="../partials/crm/sidebar.jsp" %>
     <section class="content grid-y">
         <%@include file="../partials/crm/header.jsp" %>
-        <div class="body grid-x justify-center">
-
-<form method="post"action="/progetto_war_exploded/products/${isCreate ? 'create': 'update'}" enctype="multipart/form-data">
-    <c:if test="${not isCreate}">
-        <input type="hidden" name="productId" value="${product.productId}">
-    </c:if>
-    <fieldset class="grid-y cell product-form">
-        <legend>${isCreate ? 'Crea' : 'Aggiorna'} Prodotto</legend>
-            <label for="name" class="field cell w50">
-                <input type="text" id="name" name="name" placeholder="Nome" value="${product.name}">
-            </label>
-            <label for="price" class="field cell w50">
-                <input type="text" id="price" name="price" placeholder="Prezzo" value="${product.price}">
-            </label>
-            <label for="description" class="field cell w50">
-                <input type="text" id="description" name="description" placeholder="Descrizione" value="${product.description}">
-            </label>
-            <label for="categoryId" class="field cell w50">
-                    <select name="categoryId" id="categoryId">
-                        <c:forEach items="${categories}" var="category">
-                        <option value=${category.categoryId}>
-                                ${category.categoryName}
-                        </option>
-                    </c:forEach>
-                    </select>
-            </label>
-            <label for="cover" class="field cell w50">
-                <input type="file" id="cover" name="cover">
-            </label>
-        <button type="submit" class="cell w40 btn primary">${isCreate ? 'Crea' : 'Aggiorna'}</button>
-    </fieldset>
-</form>
+        <div class="body grid-y justify-center">
+            <c:if test="${not empty alert}">
+                <%@include file="../partials/alert.jsp" %>
+            </c:if>
+            <form method="post" action="/progetto_war_exploded/products/${isCreate ? 'create': 'update'}"
+                  enctype="multipart/form-data">
+                <c:if test="${not isCreate}">
+                    <input type="hidden" name="productId" value="${product.productId}">
+                </c:if>
+                <fieldset class="grid-y cell product-form">
+                    <legend>${isCreate ? 'Crea' : 'Aggiorna'} Prodotto</legend>
+                    <label for="name" class="field cell w50">
+                        <input type="text" id="name" name="name" placeholder="Nome" value="${product.name}">
+                    </label>
+                    <label for="price" class="field cell w50">
+                        <input type="text" id="price" name="price" placeholder="Prezzo" value="${product.price}">
+                    </label>
+                    <label for="description" class="field cell w50">
+                        <input type="text" id="description" name="description" placeholder="Descrizione"
+                               value="${product.description}">
+                    </label>
+                    <label for="categoryId" class="field cell w50">
+                        <select name="categoryId" id="categoryId">
+                            <c:forEach items="${categories}" var="category">
+                                <option value=${category.categoryId}>
+                                        ${category.categoryName}
+                                </option>
+                            </c:forEach>
+                        </select>
+                    </label>
+                    <label for="cover" class="field cell w50">
+                        <input type="file" id="cover" name="cover">
+                    </label>
+                    <button type="submit" class="cell w40 btn primary">${isCreate ? 'Crea' : 'Aggiorna'}</button>
+                </fieldset>
+            </form>
+            <c:if test="${not isCreate}">
+                <form method="post" action="/progetto_war_exploded/products/delete">
+                    <input type="hidden" name="id" value="${product.productId}">
+                    <button type="submit" class="cell w40 btn">Elimina</button>
+                </form>
+            </c:if>
         </div>
     </section>
 </main>

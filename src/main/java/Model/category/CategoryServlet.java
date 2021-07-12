@@ -59,11 +59,10 @@ public class CategoryServlet extends Controller {
                 case "/show":
                     int id = Integer.parseInt(request.getParameter("id"));
                     Optional<Category> category = categoryManager.fetchCategory(id);
-                    if(category.isPresent()){
-                        request.setAttribute("category",category.get());
+                    if (category.isPresent()) {
+                        request.setAttribute("category", category.get());
                         request.getRequestDispatcher(view("category/form")).forward(request, response);
-                    }
-                    else
+                    } else
                         internalError();
                     break;
                 case "/search":
@@ -90,11 +89,11 @@ public class CategoryServlet extends Controller {
             switch (path) {
                 case "/create":
                     authorize(request.getSession(false));
-                    request.setAttribute("back",view("category/form"));
-                    validate(CategoryValidator.validateForm(request,false));
-                    Category category = new CategoryFormExtractor().extract(request,false);
-                    if(categoryManager.createCategory(category)) {
-                        request.setAttribute("alert",new Alert(List.of("Categoria creata !"),"success"));
+                    request.setAttribute("back", view("category/form"));
+                    validate(CategoryValidator.validateForm(request, false));
+                    Category category = new CategoryFormExtractor().extract(request, false);
+                    if (categoryManager.createCategory(category)) {
+                        request.setAttribute("alert", new Alert(List.of("Categoria creata !"), "success"));
                         response.setStatus(HttpServletResponse.SC_CREATED);
                         request.getRequestDispatcher(view("category/form")).forward(request, response);
                     } else
@@ -103,7 +102,7 @@ public class CategoryServlet extends Controller {
                 case "/update":
                     authorize(request.getSession(false));
                     request.setAttribute("back", view("crm/manageCategory"));
-                    validate(CategoryValidator.validateForm(request,false));
+                    validate(CategoryValidator.validateForm(request, false));
                     Category updateCategory = new CategoryFormExtractor().extract(request, true);
                     if (categoryManager.updateCategory(updateCategory)) {
                         request.setAttribute("category", updateCategory);
@@ -112,13 +111,22 @@ public class CategoryServlet extends Controller {
                     } else
                         internalError();
                     break;
+
+                case "/delete":
+                    authorize(request.getSession(false));
+                    request.setAttribute("back", view("crm/manageCategory"));
+                    int id = Integer.parseInt(request.getParameter("id"));
+                    if (categoryManager.deleteCategory(id)) {
+                        request.setAttribute("alert", new Alert(List.of("Categoria eliminata!"), "success"));
+                        request.getRequestDispatcher(view("crm/manageCategories")).forward(request, response);
+                    } else
+                        internalError();
+                    break;
             }
-        }
-        catch (SQLException t) {
+        } catch (SQLException t) {
             t.printStackTrace();
             log(t.getMessage());
-        }
-        catch (InvalidRequestException ex) {
+        } catch (InvalidRequestException ex) {
             ex.printStackTrace();
             log(ex.getMessage());
             ex.handle(request, response);

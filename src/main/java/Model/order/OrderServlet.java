@@ -104,6 +104,16 @@ public class OrderServlet extends Controller {
                     } else
                         internalError();
                     break;
+                case "/delete":
+                    authorize(request.getSession(false));
+                    request.setAttribute("back", view("crm/manageOrder"));
+                    int id = Integer.parseInt(request.getParameter("id"));
+                    if (orderManager.deleteOrder(id)) {
+                        request.setAttribute("alert", new Alert(List.of("Ordine eliminato!"), "success"));
+                        request.getRequestDispatcher(view("crm/manageOrder")).forward(request, response);
+                    } else
+                        internalError();
+                    break;
             }
         }
         catch (SQLException t) {

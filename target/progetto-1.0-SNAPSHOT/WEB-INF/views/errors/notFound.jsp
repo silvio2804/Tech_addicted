@@ -33,7 +33,7 @@
 
 <div id="container">
     <p>Pagina non trovata, assicurati di aver digitato l'indirizzo correttamente</p>
-    <p><a href="${pageContext.request.contextPath}/pages/">Torna alla home page</a></p>
+    <p><a href="${pageContext.request.contextPath}/site/home">Torna alla home page</a></p>
 </div>
 </body>
 </html>

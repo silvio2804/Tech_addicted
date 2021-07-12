@@ -7,6 +7,7 @@ import Model.category.CategoryValidator;
 import Model.http.Controller;
 import Model.http.InvalidRequestException;
 import Model.search.Paginator;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +24,7 @@ public class DiscountServlet extends Controller {
 
     private DiscountManager discountManager;
 
-    public void init() throws ServletException{
+    public void init() throws ServletException {
         try {
             discountManager = new DiscountManager(source);
         } catch (SQLException e) {
@@ -31,18 +32,18 @@ public class DiscountServlet extends Controller {
         }
     }
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             String path = getPath(request);
-            switch (path){
+            switch (path) {
                 case "/":
                     authorize(request.getSession());
-                    request.setAttribute("back",view("crm/product"));
+                    request.setAttribute("back", view("crm/product"));
                     Paginator paginator = new Paginator(1, 5);
                     int size = discountManager.countAll();
                     request.setAttribute("pages", paginator.getPages(size));
                     ArrayList<Discount> discounts = discountManager.fetchDiscounts(paginator);
-                    request.setAttribute("discounts",discounts);
+                    request.setAttribute("discounts", discounts);
                     request.getRequestDispatcher(view("crm/manageDiscount")).forward(request, response);
                     break;
                 case "/create":
@@ -52,11 +53,10 @@ public class DiscountServlet extends Controller {
                 case "/show":
                     int id = Integer.parseInt(request.getParameter("id"));
                     Optional<Discount> discount = discountManager.fetchDiscount(id);
-                    if(discount.isPresent()){
-                        request.setAttribute("discount",discount.get());
+                    if (discount.isPresent()) {
+                        request.setAttribute("discount", discount.get());
                         request.getRequestDispatcher(view("discount/form")).forward(request, response);
-                    }
-                    else
+                    } else
                         internalError();
                     break;
                 case "/search":
@@ -82,7 +82,7 @@ public class DiscountServlet extends Controller {
                 case "/create":
                     authorize(request.getSession(false));
                     request.setAttribute("back", view("crm/manageDiscount"));
-                    validate(DiscountValidator.validateForm(request,false));
+                    validate(DiscountValidator.validateForm(request, false));
                     Discount discount = new DiscountFormExtractor().extract(request, false);
                     if (discountManager.createDiscount(discount)) {
                         request.setAttribute("alert", new Alert(List.of("Sconto creato !"), "success"));
@@ -94,7 +94,7 @@ public class DiscountServlet extends Controller {
                 case "/update":
                     authorize(request.getSession(false));
                     request.setAttribute("back", view("crm/manageDiscount"));
-                    validate(DiscountValidator.validateForm(request,true));
+                    validate(DiscountValidator.validateForm(request, true));
                     Discount updateDiscount = new DiscountFormExtractor().extract(request, true);
                     if (discountManager.updateDiscount(updateDiscount)) {
                         request.setAttribute("discount", updateDiscount);
@@ -103,13 +103,22 @@ public class DiscountServlet extends Controller {
                     } else
                         internalError();
                     break;
+
+                case "/delete":
+                    authorize(request.getSession(false));
+                    request.setAttribute("back", view("crm/manageDiscount"));
+                    int id = Integer.parseInt(request.getParameter("id"));
+                    if (discountManager.deleteDiscount(id)) {
+                        request.setAttribute("alert", new Alert(List.of("Sconto eliminato!"), "success"));
+                        request.getRequestDispatcher(view("crm/manageDiscount")).forward(request, response);
+                    } else
+                        internalError();
+                    break;
             }
-        }
-        catch (SQLException t) {
+        } catch (SQLException t) {
             t.printStackTrace();
             log(t.getMessage());
-        }
-        catch (InvalidRequestException ex) {
+        } catch (InvalidRequestException ex) {
             ex.printStackTrace();
             log(ex.getMessage());
             ex.handle(request, response);

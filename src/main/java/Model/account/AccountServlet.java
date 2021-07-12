@@ -123,7 +123,7 @@ public class AccountServlet extends Controller {
                     Optional<Account> accountOpt= accountManager.findAccount(registerAccount.getEmail(), registerAccount.getPassword());
                     if (!accountOpt.isPresent()) {
                         accountManager.createAccount(registerAccount);
-                        System.out.println("account creatoo");
+                        System.out.println("account creato");
                         response.sendRedirect("../site/home");
                     }
                     else{
@@ -169,7 +169,7 @@ public class AccountServlet extends Controller {
                     Account updateAccount = new AccountFormExtractor().extract(request, true);
                 if(accountManager.updateAccount(updateAccount)){
                     request.setAttribute("account",updateAccount);
-                    request.setAttribute("alert",new Alert(List.of("Account aggiornato !"),"success"));
+                    request.setAttribute("alert",new Alert(List.of("Account aggiornato!"),"success"));
                     request.getRequestDispatcher(view("account/form")).forward(request,response);
                 }
                 else
@@ -177,6 +177,19 @@ public class AccountServlet extends Controller {
                     break;
                 case "profile": //aggiorna profilo cliente
                     break;
+
+                case "delete":
+                    authorize(request.getSession(false));
+                    request.setAttribute("back", view("crm/account"));
+                    int id = Integer.parseInt(request.getParameter("id"));
+                    if(accountManager.deleteAccount(id)){
+                        request.setAttribute("alert",new Alert(List.of("Account eliminato!"),"success"));
+                        request.getRequestDispatcher(view("crm/manageAccount")).forward(request,response);
+                    } else
+                        internalError();
+                    break;
+
+
                 case "logout": //logout per entrambi
                     break;
                 default:

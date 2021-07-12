@@ -80,6 +80,10 @@
     #profileform * {
         flex-basis: 80%;
         align-items: center;
-        margin: 6px;
+        margin: 5px;
     }
+}
+
+.content > * {
+    position: relative;
 }

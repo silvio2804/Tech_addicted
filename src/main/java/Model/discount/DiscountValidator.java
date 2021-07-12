@@ -9,7 +9,7 @@ public class DiscountValidator {
     static RequestValidator validateForm(HttpServletRequest request, boolean update){
         RequestValidator validator = new RequestValidator(request);
         validator.assertMatch("discountName", Pattern.compile("^\\w{4,20}$"),"Il nome deve avere lunghezza tra 4 e 20 caratteri");
-        validator.assertInt("percentage","La percentuale è un intero");
+        validator.assertInt("percentage","La percentuale deve essere un intero");
         if(update){
             validator.assertInt("id","Id deve essere un numero intero");
         }

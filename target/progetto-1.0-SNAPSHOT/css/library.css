@@ -37,6 +37,7 @@
     --grey: #D4D4D4;
     --error: #ee4037;
     --success: #89C540;
+    --accent: #9e7bd1;
 }
 
 input, select, textarea {
@@ -208,32 +209,32 @@ button.primary:hover {
         content: "";
         float: none;
     }
-
-    .notification {
-        position: relative;
-        color: var(--white);
-        border-radius: 10px;
-        padding: .2rem;
-        margin-bottom: .2rem;
-    }
-
-    .notification.success {
-        background-color: var(--success);
-    }
-
-    .notification.danger {
-        background-color: var(--error);
-    }
-
-    .notification.close {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        fill: var(--white);
-    }
 }
 
-input {
+.notification {
+    position: relative;
+    color: var(--white);
+    border-radius: 10px;
+    padding: .2rem;
+    margin-bottom: .2rem;
+}
+
+.notification.success {
+    background-color: var(--success);
+}
+
+.notification.danger {
+    background-color: var(--error);
+}
+
+.notification .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    fill: var(--white);
+}
+
+input:not[type=radio]:not[type=checkbox] {
     height: 42px;
 }
 

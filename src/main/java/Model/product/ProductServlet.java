@@ -6,6 +6,7 @@ import Model.category.CategoryManager;
 import Model.http.Controller;
 import Model.http.ErrorHandler;
 import Model.http.InvalidRequestException;
+import Model.http.RequestValidator;
 import Model.search.Condition;
 import Model.search.Paginator;
 
@@ -50,24 +51,24 @@ public class ProductServlet extends Controller implements ErrorHandler {
                 case "/":
                     HttpSession session = request.getSession();
                     authorize(session);
-                    request.setAttribute("back",view("crm/product"));
-                    Paginator paginator = new Paginator(1, 5);
+                    request.setAttribute("back", view("crm/product"));
+                    int intPage = parsePage(request);
+                    Paginator paginator = new Paginator(intPage, 5);
                     int size = productManager.countAll();
                     request.setAttribute("pages", paginator.getPages(size));
                     ArrayList<Product> products = productManager.fetchProducts(paginator);
-                    request.setAttribute("products",products);
-                    session.setAttribute("categories",categories);
+                    request.setAttribute("products", products);
+                    session.setAttribute("categories", categories);
                     request.getRequestDispatcher(view("crm/manageProduct")).forward(request, response);
                     break;
                 case "/show":
                     int id = Integer.parseInt(request.getParameter("id"));
                     Optional<Product> product = productManager.fetchProduct(id);
-                    if(product.isPresent()){
-                        request.setAttribute("product",product.get());
-                        request.setAttribute("categories",categories);
+                    if (product.isPresent()) {
+                        request.setAttribute("product", product.get());
+                        request.setAttribute("categories", categories);
                         request.getRequestDispatcher(view("product/form")).forward(request, response);
-                    }
-                    else
+                    } else
                         internalError();
                     break;
                 case "/create":
@@ -75,6 +76,10 @@ public class ProductServlet extends Controller implements ErrorHandler {
                     request.getRequestDispatcher(view("product/form")).forward(request, response);
                     break;
                 case "/search":
+                    ProductSearch productSearch = new ProductSearch();
+                    List<Condition> conditions = productSearch.buildSearch(request);
+                    List<Product> searchProd = productManager.search(conditions);
+                    request.setAttribute("products", searchProd);
                     request.getRequestDispatcher(view("site/search")).forward(request, response);
                     break;
                 case "/advancedSearch":
@@ -84,26 +89,23 @@ public class ProductServlet extends Controller implements ErrorHandler {
                     categoryManager = new CategoryManager(source);
                     int idCat = Integer.parseInt(request.getParameter("categoryId"));
                     Optional<Category> category = categoryManager.fetchCategory(idCat);
-                    if (category.isPresent()){
+                    if (category.isPresent()) {
                         ArrayList<Product> prod = productManager.fetchProductsByCategory(category.get());
                         request.setAttribute("products", prod);
                         request.getRequestDispatcher(view("site/search")).forward(request, response);
-                    }
-                    else notFound();
+                    } else notFound();
                     break;
                 default:
                     notFound();
             }
-        }
-        catch (SQLException sqlException){
+        } catch (SQLException sqlException) {
             sqlException.printStackTrace();
+        } catch (InvalidRequestException ex) {
+            ex.printStackTrace();
+            log(ex.getMessage());
+            ex.handle(request, response);
         }
-     catch (InvalidRequestException ex) {
-        ex.printStackTrace();
-        log(ex.getMessage());
-        ex.handle(request, response);
     }
-}
 
 
     @Override
@@ -113,15 +115,17 @@ public class ProductServlet extends Controller implements ErrorHandler {
             switch (path) {
                 case "/create":
                     authorize(request.getSession(false));
-                    request.setAttribute("back",view("product/form"));
+                    request.setAttribute("back", view("product/form"));
                     validate(ProductValidator.validateForm(request));
-                    Product product = new ProductFormExtractor().extract(request,false);
+                    RequestValidator requestValidator = ProductValidator.validateForm(request);
+                    System.out.println(requestValidator.getError());
+                    Product product = new ProductFormExtractor().extract(request, false);
                     Part filePart = request.getPart("cover");
                     String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
                     product.setCover(fileName);
-                    if(productManager.createProduct(product)) {
+                    if (productManager.createProduct(product)) {
                         product.writeCover(getUploadPath(), request.getPart("cover"));
-                        request.setAttribute("alert",new Alert(List.of("Prodotto creato!"),"success"));
+                        request.setAttribute("alert", new Alert(List.of("Prodotto creato!"), "success"));
                         response.setStatus(HttpServletResponse.SC_CREATED);
                         request.getRequestDispatcher(view("product/form")).forward(request, response);
                     } else
@@ -129,26 +133,35 @@ public class ProductServlet extends Controller implements ErrorHandler {
                     break;
                 case "/search":
                     List<Condition> conditions = new ProductSearch().buildSearch(request);
-                    List<Product> searchProducts = conditions.isEmpty() ? productManager.fetchProducts(new Paginator(1,50)):
+                    List<Product> searchProducts = conditions.isEmpty() ? productManager.fetchProducts(new Paginator(1, 50)) :
                             productManager.search(conditions);
-                            request.setAttribute("products",searchProducts);
-                            request.getRequestDispatcher(view("site/search")).forward(request,response);
+                    request.setAttribute("products", searchProducts);
+                    request.getRequestDispatcher(view("site/search")).forward(request, response);
                     break;
                 case "/update":
                     authorize(request.getSession(false));
-                    request.setAttribute("back",view("crm/product"));
+                    request.setAttribute("back", view("crm/product"));
                     validate(ProductValidator.validateForm(request));
-                    Product updateProduct = new ProductFormExtractor().extract(request,true);
-                    request.setAttribute("product",updateProduct);
-                    if(productManager.updateProduct(updateProduct)){
+                    Product updateProduct = new ProductFormExtractor().extract(request, true);
+                    request.setAttribute("product", updateProduct);
+                    if (productManager.updateProduct(updateProduct)) {
                         Part filePart1 = request.getPart("cover");
                         String fileName1 = Paths.get(filePart1.getSubmittedFileName()).getFileName().toString();
                         updateProduct.setCover(fileName1);
                         updateProduct.writeCover(getUploadPath(), request.getPart("cover"));
-                        request.setAttribute("alert",new Alert(List.of("Prodotto aggiornato!"),"success"));
+                        request.setAttribute("alert", new Alert(List.of("Prodotto aggiornato!"), "success"));
                         request.getRequestDispatcher(view("product/form")).forward(request, response);
-                    }
-                    else
+                    } else
+                        internalError();
+                    break;
+                case "/delete":
+                    authorize(request.getSession(false));
+                    request.setAttribute("back", view("crm/manageProduct"));
+                    int id = Integer.parseInt(request.getParameter("id"));
+                    if (productManager.deleteProduct(id)) {
+                        request.setAttribute("alert", new Alert(List.of("Prodotto eliminato!"), "success"));
+                        request.getRequestDispatcher(view("product/form")).forward(request, response);
+                    } else
                         internalError();
                     break;
                 default:

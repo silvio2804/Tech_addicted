@@ -1,5 +1,3 @@
-$(document).ready(function(){
-
 const homeImg = document.getElementsByClassName("leftside")[0].firstElementChild
 homeImg.addEventListener('click', function(){
     window.location.href = "/progetto_war_exploded/site/home"
@@ -7,5 +5,13 @@ homeImg.addEventListener('click', function(){
 
 const login = document.getElementsByClassName("account")[1]
 login.addEventListener('click', function(){
-    window.location.href = "/progetto_war_exploded/accounts/secret"
-})}
+    window.location.href = "/progetto_war_exploded/accounts/signin"
+})
+
+const form = document.getElementById('myForm')
+const btn = document.getElementById('sc')
+btn.addEventListener('click', function () {
+
+    form.classList.toggle('block')
+
+})

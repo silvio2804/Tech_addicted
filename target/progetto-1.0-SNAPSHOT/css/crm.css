@@ -6,6 +6,7 @@
 .topbar, .sidebar {
     background-color: var(--primary);
     padding: .5rem;
+    border-radius: 0px 0px 6px;
 }
 
 .menu > a {
@@ -79,6 +80,10 @@
     #profileform * {
         flex-basis: 80%;
         align-items: center;
-        margin: 6px;
+        margin: 5px;
     }
+}
+
+.content > * {
+    position: relative;
 }

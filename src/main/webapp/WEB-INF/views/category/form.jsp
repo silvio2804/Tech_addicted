@@ -1,10 +1,10 @@
-<%@ taglib prefix ="c" uri ="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <jsp:useBean id="category" class="Model.category.Category" scope="request"/>
 <c:set var="isCreate" value="${category.categoryId == 0}"/>
 
 <c:if test="${not empty alert}">
-    <%@include file="../partials/alert.jsp"%>
+    <%@include file="../partials/alert.jsp" %>
 </c:if>
 
 <!doctype html>
@@ -28,18 +28,25 @@
         <%@include file="../partials/crm/header.jsp" %>
 
         <div class="body grid-x justify-center">
-<form method="post"action="/progetto_war_exploded/categories/${isCreate ? 'create': 'update'}">
-    <c:if test="${not isCreate}">
-        <input type="hidden" name="categoryId" value="${category.categoryId}">
-    </c:if>
-    <fieldset class="grid-x cell category-form">
-        <legend>${isCreate ? 'Crea' : 'Aggiorna'} Categoria</legend>
-        <label for="categoryName" class="field cell w 40">
-            <input id="categoryName" name="categoryName" placeholder="Nome categoria" type="text" value="${category.categoryName}">
-        </label>
-        <button type="submit" class="cell w40 btn primary">${isCreate ? 'Crea' : 'Aggiorna'}</button>
-    </fieldset>
-</form>
+            <form method="post" action="/progetto_war_exploded/categories/${isCreate ? 'create': 'update'}">
+                <c:if test="${not isCreate}">
+                    <input type="hidden" name="categoryId" value="${category.categoryId}">
+                </c:if>
+                <fieldset class="grid-x cell category-form">
+                    <legend>${isCreate ? 'Crea' : 'Aggiorna'} Categoria</legend>
+                    <label for="categoryName" class="field cell w 40">
+                        <input id="categoryName" name="categoryName" placeholder="Nome categoria" type="text"
+                               value="${category.categoryName}">
+                    </label>
+                    <button type="submit" class="cell w40 btn primary">${isCreate ? 'Crea' : 'Aggiorna'}</button>
+                </fieldset>
+            </form>
+            <c:if test="${not isCreate}">
+                <form method="post" action="progetto_war_exploded/categories/delete">
+                    <input type="hidden" name="id" value="${category.categoryId}">
+                    <button type="submit" class="cell w40 btn">Elimina</button>
+                </form>
+            </c:if>
         </div>
     </section>
 </main>

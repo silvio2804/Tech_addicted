@@ -106,6 +106,16 @@ public class TagServlet extends Controller {
                     } else
                         internalError();
                     break;
+                case "/delete":
+                    authorize(request.getSession(false));
+                    request.setAttribute("back", view("crm/manageTag"));
+                    int id = Integer.parseInt(request.getParameter("id"));
+                    if (tagManager.deleteTag(id)) {
+                        request.setAttribute("alert", new Alert(List.of("Tag eliminato!"), "success"));
+                        request.getRequestDispatcher(view("crm/manageTag")).forward(request, response);
+                    } else
+                        internalError();
+                    break;
             }
         }
         catch (SQLException t) {
