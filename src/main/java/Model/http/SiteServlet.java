@@ -44,9 +44,9 @@ public class SiteServlet extends Controller {
             switch (path) {
                 case "/home":
                     HttpSession session = request.getSession();
-                    ArrayList<Product> products = productManager.fetchProducts(new Paginator(1, 8));
+                    ArrayList<Product> products = productManager.fetchProducts(new Paginator(1, 4));
                     ArrayList<Category> categories = categoryManager.fetchCategories(new Paginator(1, 30));
-                    ArrayList<Tag> tags = tagManager.fetchTags(new Paginator(1, 50));
+                    ArrayList<Tag> tags = tagManager.fetchTags(new Paginator(1, 30));
                     session.setAttribute("categories", categories);
                     request.setAttribute("products", products);
                     session.setAttribute("tags", tags);

@@ -20,6 +20,7 @@
         .cont-form {
             display: flex;
             margin-top: 15px;
+            align-self: center;
         }
 
         .checkmark {

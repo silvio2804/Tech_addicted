@@ -9,6 +9,8 @@ import Model.http.InvalidRequestException;
 import Model.http.RequestValidator;
 import Model.search.Condition;
 import Model.search.Paginator;
+import Model.tag.Tag;
+import Model.tag.TagManager;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -32,6 +34,7 @@ public class ProductServlet extends Controller implements ErrorHandler {
     private ProductManager productManager;
     private ArrayList<Category> categories;
     private CategoryManager categoryManager;
+    private TagManager tagManager;
 
     public void init() throws ServletException {
         super.init();
@@ -101,6 +104,17 @@ public class ProductServlet extends Controller implements ErrorHandler {
                     Optional<Category> category = categoryManager.fetchCategory(idCat);
                     if (category.isPresent()) {
                         ArrayList<Product> prod = productManager.fetchProductsByCategory(category.get());
+                        request.setAttribute("products", prod);
+                        request.getRequestDispatcher(view("site/search")).forward(request, response);
+                    } else notFound();
+                    break;
+
+                case "/searchByTag":
+                    tagManager = new TagManager(source);
+                    int idTag = Integer.parseInt(request.getParameter("tag"));
+                    Optional<Tag> tag = tagManager.fetchTag(idTag);
+                    if (tag.isPresent()) {
+                        ArrayList<Product> prod = productManager.fetchProductsByTag(tag.get());
                         request.setAttribute("products", prod);
                         request.getRequestDispatcher(view("site/search")).forward(request, response);
                     } else notFound();

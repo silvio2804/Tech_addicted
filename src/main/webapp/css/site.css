@@ -7,12 +7,21 @@
     max-width: 100%;
     position: relative;
     padding: 50px;
-    display: block;
+    display: flex;
+    background: silver;
+    border-radius: 0px 0px 40px 40px;
+    align-content: center;
+    margin-top: -15px;
+    justify-content: center;
+    flex: 0 auto;
 }
 
 
 .mySlides {
     display: none;
+    border-style: solid;
+    border-radius: 40px;
+    overflow: hidden;
 }
 
 
@@ -43,6 +52,7 @@
     display: flex;
     margin-top: 183px;
     height: auto;
+    margin-bottom: 30px
 
 }
 
@@ -55,7 +65,7 @@
     z-index: 9998;
     height: 23%;
     flex-flow: row nowrap;
-    border-radius:0px 0px 16px 16px;
+    border-radius: 0px 0px 16px 16px;
     box-shadow: 0px 5px 18px 0px dimgray;
 }
 
@@ -176,10 +186,12 @@ div > .btn, span > .btn {
 }
 
 .bsi {
-    width: auto;
+    width: 80vw;
     display: flex;
-    max-height: 402px;
-    height: auto;
+    max-height: 49vh;
+    height: 49vh;
+    max-width: 80vw;
+    background: slategrey;
 }
 
 .topbar > * {
@@ -323,4 +335,53 @@ dt {
     font-style: italic;
     padding-top: 3px;
     margin-bottom: 3px;
+}
+
+.search-form {
+    flex-direction: column;
+    padding: 13px;
+    margin: 35px;
+    border-radius: 20px;
+    background: var(--primary);
+    filter: drop-shadow(2px 4px 6px black)
+}
+
+.search-form > * > *, .search-form > :not(label) {
+    padding: 5px;
+    margin: 4px;
+    border-radius: 4px;
+    width: 96%;
+}
+
+.search-form > .btn {
+    width: fit-content;
+    align-self: center;
+    padding: 9px;
+    margin: 6px;
+    border-radius: 11px;
+    border-style: solid;
+    border-color: gray;
+}
+
+.result {
+    display: flex;
+    width: 62%;
+    flex: 2;
+    margin: 10px;
+    height: auto;
+    padding: 3px;
+}
+
+.result > .card {
+    width: 94%;
+    margin: 15px;
+    justify-self: center;
+    box-shadow: none;
+    text-align: left;
+    max-width: none;
+}
+
+.result > .card > button {
+    padding: 10px;
+    border-radius: 5px;
 }

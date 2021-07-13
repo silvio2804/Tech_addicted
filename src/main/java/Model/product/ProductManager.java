@@ -9,6 +9,7 @@ import Model.search.Paginator;
 import Model.storage.Manager;
 import Model.storage.QueryBuilder;
 import Model.account.Account;
+import Model.tag.Tag;
 
 import javax.servlet.ServletOutputStream;
 import javax.sql.DataSource;
@@ -22,7 +23,7 @@ import java.util.Optional;
 
 public class ProductManager extends Manager implements ProductDao<SQLException> {
 
-    public ProductManager(DataSource source)throws SQLException{
+    public ProductManager(DataSource source) throws SQLException {
         super(source);
     }
 
@@ -32,8 +33,8 @@ public class ProductManager extends Manager implements ProductDao<SQLException> 
             QueryBuilder queryBuilder = new QueryBuilder("prodotto", "pro");
             String query = queryBuilder.select().limit(true).generateQuery();
             try (PreparedStatement ps = conn.prepareStatement(query)) {
-                ps.setInt(1,paginator.getOffset());
-                ps.setInt(2,paginator.getLimit());
+                ps.setInt(1, paginator.getOffset());
+                ps.setInt(2, paginator.getLimit());
                 ResultSet rs = ps.executeQuery();
                 ProductExtractor ex = new ProductExtractor();
                 ArrayList<Product> prodotti = new ArrayList<>();
@@ -56,16 +57,16 @@ public class ProductManager extends Manager implements ProductDao<SQLException> 
                 ps.setInt(1, id);
                 ResultSet rs = ps.executeQuery();
                 Product product = null;
-                    while (rs.next()) {
-                        product =new ProductExtractor().extract(rs);
-                        CategoryManager categoryManager = new CategoryManager(source);
-                        Optional<Category> category = categoryManager.fetchCategory(rs.getInt(6));
-                        product.setCategory(category.get());
-                    }
-                     return Optional.ofNullable(product);
+                while (rs.next()) {
+                    product = new ProductExtractor().extract(rs);
+                    CategoryManager categoryManager = new CategoryManager(source);
+                    Optional<Category> category = categoryManager.fetchCategory(rs.getInt(6));
+                    product.setCategory(category.get());
                 }
+                return Optional.ofNullable(product);
             }
         }
+    }
 
     @Override
     public boolean createProduct(Product product) throws SQLException {
@@ -102,8 +103,8 @@ public class ProductManager extends Manager implements ProductDao<SQLException> 
     public boolean updateProduct(Product product) throws SQLException {
         try (Connection conn = source.getConnection()) {
             QueryBuilder queryBuilder = new QueryBuilder("prodotto", "pro");
-            String query = queryBuilder.update("nome","descrizione","immagine",
-                    "prezzo","idCategoria").where("idProd=?").generateQuery();
+            String query = queryBuilder.update("nome", "descrizione", "immagine",
+                    "prezzo", "idCategoria").where("idProd=?").generateQuery();
             try (PreparedStatement ps = conn.prepareStatement(query)) {
                 ps.setString(1, product.getName());
                 ps.setString(2, product.getDescription());
@@ -117,6 +118,7 @@ public class ProductManager extends Manager implements ProductDao<SQLException> 
         }
     }
 
+    @Override
     public ArrayList<Product> fetchProductAccount(int idUtente) throws SQLException {
         try (Connection conn = source.getConnection()) {
             QueryBuilder queryBuilder = new QueryBuilder("ProdottiInCarrello", "proCar");
@@ -128,7 +130,7 @@ public class ProductManager extends Manager implements ProductDao<SQLException> 
 
 
     @Override
-    public List<Product> search(List <Condition> conditions) throws SQLException {
+    public List<Product> search(List<Condition> conditions) throws SQLException {
         try (Connection conn = source.getConnection()) {
             QueryBuilder queryBuilder = new QueryBuilder("prodotto", "pro");
             String query = queryBuilder.select("*").innerJoin("categoria", "cat")
@@ -160,25 +162,27 @@ public class ProductManager extends Manager implements ProductDao<SQLException> 
         }
     }
 
-   public  ArrayList<Category> fetchCategoriesByProducts() throws SQLException {
-       ArrayList<Category> categories = new ArrayList<>();
-       try (Connection conn = source.getConnection()) {
-           QueryBuilder queryBuilder = new QueryBuilder("categoria", "cat");
-           String query = queryBuilder.selectDistinct("nomeCategoria","idCat").outerJoin(true,"prodotto","pro").
-                   on("(cat.idCat = pro.idCategoria)").generateQuery();
-           try (PreparedStatement ps = conn.prepareStatement(query)) {
-               ResultSet rs = ps.executeQuery();
-               CategoryExtractor extractor = new CategoryExtractor();
-               while (rs.next()){
-                   Category category = extractor.extract(rs);
-                   categories.add(category);
-               }
-               return categories;
-           }
-       }
-   }
+    @Override
+    public ArrayList<Category> fetchCategoriesByProducts() throws SQLException {
+        ArrayList<Category> categories = new ArrayList<>();
+        try (Connection conn = source.getConnection()) {
+            QueryBuilder queryBuilder = new QueryBuilder("categoria", "cat");
+            String query = queryBuilder.selectDistinct("nomeCategoria", "idCat").outerJoin(true, "prodotto", "pro").
+                    on("(cat.idCat = pro.idCategoria)").generateQuery();
+            try (PreparedStatement ps = conn.prepareStatement(query)) {
+                ResultSet rs = ps.executeQuery();
+                CategoryExtractor extractor = new CategoryExtractor();
+                while (rs.next()) {
+                    Category category = extractor.extract(rs);
+                    categories.add(category);
+                }
+                return categories;
+            }
+        }
+    }
 
-    public int countAll() throws SQLException{
+    @Override
+    public int countAll() throws SQLException {
         try (Connection conn = source.getConnection()) {
             QueryBuilder queryBuilder = new QueryBuilder("prodotto", "pro");
             queryBuilder.count("allProducts");
@@ -191,16 +195,37 @@ public class ProductManager extends Manager implements ProductDao<SQLException> 
         return 0;
     }
 
-    public ArrayList<Product>fetchProductsByCategory(Category category) throws SQLException{
+    @Override
+    public ArrayList<Product> fetchProductsByCategory(Category category) throws SQLException {
         ArrayList<Product> products = new ArrayList<>();
         try (Connection conn = source.getConnection()) {
             QueryBuilder queryBuilder = new QueryBuilder("prodotto", "pro");
             String query = queryBuilder.select().where("idCategoria=?").generateQuery();
             try (PreparedStatement ps = conn.prepareStatement(query)) {
-                ps.setInt(1,category.getCategoryId());
+                ps.setInt(1, category.getCategoryId());
                 ResultSet rs = ps.executeQuery();
                 ProductExtractor productExtractor = new ProductExtractor();
-                while (rs.next()){
+                while (rs.next()) {
+                    Product product = productExtractor.extract(rs);
+                    products.add(product);
+                }
+                return products;
+            }
+        }
+    }
+
+    @Override
+    public ArrayList<Product> fetchProductsByTag(Tag tag) throws SQLException {
+        ArrayList<Product> products = new ArrayList<>();
+        try (Connection conn = source.getConnection()) {
+            QueryBuilder queryBuilder = new QueryBuilder("prodotto", "pro");
+            String query = queryBuilder.select("*").innerJoin("tagprodotti", "tag")
+                    .on("pro.idProd = tag.idProdotto").where("idTag=?").generateQuery();
+            try (PreparedStatement ps = conn.prepareStatement(query)) {
+                ps.setInt(1, tag.getTagId());
+                ResultSet rs = ps.executeQuery();
+                ProductExtractor productExtractor = new ProductExtractor();
+                while (rs.next()) {
                     Product product = productExtractor.extract(rs);
                     products.add(product);
                 }
