@@ -1,13 +1,12 @@
 package Model.http;
 
-import Model.cart.Cart;
-import Model.cart.CartManager;
 import Model.category.Category;
 import Model.category.CategoryManager;
 import Model.product.Product;
 import Model.product.ProductManager;
 import Model.search.Paginator;
-import org.apache.tomcat.jdbc.pool.DataSource;
+import Model.tag.Tag;
+import Model.tag.TagManager;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,17 +18,19 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Optional;
 
-@WebServlet(name = "SiteServlet",value ="/site/*")
+//navigazione pagine del sito lato customer
+@WebServlet(name = "SiteServlet", value = "/site/*")
 public class SiteServlet extends Controller {
-
+    private TagManager tagManager;
     private CategoryManager categoryManager;
     private ProductManager productManager;
-    private CartManager cartManager;
+
     public void init() throws ServletException {
         try {
             categoryManager = new CategoryManager(source);
             productManager = new ProductManager(source);
-            cartManager = new CartManager((DataSource) source);
+            tagManager = new TagManager(source);
+
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -37,31 +38,29 @@ public class SiteServlet extends Controller {
     }
 
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String path = getPath(request);
         try {
             switch (path) {
                 case "/home":
                     HttpSession session = request.getSession();
-                    ArrayList<Product> products = productManager.fetchProducts(new Paginator(1,30));
+                    ArrayList<Product> products = productManager.fetchProducts(new Paginator(1, 4));
                     ArrayList<Category> categories = categoryManager.fetchCategories(new Paginator(1, 30));
-                    /*int id = 0;
-                    Cart cart = cartManager.fetchCartWithProduct(id);*/
-                    session.setAttribute("categories",categories);
-                    session.setAttribute("products", products);
-                    //session.setAttribute("cart",cart);
+                    ArrayList<Tag> tags = tagManager.fetchTags(new Paginator(1, 30));
+                    session.setAttribute("categories", categories);
+                    request.setAttribute("products", products);
+                    session.setAttribute("tags", tags);
                     request.getRequestDispatcher(view("site/home")).forward(request, response);
-                    break;
-                case "/product":
-                    //response.sendRedirect("progetto_war_exploded/products/show");
-                    request.getRequestDispatcher(view("site/product")).forward(request, response);
-                    break;
                 default:
                     internalError();
+                case "/lorem":
+                    request.getRequestDispatcher(view("site/lorem")).forward(request, response);
             }
-        }
-        catch (InvalidRequestException | SQLException e) {
+        } catch (InvalidRequestException | SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     }
 }

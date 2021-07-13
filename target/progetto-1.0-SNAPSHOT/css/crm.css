@@ -1,6 +1,8 @@
 .app {
     display: flex;
     flex-flow: row nowrap;
+    height: auto;
+    min-height: 100vh;
 }
 
 .topbar, .sidebar {
@@ -86,4 +88,10 @@
 
 .content > * {
     position: relative;
+}
+
+.proimg > div > img {
+    height: 100%;
+    width: 133%;
+    flex-shrink: 3;
 }

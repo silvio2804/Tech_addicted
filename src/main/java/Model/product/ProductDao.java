@@ -3,6 +3,7 @@ package Model.product;
 import Model.category.Category;
 import Model.search.Condition;
 import Model.search.Paginator;
+import Model.tag.Tag;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -28,4 +29,8 @@ public interface ProductDao<E extends Exception>{
     ArrayList<Category> fetchCategoriesByProducts() throws E;
 
     int countAll() throws E;
+
+    ArrayList<Product> fetchProductsByCategory(Category category) throws E;
+
+    ArrayList<Product> fetchProductsByTag(Tag tag) throws E;
 }

@@ -17,7 +17,7 @@
         </div>
     </div>
     <div class="search-container">
-        <form method="post" action="/products/search" class="searchbar-form">
+        <form method="post" action="/progetto_war_exploded/products/search" class="searchbar-form">
             <input type="search" name="name" placeholder="Cerca..." class="search-field">
             <button type="submit" class="search-button">
                 <img src="../images/search.png" height="30" width="30">
@@ -57,7 +57,7 @@
         </span>
 
         <div class="formtag" id="myForm">
-            <form action="/progetto_war_exploded/product/search" method="post" class="form-container">
+            <form action="/progetto_war_exploded/products/searchByTag" method="get" class="form-container">
                 <h3>Cosa ti interessa?</h3>
                 <label for="tag">
                     <select name="tag" id="tag">

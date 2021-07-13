@@ -3,9 +3,9 @@
     <h1>${product.name}</h1>
     <p class="price">${product.price}</p>
     <p>
-    <form action="/site/product">
-        <input type="hidden" value="${product.productId}">
-        <button>Visualizza prodotto</button>
+    <form action="/progetto_war_exploded/products/showCli">
+        <input type="hidden" name="id" value="${product.productId}">
+        <button type="submit">Visualizza prodotto</button>
     </form>
     </p>
 </div>

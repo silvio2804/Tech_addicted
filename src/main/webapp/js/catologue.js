@@ -15,4 +15,10 @@ ajax({
         console.error(err);
     }
 });
+function loadTag(){
+    var xhttp = new XMLHttpRequest();
+
+}
+
+
 
