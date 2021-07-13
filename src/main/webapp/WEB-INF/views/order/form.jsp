@@ -3,10 +3,6 @@
 <jsp:useBean id="order" class="Model.order.Order" scope="request"/>
 <c:set var="isCreate" value="${order.orderId == 0}"/>
 
-<c:if test="${not empty alert}">
-    <%@include file="../partials/alert.jsp" %>
-</c:if>
-
 <!doctype html>
 <html>
 <head>
@@ -26,8 +22,10 @@
     <%@include file="../partials/crm/sidebar.jsp" %>
     <section class="content grid-y">
         <%@include file="../partials/crm/header.jsp" %>
-        <div class="body grid-x justify-center">
-
+        <div class="body grid-y justify-center">
+            <c:if test="${not empty alert}">
+                <%@include file="../partials/alert.jsp" %>
+            </c:if>
 
             <form method="post" action="/progetto_war_exploded/orders/${isCreate ? 'create': 'update'}">
                 <c:if test="${not isCreate}">
@@ -49,7 +47,7 @@
                 </fieldset>
             </form>
             <c:if test="${not isCreate}">
-                <form method="post" action="progetto_war_exploded/orders/delete">
+                <form method="post" action="/progetto_war_exploded/orders/delete">
                     <input type="hidden" name="id" value="${order.orderId}">
                     <button type="submit" class="cell w40 btn">Elimina</button>
                 </form>

@@ -65,7 +65,9 @@ public class ProductManager extends Manager implements ProductDao<SQLException> 
 
     @Override
     public boolean createProduct(Product product) throws SQLException {
+
         try (Connection conn = source.getConnection()) {
+            conn.setAutoCommit(false);
             QueryBuilder queryBuilder = new QueryBuilder("prodotto", "pro");
             queryBuilder.insert("idProd", "nome", "descrizione", "prezzo", "immagine", "idCategoria");
             try (PreparedStatement ps = conn.prepareStatement(queryBuilder.generateQuery())) {

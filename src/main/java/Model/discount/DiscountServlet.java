@@ -39,7 +39,8 @@ public class DiscountServlet extends Controller {
                 case "/":
                     authorize(request.getSession());
                     request.setAttribute("back", view("crm/product"));
-                    Paginator paginator = new Paginator(1, 5);
+                    int page = parsePage(request);
+                    Paginator paginator = new Paginator(page, 10);
                     int size = discountManager.countAll();
                     request.setAttribute("pages", paginator.getPages(size));
                     ArrayList<Discount> discounts = discountManager.fetchDiscounts(paginator);

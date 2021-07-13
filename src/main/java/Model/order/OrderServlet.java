@@ -37,7 +37,7 @@ public class OrderServlet extends Controller {
                 case "/":
                     authorize(request.getSession());
                     request.setAttribute("back",view("crm/home"));
-                    Paginator paginator = new Paginator(1, 5);
+                    Paginator paginator = new Paginator(1, 10);
                     int size = orderManager.countAll();
                     request.setAttribute("pages", paginator.getPages(size));
                     ArrayList<Order> orders = orderManager.fetchOrders(paginator);

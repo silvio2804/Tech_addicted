@@ -52,46 +52,46 @@
                     <fieldset class="grid-y cell acc-form">
                         <legend>${isCreate ? 'Crea' : 'Aggiorna'} Account</legend>
                         <label for="name" class="field cell w 40">
-                            <input id="name" name="name" placeholder="Nome" type="text" value="${accountShowed.name}">
+                            <input id="name" name="name" placeholder="Nome" type="text" value="${accountShowed.name}" required>
                         </label>
 
                         <label for="lastName" class="field cell w 40">
                             <input id="lastName" name="lastName" placeholder="Cognome" type="text"
-                                   value="${accountShowed.lastName}">
+                                   value="${accountShowed.lastName}" required>
                         </label>
 
                         <label for="dataNa" class="field cell w 40">
                             <input id="dataNa" name="dataNa" placeholder="data di nascita" type="date"
-                                   value="${accountShowed.password}">
+                                   value="${accountShowed.password}" required>
                         </label>
 
                         <label for="email" class="field cell w 40">
                             <input id="email" name="email" placeholder="Email" type="email"
-                                   value="${accountShowed.email}">
+                                   value="${accountShowed.email}" required>
                         </label>
 
                         <label for="street" class="field cell w 40">
                             <input id="street" name="street" placeholder="Via" type="text"
-                                   value="${accountShowed.street}">
+                                   value="${accountShowed.street}" required>
                         </label>
 
                         <label for="city" class="field cell w 40">
-                            <input id="city" name="city" placeholder="Citta" type="text" value="${accountShowed.city}">
+                            <input id="city" name="city" placeholder="Citta" type="text" value="${accountShowed.city}"
+                                   required>
                         </label>
 
                         <label for="houseNumber" class="field cell w 40">
                             <input id="houseNumber" name="houseNumber" placeholder="Numero civico" type="text"
-                                   value="${accountShowed.city}">
+                                   value="${accountShowed.city}" required>
                         </label>
-
                         <label for="password" class="field cell w 40">
-                            <input id="password" name="password" placeholder="password" type="text"
+                            <input id="password" name="password" placeholder="password" type="text" required minlength="6"
                                    value="${accountShowed.password}">
                         </label>
 
-                        <label for="maschio" class="field cell w 40">
-                            <h5>maschio</h5>  <input type="radio" id="maschio" name="gender" value="m">
-                            <h5>femmina</h5>  <input name="gender" type="radio" value="f" id="femmina">
+                        <label class="field cell w 40">
+                            <h5>maschio</h5>  <input name="gender" type="radio" id="maschio" value="m">
+                            <h5>femmina</h5>  <input name="gender" type="radio" id="femmina" value="f" >
                         </label>
 
                         <label for="admin" class="field cell w 40">

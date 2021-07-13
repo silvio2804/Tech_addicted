@@ -57,18 +57,19 @@ public class AccountManager extends Manager implements AccountDao {
     public boolean createAccount(Account utente) throws SQLException {
         try (Connection conn = source.getConnection()) {
             QueryBuilder queryBuilder = new QueryBuilder("utente", "ute");
-            String admin = "" + utente.isAdmin();
-            queryBuilder.insert("email", "passw", "nome", "cognome", "adm","dataNascita","citta","via","numeroCivico");
+            queryBuilder.insert("email", "nome", "cognome", "adm","dataNascita","citta","via","numeroCivico","sesso","passw");
             try (PreparedStatement ps = conn.prepareStatement(queryBuilder.generateQuery())) {
                 ps.setString(1, utente.getEmail());
-                ps.setString(2, utente.getPassword());
-                ps.setString(3, utente.getName());
-                ps.setString(4, utente.getLastName());
-                ps.setBoolean(5, utente.isAdmin());
-                ps.setObject(6,utente.getDate());
-                ps.setString(7,utente.getCity());
-                ps.setString(8,utente.getStreet());
-                ps.setInt(9,utente.getHouseNumber());
+                ps.setString(2, utente.getName());
+                ps.setString(3, utente.getLastName());
+                ps.setBoolean(4, utente.isAdmin());
+                ps.setObject(5,utente.getDate());
+                ps.setString(6,utente.getCity());
+                ps.setString(7,utente.getStreet());
+                ps.setInt(8,utente.getHouseNumber());
+                ps.setString(9,utente.getGender());
+                ps.setString(10,utente.getPassword());
+                System.out.println(utente);
                 int updRet = ps.executeUpdate();
                 return updRet == 1;
             }
@@ -79,7 +80,7 @@ public class AccountManager extends Manager implements AccountDao {
     public boolean deleteAccount(int id) throws SQLException {
         try (Connection conn = source.getConnection()) {
             QueryBuilder queryBuilder = new QueryBuilder("utente", "ute");
-            queryBuilder.delete().where("id=?");
+            queryBuilder.delete().where("idUte=?");
             try (PreparedStatement ps = conn.prepareStatement(queryBuilder.generateQuery())) {
                 ps.setInt(1, id);
                 int updRet = ps.executeUpdate();
@@ -92,7 +93,7 @@ public class AccountManager extends Manager implements AccountDao {
     public boolean updateAccount(Account utente) throws SQLException {
         try (Connection conn = source.getConnection()) {
             QueryBuilder queryBuilder = new QueryBuilder("utente", "ute");
-            queryBuilder.update("email", "passw", "nome", "cognome", "adm","dataNascita","citta","via","numeroCivico").where("id=?");
+            queryBuilder.update("email", "passw", "nome", "cognome", "adm","dataNascita","citta","via","numeroCivico").where("idUte=?");
             try (PreparedStatement ps = conn.prepareStatement(queryBuilder.generateQuery())) {
                 ps.setString(1, utente.getEmail());
                 ps.setString(2, utente.getPassword());
@@ -103,6 +104,8 @@ public class AccountManager extends Manager implements AccountDao {
                 ps.setString(7,utente.getCity());
                 ps.setString(8,utente.getStreet());
                 ps.setInt(9,utente.getHouseNumber());
+                ps.setInt(10,utente.getId());
+                System.out.println(utente);
                 int updRet = ps.executeUpdate();
                 return updRet == 1;
             }

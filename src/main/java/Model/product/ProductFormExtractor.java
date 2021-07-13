@@ -15,10 +15,10 @@ public class ProductFormExtractor implements FormExtractor<Product> {
         product.setName(request.getParameter("name"));
         product.setPrice(Double.parseDouble(request.getParameter("price")));
         product.setDescription(request.getParameter("description"));
+        product.setCover(request.getParameter("cover"));
         Category category = new Category();
         category.setCategoryId(Integer.parseInt(request.getParameter("categoryId")));
         product.setCategory(category);
-
         return product;
     }
 }

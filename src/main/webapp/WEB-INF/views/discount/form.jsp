@@ -3,16 +3,12 @@
 <jsp:useBean id="discount" class="Model.discount.Discount" scope="request"/>
 <c:set var="isCreate" value="${discount.discountId == 0}"/>
 
-<c:if test="${not empty alert}">
-    <%@include file="../partials/alert.jsp"%>
-</c:if>
-
 <!doctype html>
 <html>
 <head>
     <jsp:include page="../partials/head.jsp">
         <jsp:param name="param" value="Tech addicted home"/>
-        <jsp:param name="styles" value="crm,crmTable,dashboard"/>
+        <jsp:param name="styles" value="crm,crmTable"/>
         <jsp:param name="scripts" value="crm"/>
     </jsp:include>
     <style>
@@ -26,9 +22,10 @@
     <%@include file="../partials/crm/sidebar.jsp" %>
     <section class="content grid-y">
         <%@include file="../partials/crm/header.jsp" %>
-        <div class="body grid-x justify-center">
-
-
+        <div class="body grid-y justify-center">
+            <c:if test="${not empty alert}">
+                <%@include file="../partials/alert.jsp"%>
+            </c:if>
 <form method="post"action="/progetto_war_exploded/discounts/${isCreate ? 'create': 'update'}">
     <c:if test="${not isCreate}">
         <input type="hidden" name="discountId" value="${discount.discountId}">
@@ -46,6 +43,12 @@
         <button type="submit" class="cell w40 btn primary">${isCreate ? 'Crea' : 'Aggiorna'}</button>
     </fieldset>
 </form>
+            <c:if test="${not isCreate}">
+                <form method="post" action="/progetto_war_exploded/discounts/delete">
+                    <input type="hidden" name="id" value="${product.productId}">
+                    <button type="submit" class="cell w40 btn">Elimina</button>
+                </form>
+            </c:if>
         </div>
     </section>
 </main>

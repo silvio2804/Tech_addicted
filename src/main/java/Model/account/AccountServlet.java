@@ -1,15 +1,20 @@
 package Model.account;
 
 import Components.Alert;
+import Model.cart.Cart;
+import Model.cart.CartManager;
 import Model.http.Controller;
 import Model.http.InvalidRequestException;
 import Model.search.Paginator;
+import org.apache.tomcat.jdbc.pool.DataSource;
+
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,11 +24,13 @@ import java.util.Optional;
 public class AccountServlet extends Controller {
 
     private AccountManager accountManager;
+    private CartManager cartManager;
 
     public void init() throws ServletException {
         super.init();
         try {
             accountManager = new AccountManager(source);
+            cartManager = new CartManager(source);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -38,11 +45,11 @@ public class AccountServlet extends Controller {
                     authorize(request.getSession());
                     request.setAttribute("back", view("crm/accounts"));
                     int page = parsePage(request);
-                    Paginator paginator = new Paginator(page, 5);
+                    Paginator paginator = new Paginator(page, 10);
                     int size = accountManager.countAll();
                     request.setAttribute("pages", paginator.getPages(size));
                     List<Account> accounts = accountManager.fetchAccounts(paginator);
-                    request.setAttribute("accounts", accounts);
+                    request.getSession().setAttribute("accounts", accounts);
                     request.getRequestDispatcher(view("crm/manageAccount")).forward(request, response);
                     break;
                 case "/signup":
@@ -52,10 +59,9 @@ public class AccountServlet extends Controller {
                     HttpSession session = request.getSession(false);
                     authenticate(session);
                     AccountSession accountSession = getSessionAccount(session);
-                    String redirect = accountSession.isAdmin() ? "/progetto_war_exploded/accounts/signin" : "/progetto_war_exploded/site/home";
                     session.removeAttribute("accountSession");
                     session.invalidate();
-                    response.sendRedirect(redirect);
+                    response.sendRedirect("/progetto_war_exploded/site/home");
                     break;
                 case "/signin":
                     request.getRequestDispatcher(view("site/signin")).forward(request, response);
@@ -101,10 +107,12 @@ public class AccountServlet extends Controller {
             switch (path) {
                 case "/signup": //registrazione cliente
                     Account registerAccount = new RegisterAccountExtractor().extract(request,false);
+                    AccountSession accountSess = new AccountSession(registerAccount);
                     registerAccount.setPassword(request.getParameter("password"));
                     Optional<Account> accountOpt= accountManager.findAccount(registerAccount.getEmail(), registerAccount.getPassword());
                     if (!accountOpt.isPresent()) {
                         accountManager.createAccount(registerAccount);
+                        request.getSession(false).setAttribute("accountSession",accountSess);
                         response.sendRedirect("../site/home");
                     }
                     else{
@@ -118,13 +126,20 @@ public class AccountServlet extends Controller {
                     Account tmpCustomer = new Account();
                     tmpCustomer.setEmail(request.getParameter("email"));
                     tmpCustomer.setPassword(request.getParameter("password"));
-                    Integer accounts = accountManager.countAll();
-                    request.setAttribute("accounts",accounts);
+                    if(tmpCustomer.isAdmin()) {
+                        Integer accounts = accountManager.countAll();
+                        request.setAttribute("accounts", accounts);
+                    }
                     Optional<Account> optCustomer = accountManager.findAccount(tmpCustomer.getEmail(), tmpCustomer.getPassword());
                     if (optCustomer.isPresent()) {
                         AccountSession accountSession = new AccountSession(optCustomer.get());
                         String red = accountSession.isAdmin() ? "../pages/dashboard" :"../site/home";
                         request.getSession(true).setAttribute("accountSession", accountSession);
+                        if(!optCustomer.get().isAdmin()){
+                            Cart cart = cartManager.fetchCart(accountSession);
+                            cart = cartManager.fetchCartWithProduct(cart.getIdCart());
+                            request.getSession(false).setAttribute("cart", cart);
+                        }
                         response.sendRedirect(red);
                     } else
                         throw new InvalidRequestException("Credenziali non valide!",
@@ -132,28 +147,35 @@ public class AccountServlet extends Controller {
                     break;
                 case "/create":
                     authorize(request.getSession(false));
-                    request.setAttribute("back", view("crm/dashboard"));
+                    request.setAttribute("back", view("account/form"));
                     validate(AccountValidator.validateForm(request, false));
                     Account account = new AccountFormExtractor().extract(request, false);
                     account.setPassword(request.getParameter("password"));
                     if (accountManager.createAccount(account)) {
-                        request.setAttribute("alert", new Alert(List.of("Account creato!"), "success"));
-                        request.getRequestDispatcher(view("account/form")).forward(request, response);
-                    } else
-                        internalError();
+                        Cart cart = new Cart(new ArrayList<>());
+                        cart.setAccount(accountManager.findAccount(account.getEmail(), account.getPassword()).get());
+                        if(cartManager.createCart(cart)){
+                            request.setAttribute("alert", new Alert(List.of("Account creato!"), "success"));
+                            request.getRequestDispatcher(view("account/form")).forward(request, response);
+                        }
+                        else
+                            internalError();
+                        }
                     break;
                 case "/update":
                     authorize(request.getSession(false));
-                    request.setAttribute("back", view("crm/account"));
-                    validate(AccountValidator.validateForm(request, true));
+                    request.setAttribute("back", view("crm/manageAccount"));
+                    //validate(AccountValidator.validateForm(request, true));
                     Account updateAccount = new AccountFormExtractor().extract(request, true);
+                    updateAccount.setPassword(request.getParameter("password"));
                 if(accountManager.updateAccount(updateAccount)){
                     request.setAttribute("account",updateAccount);
                     request.setAttribute("alert",new Alert(List.of("Account aggiornato !"),"success"));
                     request.getRequestDispatcher(view("account/form")).forward(request,response);
                 }
-                else
-                    internalError();
+                else {
+                    throw new InvalidRequestException(("Credenziali non valide!"), List.of("Credenziali non valide!"), HttpServletResponse.SC_BAD_REQUEST);
+                }
                     break;
                 case "/delete":
                     authorize(request.getSession(false));
@@ -166,8 +188,6 @@ public class AccountServlet extends Controller {
                         internalError();
                     break;
                 case "profile": //aggiorna profilo cliente
-                    break;
-                case "logout": //logout per entrambi
                     break;
                 default:
                     notAllowed();

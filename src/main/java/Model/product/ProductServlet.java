@@ -118,13 +118,12 @@ public class ProductServlet extends Controller implements ErrorHandler {
                     request.setAttribute("back", view("product/form"));
                     validate(ProductValidator.validateForm(request));
                     RequestValidator requestValidator = ProductValidator.validateForm(request);
-                    System.out.println(requestValidator.getError());
                     Product product = new ProductFormExtractor().extract(request, false);
                     Part filePart = request.getPart("cover");
                     String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
                     product.setCover(fileName);
+                    product.writeCover(getUploadPath(), request.getPart("cover"));
                     if (productManager.createProduct(product)) {
-                        product.writeCover(getUploadPath(), request.getPart("cover"));
                         request.setAttribute("alert", new Alert(List.of("Prodotto creato!"), "success"));
                         response.setStatus(HttpServletResponse.SC_CREATED);
                         request.getRequestDispatcher(view("product/form")).forward(request, response);
@@ -143,12 +142,12 @@ public class ProductServlet extends Controller implements ErrorHandler {
                     request.setAttribute("back", view("crm/product"));
                     validate(ProductValidator.validateForm(request));
                     Product updateProduct = new ProductFormExtractor().extract(request, true);
-                    request.setAttribute("product", updateProduct);
+                    Part filePart1 = request.getPart("cover");
+                    String fileName1 = Paths.get(filePart1.getSubmittedFileName()).getFileName().toString();
+                    updateProduct.setCover(fileName1);
                     if (productManager.updateProduct(updateProduct)) {
-                        Part filePart1 = request.getPart("cover");
-                        String fileName1 = Paths.get(filePart1.getSubmittedFileName()).getFileName().toString();
-                        updateProduct.setCover(fileName1);
                         updateProduct.writeCover(getUploadPath(), request.getPart("cover"));
+                        request.setAttribute("product", updateProduct);
                         request.setAttribute("alert", new Alert(List.of("Prodotto aggiornato!"), "success"));
                         request.getRequestDispatcher(view("product/form")).forward(request, response);
                     } else
@@ -170,10 +169,15 @@ public class ProductServlet extends Controller implements ErrorHandler {
         } catch (SQLException t) {
             t.printStackTrace();
             log(t.getMessage());
-        } catch (InvalidRequestException ex) {
+        } catch (InvalidRequestException  ex) {
             ex.printStackTrace();
             log(ex.getMessage());
             ex.handle(request, response);
+        }
+        catch (IOException ioException){
+            ioException.printStackTrace();
+            log(ioException.toString());
+            response.sendRedirect("/progetto_war_exploded/products/create");
         }
     }
 }

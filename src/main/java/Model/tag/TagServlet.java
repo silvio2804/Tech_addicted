@@ -42,7 +42,7 @@ public class TagServlet extends Controller {
                 case "/":
                     authorize(request.getSession());
                     request.setAttribute("back", view("crm/dashboard"));
-                    Paginator paginator = new Paginator(1, 30);
+                    Paginator paginator = new Paginator(1, 10);
                     int size = tagManager.countAll();
                     request.setAttribute("pages", paginator.getPages(size));
                     ArrayList<Tag> tags = tagManager.fetchTags(paginator);

@@ -48,7 +48,7 @@
     <a href="/progetto_war_exploded/site/wish">WishList</a>
 </button> </span>
     </c:if>
-    <span>
+    <span id="cart">
         <%@include file="../../../../icons/shopping-cart-empty-side-view.svg" %>
     </span>
     <div>

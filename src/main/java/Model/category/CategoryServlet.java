@@ -47,7 +47,7 @@ public class CategoryServlet extends Controller {
         try {
             String path = getPath(request);
             switch (path) {
-                case "/": //mostra tutte le categorie
+                case "/":
                     authorize(request.getSession());
                     request.setAttribute("back", view("crm/home"));
                     int page = parsePage(request);

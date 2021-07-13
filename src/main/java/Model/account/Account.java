@@ -108,12 +108,32 @@ public class Account {
         this.orders = orders;
     }
 
-    public ArrayList<Cart> getPurchaseHistory() {
-        return purchaseHistory;
+    @Override
+    public String toString() {
+        return "Account{" +
+                "name='" + name + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", id=" + id +
+                ", date=" + date +
+                ", email='" + email + '\'' +
+                ", street='" + street + '\'' +
+                ", houseNumber=" + houseNumber +
+                ", city='" + city + '\'' +
+                ", admin=" + admin +
+                ", password='" + password + '\'' +
+                ", gender='" + gender + '\'' +
+                ", wishList=" + wishList +
+                ", orders=" + orders +
+                ", cart=" + cart +
+                '}';
     }
 
-    public void setPurchaseHistory(ArrayList<Cart> purchaseHistory) {
-        this.purchaseHistory = purchaseHistory;
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
     }
 
     public String getPassword() {
@@ -122,10 +142,6 @@ public class Account {
 
     public void setPassword(String password) throws NoSuchAlgorithmException { // password è inserita dall'utente
         MessageDigest digest = MessageDigest.getInstance("SHA-512"); //password crittografata
-        //SecureRandom ss = new SecureRandom();
-        //byte[] salt = new byte[16];
-        //ss.nextBytes(salt);
-        //digest.update(salt);
         byte[] hashedPwd = digest.digest(password.getBytes(StandardCharsets.UTF_8));
         digest.update(password.getBytes(StandardCharsets.UTF_8));
         StringBuilder builder = new StringBuilder();
@@ -151,13 +167,6 @@ public class Account {
         return this.id == ut.getId();
     }
 
-    @Override
-    public String toString() {
-        return "Account{" +
-                "email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                '}';
-    }
 
     private String name;
     private String lastName;
@@ -173,5 +182,5 @@ public class Account {
 
     private ArrayList<Product> wishList;
     private ArrayList<Order> orders;
-    private ArrayList<Cart> purchaseHistory;
+    private Cart cart;
 }

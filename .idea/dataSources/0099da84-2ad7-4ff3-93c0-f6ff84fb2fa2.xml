@@ -932,26 +932,36 @@ SELECT|sys.sys_config
     <table id="292" parent="10" name="ordine"/>
     <table id="293" parent="10" name="prodottiincarrello"/>
     <table id="294" parent="10" name="prodotto"/>
-    <table id="295" parent="10" name="promozione"/>
-    <table id="296" parent="10" name="sconto"/>
-    <table id="297" parent="10" name="tag"/>
-    <table id="298" parent="10" name="tagprodotti"/>
-    <table id="299" parent="10" name="utente"/>
-    <column id="300" parent="289" name="idCar">
+    <table id="295" parent="10" name="tag"/>
+    <table id="296" parent="10" name="tagprodotti"/>
+    <table id="297" parent="10" name="utente"/>
+    <column id="298" parent="289" name="idCar">
       <Position>1</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="301" parent="289" name="idUtente">
+    <column id="299" parent="289" name="idUtente">
       <Position>2</Position>
       <DataType>int|0s</DataType>
+      <NotNull>1</NotNull>
     </column>
-    <key id="302" parent="289" name="PRIMARY">
+    <index id="300" parent="289" name="idUtente">
+      <ColNames>idUtente</ColNames>
+      <Type>btree</Type>
+    </index>
+    <key id="301" parent="289" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
-      <ColNames>idCar</ColNames>
+      <ColNames>idCar
+idUtente</ColNames>
       <Primary>1</Primary>
     </key>
+    <foreign-key id="302" parent="289" name="carrello_ibfk_1">
+      <ColNames>idUtente</ColNames>
+      <RefTableName>utente</RefTableName>
+      <RefColNames>idUte</RefColNames>
+      <OnDelete>cascade</OnDelete>
+    </foreign-key>
     <column id="303" parent="290" name="nomeCategoria">
       <Position>1</Position>
       <DataType>varchar(30)|0s</DataType>
@@ -1103,144 +1113,89 @@ idProdotto</ColNames>
       <ColNames>idProd</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="333" parent="295" name="idProdotto">
-      <Position>1</Position>
-      <DataType>int|0s</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <column id="334" parent="295" name="idSconto">
-      <Position>2</Position>
-      <DataType>int|0s</DataType>
-    </column>
-    <column id="335" parent="295" name="dataInizio">
-      <Position>3</Position>
-      <DataType>timestamp|0s</DataType>
-    </column>
-    <column id="336" parent="295" name="dataFine">
-      <Position>4</Position>
-      <DataType>timestamp|0s</DataType>
-    </column>
-    <index id="337" parent="295" name="idSconto">
-      <ColNames>idSconto</ColNames>
-      <Type>btree</Type>
-    </index>
-    <key id="338" parent="295" name="PRIMARY">
-      <NameSurrogate>1</NameSurrogate>
-      <ColNames>idProdotto</ColNames>
-      <Primary>1</Primary>
-    </key>
-    <foreign-key id="339" parent="295" name="promozione_ibfk_1">
-      <ColNames>idSconto</ColNames>
-      <RefTableName>sconto</RefTableName>
-      <RefColNames>idSconto</RefColNames>
-      <OnDelete>cascade</OnDelete>
-    </foreign-key>
-    <column id="340" parent="296" name="idSconto">
+    <column id="333" parent="295" name="idTag">
       <Position>1</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="341" parent="296" name="nomeSconto">
-      <Position>2</Position>
-      <DataType>varchar(30)|0s</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <column id="342" parent="296" name="percentuale">
-      <Position>3</Position>
-      <DataType>int|0s</DataType>
-    </column>
-    <key id="343" parent="296" name="PRIMARY">
-      <NameSurrogate>1</NameSurrogate>
-      <ColNames>idSconto</ColNames>
-      <Primary>1</Primary>
-    </key>
-    <column id="344" parent="297" name="idTag">
-      <Position>1</Position>
-      <DataType>int|0s</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <column id="345" parent="297" name="parola">
+    <column id="334" parent="295" name="parola">
       <Position>2</Position>
       <DataType>varchar(30)|0s</DataType>
     </column>
-    <key id="346" parent="297" name="PRIMARY">
+    <key id="335" parent="295" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>idTag</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="347" parent="298" name="idProdotto">
+    <column id="336" parent="296" name="idProdotto">
       <Position>1</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="348" parent="298" name="idTag">
+    <column id="337" parent="296" name="idTag">
       <Position>2</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <key id="349" parent="298" name="PRIMARY">
+    <key id="338" parent="296" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>idProdotto
 idTag</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="350" parent="299" name="idUte">
+    <column id="339" parent="297" name="idUte">
       <Position>1</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="351" parent="299" name="nome">
+    <column id="340" parent="297" name="nome">
       <Position>2</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="352" parent="299" name="cognome">
+    <column id="341" parent="297" name="cognome">
       <Position>3</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="353" parent="299" name="dataNascita">
+    <column id="342" parent="297" name="dataNascita">
       <Position>4</Position>
       <DataType>date|0s</DataType>
-      <NotNull>1</NotNull>
     </column>
-    <column id="354" parent="299" name="email">
+    <column id="343" parent="297" name="email">
       <Position>5</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="355" parent="299" name="passw">
+    <column id="344" parent="297" name="passw">
       <Position>6</Position>
       <DataType>varchar(128)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="356" parent="299" name="sesso">
+    <column id="345" parent="297" name="sesso">
       <Position>7</Position>
       <DataType>varchar(10)|0s</DataType>
     </column>
-    <column id="357" parent="299" name="adm">
+    <column id="346" parent="297" name="adm">
       <Position>8</Position>
       <DataType>tinyint(1)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="358" parent="299" name="citta">
+    <column id="347" parent="297" name="citta">
       <Position>9</Position>
       <DataType>varchar(30)|0s</DataType>
-      <NotNull>1</NotNull>
     </column>
-    <column id="359" parent="299" name="via">
+    <column id="348" parent="297" name="via">
       <Position>10</Position>
       <DataType>varchar(30)|0s</DataType>
-      <NotNull>1</NotNull>
     </column>
-    <column id="360" parent="299" name="numeroCivico">
+    <column id="349" parent="297" name="numeroCivico">
       <Position>11</Position>
       <DataType>int|0s</DataType>
-      <NotNull>1</NotNull>
     </column>
-    <key id="361" parent="299" name="PRIMARY">
+    <key id="350" parent="297" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>idUte</ColNames>
       <Primary>1</Primary>

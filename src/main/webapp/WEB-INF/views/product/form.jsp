@@ -12,7 +12,7 @@
     <jsp:include page="../partials/head.jsp">
         <jsp:param name="param" value="Tech addicted home"/>
         <jsp:param name="styles" value="crm,crmTable"/>
-        <jsp:param name="scripts" value="crm,"/>
+        <jsp:param name="scripts" value="crm"/>
     </jsp:include>
     <style>
         .product-form > * {
@@ -56,7 +56,7 @@
                         </select>
                     </label>
                     <label for="cover" class="field cell w50">
-                        <input type="file" id="cover" name="cover">
+                        <input type="file" id="cover" name="cover" value="${product.cover}">
                     </label>
                     <button type="submit" class="cell w40 btn primary">${isCreate ? 'Crea' : 'Aggiorna'}</button>
                 </fieldset>

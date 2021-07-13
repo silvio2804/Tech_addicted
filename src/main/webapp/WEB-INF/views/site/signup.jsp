@@ -6,10 +6,11 @@
 <jsp:include page="../partials/head.jsp">
     <jsp:param name="title" value="Singup"/>
     <jsp:param name="styles" value="sign"/>
+    <jsp:param name="scripts" value="signform"/>
 </jsp:include>
 
 <main class="app">
-<form class="app grid-x justify-center align-center" action="/progetto_war_exploded/accounts/signup" method="post">
+<form name="registerForm" class="app grid-x justify-center align-center" method="post" onsubmit="return checkPass()">
 
     <fieldset class="grid-y cell w33 login">
 
@@ -31,19 +32,19 @@
             <input id="email" name="email" placeholder="Email" type="email">
         </label>
 
-        <label for="emailCheck" class="field cell w33">
-            <input id="emailCheck" name="emailCheck" placeholder="Conferma email" type="email">
+        <label for="checkEmail" class="field cell w33">
+            <input id="checkEmail" name="checkEmail" placeholder="Conferma email" type="email">
         </label>
 
         <label for="password" class="field cell w33" >
-            <input id="password" name="password" type="password" placeholder="password" type="text" required>
+            <input id="password" name="password" type="password" placeholder="password" required>
         </label>
 
-        <label for="passwordCheck" class="field cell w33" >
-            <input id="passwordCheck" name="passwordCheck" type="password" placeholder="Conferma password" type="text" required>
+        <label for="checkPassword" class="field cell w33" >
+            <input id="checkPassword" name="checkPassword" type="password" placeholder="Conferma password" required>
         </label>
 
-        <button type="submit" class="cell w33 btn primary">Registrati</button>
+        <button type="submit" class="cell w33 btn primary" >Registrati</button>
 
     </fieldset>
 </form>

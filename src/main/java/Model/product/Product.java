@@ -84,7 +84,12 @@ public class Product {
     public void writeCover(String uploadPath, Part stream) throws IOException {
         try(InputStream fileStream = stream.getInputStream()){
             File file = new File(uploadPath + cover);
-            Files.copy(fileStream, file.toPath());
+            if(!file.exists()){
+                Files.copy(fileStream, file.toPath());
+            }
+            else{
+                throw new IOException("Immagine gia esistente!");
+            }
         }
     }
 

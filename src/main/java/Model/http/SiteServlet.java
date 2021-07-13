@@ -45,11 +45,11 @@ public class SiteServlet extends Controller {
                     HttpSession session = request.getSession();
                     ArrayList<Product> products = productManager.fetchProducts(new Paginator(1,30));
                     ArrayList<Category> categories = categoryManager.fetchCategories(new Paginator(1, 30));
-                    int id = 0;
-                    Cart cart = cartManager.fetchCartWithProduct(id);
+                    /*int id = 0;
+                    Cart cart = cartManager.fetchCartWithProduct(id);*/
                     session.setAttribute("categories",categories);
                     session.setAttribute("products", products);
-                    session.setAttribute("cart",cart);
+                    //session.setAttribute("cart",cart);
                     request.getRequestDispatcher(view("site/home")).forward(request, response);
                     break;
                 case "/product":

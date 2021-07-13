@@ -2,6 +2,7 @@ package Model.cart;
 
 import Model.account.Account;
 import Model.account.AccountExtractor;
+import Model.account.AccountSession;
 import Model.category.Category;
 import Model.category.CategoryExtractor;
 import Model.order.Order;
@@ -10,12 +11,10 @@ import Model.product.Product;
 import Model.product.ProductExtractor;
 import Model.storage.Manager;
 import Model.storage.QueryBuilder;
-import org.apache.tomcat.jdbc.pool.DataSource;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
+import javax.sql.DataSource;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -23,9 +22,11 @@ import java.util.Optional;
 
 public class CartManager extends Manager implements CartDao {
 
-    public CartManager (DataSource source)throws SQLException{
+    public CartManager (DataSource source) throws SQLException{
         super(source);
     }
+
+
 
     public boolean createCart(Cart cart) throws SQLException {
         try (Connection conn = source.getConnection()) {
@@ -56,6 +57,24 @@ public class CartManager extends Manager implements CartDao {
     }
         return false;
     }*/
+
+    @Override
+    public Cart fetchCart(AccountSession account) throws SQLException {
+        try (Connection conn = source.getConnection()) {
+            QueryBuilder queryBuilder =new QueryBuilder("carrello", "car");
+            String query = queryBuilder.select().where("idUtente=?").generateQuery();
+            try (PreparedStatement ps = conn.prepareStatement(query)) {
+                ps.setInt(1, account.getId());
+                ResultSet rs = ps.executeQuery();
+                CartExtractor cartExtractor = new CartExtractor();
+                Cart cart = null;
+                while (rs.next()) {
+                    cart = cartExtractor.extract(rs);
+                }
+                return cart;
+            }
+        }
+    }
 
     @Override
     public ArrayList<Product> fetchProductsByCart(Cart cart) throws SQLException {
@@ -97,26 +116,20 @@ public class CartManager extends Manager implements CartDao {
     public Cart fetchCartWithProduct(int idCar) throws SQLException {
         try (Connection conn = source.getConnection()) {
             //prelevo tutti i prodotti del carrello
-            QueryBuilder queryBuilder = new QueryBuilder("prodottiincarrello", "proInCar");
-            String query = queryBuilder.select("proInCar.idCarrello", "pro.idProd", "pro.nome", "pro.descrizione" +
-                    " pro.immagine", "pro.prezzo", "cat.nomeCategoria").innerJoin("prodotto","pro")
-                    .on("proInCar.idProdotto=pro.idProd").innerJoin("categoria","cat").on("pro.idCategoria = car.idCat")
-                    .where("proInCar.idCarrello=?").innerJoin("categoria","cat")
-                    .on("pro.idCat=cat.idCat").generateQuery();
+            QueryBuilder queryBuilder = new QueryBuilder("prodotto", "pro");
+            String query = queryBuilder.select( "idProd", "nome", "immagine", "prezzo").innerJoin("prodottiincarrello","proInCar")
+                    .on("proInCar.idProdotto=pro.idProd")
+                    .where("proInCar.idCarrello=?").generateQuery();
             try (PreparedStatement ps = conn.prepareStatement(query)) {
                 ps.setInt(1, idCar);
                 ResultSet rs = ps.executeQuery();
                 Cart cart = new Cart(new ArrayList<>());
                 if (rs.next()) {
                     Product product = new Product();
-                    product.setProductId(rs.getInt(2));
-                    product.setName(rs.getString(3));
-                    product.setDescription(rs.getString(4));
-                    product.setCover(rs.getString(5));
-                    product.setPrice(rs.getDouble(6));
-                    Category category = new Category();
-                    category.setCategoryName(rs.getString(7));
-                    product.setCategory(category);
+                    product.setProductId(rs.getInt(1));
+                    product.setName(rs.getString(2));
+                    product.setCover(rs.getString(3));
+                    product.setPrice(rs.getDouble(4));
                     cart = new CartExtractor().extract(rs);
                     cart.addProduct(product,2);
                 }
