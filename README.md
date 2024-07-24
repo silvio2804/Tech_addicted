@@ -1,5 +1,5 @@
 # Tech Addicted
-![alt text](https://github.com/silvio2804/Tech_addicted/)
+<img src="https://github.com/silvio2804/Tech_addicted/blob/master/logo.png" width="200" height="200" />
 
 This is an E-commerce realized for an Univerisity Project. *Tech Addicted* features:
 * buy products like computers, tablet ...
